@@ -1,6 +1,4 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,6 +11,7 @@
       --card-color: rgba(255, 255, 255, 0.04);
       --accent: #3ee8d3;
       --text-color: #e6f1ff;
+      --glass-blur: 18px;
     }
     * {
       box-sizing: border-box;
@@ -24,6 +23,7 @@
       font-family: 'Orbitron', sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
+      scroll-behavior: smooth;
     }
     .container {
       display: flex;
@@ -31,29 +31,35 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      padding: 2rem;
+      padding: 2rem 1rem;
       text-align: center;
     }
     .card {
       background: var(--card-color);
-      border-radius: 20px;
+      border-radius: 24px;
       padding: 2rem;
       width: 100%;
-      max-width: 600px;
-      box-shadow: 0 0 40px rgba(62, 232, 211, 0.15);
-      backdrop-filter: blur(16px);
+      max-width: 640px;
+      box-shadow: 0 0 50px rgba(62, 232, 211, 0.2);
+      backdrop-filter: blur(var(--glass-blur));
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
     }
     .profile-pic {
-      width: 120px;
-      height: 120px;
+      width: 130px;
+      height: 130px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 1rem;
-      box-shadow: 0 0 20px var(--accent);
+      margin-bottom: 1.2rem;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 30px var(--accent);
     }
     h1.name {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
+      font-size: 2.4rem;
+      margin-bottom: 0.6rem;
       background: linear-gradient(90deg, #3ee8d3, #00c9ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -65,54 +71,54 @@
     }
     .typewriter {
       font-family: 'Roboto Mono', monospace;
-      font-size: 1rem;
-      height: 1rem;
+      font-size: 1.1rem;
+      height: 1.2rem;
       margin-bottom: 1.5rem;
+      color: #b0e6ff;
+    }
+    .local-greeting {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: #a8d7f3;
     }
     .social-icons {
       display: flex;
       justify-content: center;
       gap: 1rem;
       flex-wrap: wrap;
-      margin: 1rem 0;
+      margin: 1.2rem 0;
     }
     .social-icons a {
       color: var(--accent);
-      background: rgba(255, 255, 255, 0.07);
-      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.8rem;
       border-radius: 50%;
-      font-size: 1.5rem;
-      transition: all 0.3s ease;
+      font-size: 1.6rem;
+      transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
     }
     .social-icons a:hover {
       background: var(--accent);
       color: var(--bg-color);
-      transform: scale(1.15);
+      transform: scale(1.2);
     }
     .bio {
       text-align: left;
       margin: 2rem 0;
-      font-size: 0.95rem;
-      line-height: 1.7;
+      font-size: 1rem;
+      line-height: 1.8;
       color: #cbdcec;
+      animation: slideUp 1s ease forwards;
     }
     .bio p {
+      margin-bottom: 0.6rem;
       opacity: 0;
-      transform: translateY(30px);
-      animation: slideUp 0.6s ease forwards;
+      transform: translateY(20px);
+      animation: slideIn 0.6s ease forwards;
     }
-    .bio p:nth-child(1) { animation-delay: 0.2s; }
-    .bio p:nth-child(2) { animation-delay: 0.4s; }
-    .bio p:nth-child(3) { animation-delay: 0.6s; }
-    .bio p:nth-child(4) { animation-delay: 0.8s; }
-    .bio p:nth-child(5) { animation-delay: 1s; }
-    .bio p:nth-child(6) { animation-delay: 1.2s; }
-    .bio p:nth-child(7) { animation-delay: 1.4s; }
-    .bio p:nth-child(8) { animation-delay: 1.6s; }
-    .bio p:nth-child(9) { animation-delay: 1.8s; }
-    .bio p:nth-child(10) { animation-delay: 2s; }
-    .bio p:nth-child(11) { animation-delay: 2.2s; }
-    @keyframes slideUp {
+    .bio p:nth-child(n) {
+      animation-delay: calc(0.2s * var(--n));
+    }
+    @keyframes slideIn {
       to {
         opacity: 1;
         transform: translateY(0);
@@ -120,14 +126,13 @@
     }
     footer {
       margin-top: 2rem;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: #8899aa;
     }
     @media (max-width: 600px) {
-      .bio {
-        font-size: 0.9rem;
-        text-align: center;
-      }
+      h1.name { font-size: 2rem; }
+      .typewriter { font-size: 1rem; }
+      .bio { font-size: 0.95rem; text-align: center; }
     }
   </style>
 </head>
@@ -136,6 +141,7 @@
     <div class="card">
       <img src="profile.jpg" alt="Jino Sabu" class="profile-pic">
       <h1 class="name">Jino Sabu</h1>
+      <div class="local-greeting" id="local-greeting"></div>
       <div class="typewriter" id="typewriter"></div>
       <div class="social-icons">
         <a href="https://www.github.com/jinosabu1999" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
@@ -146,18 +152,18 @@
         <a href="https://www.telegram.me/jinosabu1999" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
       </div>
       <div class="bio">
-        <p>👋 Hey there! I’m Jino Sabu</p>
-        <p>🛠️ Mechanical Engineer by degree</p>
-        <p>💻 Frontend Developer by passion</p>
-        <p>🧠 AI Enthusiast by obsession</p>
-        <p>🎯 I fuse creativity with code to craft futuristic digital experiences</p>
-        <p>🎨 Designing interfaces that feel as good as they function</p>
-        <p>⚙️ Engineering smarter systems that just make life easier</p>
-        <p>🌱 Always learning. Always building. Always evolving.</p>
-        <p>🚀 Currently on a mission to blend logic, design & innovation</p>
-        <p>🌌 I don’t just build websites—I build vibes</p>
-        <p>🖤 Living life in dark mode, one pixel at a time</p>
-        <p>✨ Here to push limits, break patterns & create magic.</p>
+        <p style="--n:1">👋 Hey there! I’m Jino Sabu</p>
+        <p style="--n:2">🛠️ Mechanical Engineer by degree</p>
+        <p style="--n:3">💻 Frontend Developer by passion</p>
+        <p style="--n:4">🧠 AI Enthusiast by obsession</p>
+        <p style="--n:5">🎯 I fuse creativity with code to craft futuristic digital experiences</p>
+        <p style="--n:6">🎨 Designing interfaces that feel as good as they function</p>
+        <p style="--n:7">⚙️ Engineering smarter systems that just make life easier</p>
+        <p style="--n:8">🌱 Always learning. Always building. Always evolving.</p>
+        <p style="--n:9">🚀 Currently on a mission to blend logic, design & innovation</p>
+        <p style="--n:10">🌌 I don’t just build websites—I build vibes</p>
+        <p style="--n:11">🖤 Living life in dark mode, one pixel at a time</p>
+        <p style="--n:12">✨ Here to push limits, break patterns & create magic.</p>
       </div>
       <footer>&copy; 2025 Jino Sabu. All rights reserved.</footer>
     </div>
@@ -181,7 +187,17 @@
       display.textContent = current;
       setTimeout(typeEffect, isDeleting ? 50 : 130);
     }
-    typeEffect();
+    typeEffect();// Localized Greeting Feature
+fetch("https://ipapi.co/json")
+  .then(res => res.json())
+  .then(data => {
+    const country = data.country_name || "your place";
+    document.getElementById("local-greeting").textContent = `👋 Greetings from ${country}!`; 
+  })
+  .catch(() => {
+    document.getElementById("local-greeting").textContent = "👋 Welcome, friend from around the globe!";
+  });
+
   </script>
 </body>
 </html>
