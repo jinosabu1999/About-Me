@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">  
+<!DOCTYPE html><html lang="en">  
 <head>  
   <meta charset="UTF-8" />  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
@@ -35,7 +34,7 @@
       padding: 2rem 1rem;  
       text-align: center;  
     }  
-    .card {  
+    .card, .project-card {  
       background: var(--card-color);  
       border-radius: 24px;  
       padding: 2rem;  
@@ -44,6 +43,7 @@
       box-shadow: 0 0 50px rgba(62, 232, 211, 0.2);  
       backdrop-filter: blur(var(--glass-blur));  
       animation: fadeIn 1s ease-in-out;  
+      margin: 1.5rem 0;  
     }  
     @keyframes fadeIn {  
       from { opacity: 0; transform: scale(0.96); }  
@@ -125,6 +125,37 @@
         transform: translateY(0);  
       }  
     }  
+    .project-title {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-top: 3rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .project-card h2 {  
+      font-size: 1.5rem;  
+      margin-bottom: 0.6rem;  
+      color: var(--accent);  
+    }  
+    .project-card p {  
+      font-size: 1rem;  
+      color: #b0e6ff;  
+      margin-bottom: 1rem;  
+    }  
+    .project-card a {  
+      display: inline-block;  
+      padding: 0.6rem 1.2rem;  
+      background: #fff;  
+      color: #000;  
+      font-weight: bold;  
+      border-radius: 12px;  
+      text-decoration: none;  
+      transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;  
+    }  
+    .project-card a:hover {  
+      transform: scale(1.1);  
+      background: #f2f2f2;
+    }  
     footer {  
       margin-top: 2rem;  
       font-size: 0.8rem;  
@@ -156,7 +187,7 @@
       </div>  
       <div class="bio">  
         <p style="--n:1">👋 Hey there! I’m Jino Sabu</p>  
-        <p style="--n:2">🛠️ Mechanical Engineer by degree</p>  
+        <p style="--n:2">💪 Mechanical Engineer by degree</p>  
         <p style="--n:3">💻 Frontend Developer by passion</p>  
         <p style="--n:4">🧠 AI Enthusiast by obsession</p>  
         <p style="--n:5">🎯 I fuse creativity with code to craft futuristic digital experiences</p>  
@@ -169,9 +200,34 @@
         <p style="--n:12">✨ Here to push limits, break patterns & create magic.</p>  
       </div>  
       <footer>&copy; 2025 Jino Sabu. All rights reserved.</footer>  
-    </div>  
-  </div>  
-  <script>  
+    </div><h2 class="project-title">🚀 Projects</h2>
+<div class="project-card">
+  <h2>Multi Tool Kit 2025</h2>
+  <p>A Swiss army knife for the web – fast, sleek, packed with utilities!</p>
+  <a href="https://v0-multi-tool-app.vercel.app" target="_blank">Explore</a>
+</div>
+<div class="project-card">
+  <h2>ToolTesseract App</h2>
+  <p>All your productivity tools in one futuristic interface. Hyper-organized. Hyper-intuitive.</p>
+  <a href="https://v0-tooltesseract.vercel.app" target="_blank">Launch Now</a>
+</div>
+<div class="project-card">
+  <h2>Memories App</h2>
+  <p>Preserve your moments in a beautiful time capsule. Designed for nostalgia.</p>
+  <a href="https://chronocapsule.vercel.app" target="_blank">Revisit Memories</a>
+</div>
+<div class="project-card">
+  <h2>Audio Cutter App</h2>
+  <p>Cut, trim, and remix audio tracks in seconds. Minimal, smooth, powerful.</p>
+  <a href="https://v0-audio-cutter-app.vercel.app" target="_blank">Try It Out</a>
+</div>
+<div class="project-card">
+  <h2>Code Editor</h2>
+  <p>Your personal coding playground. Fast, clean, dark-mode friendly.</p>
+  <a href="https://code-editor-by-jino.vercel.app" target="_blank">Code Now</a>
+</div>
+
+  </div>  <script>  
     const roles = ["Mechanical Engineer", "Frontend Developer", "AI Enthusiast"];  
     let i = 0, j = 0, current = '', isDeleting = false;  
     function typeEffect() {  
@@ -200,6 +256,5 @@
       .catch(() => {  
         document.getElementById("local-greeting").textContent = "👋 Welcome, friend from around the globe!";  
       });  
-  </script>  
-</body>  
+  </script>  </body>  
 </html>
