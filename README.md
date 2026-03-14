@@ -13,11 +13,8 @@ Built to represent a clean digital presence while keeping performance fast and l
 
 🌌 Live Preview
 
-> Add your GitHub Pages link here
+>https://jinosabu1999.github.io/About-Me/
 
-
-
-https://yourusername.github.io/your-repo-name/
 
 
 ---
