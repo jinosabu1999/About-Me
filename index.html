@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-accent="default">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Jino Sabu | Digital Architect</title>
+  
+  <meta name="description" content="Mechanical Engineer turned Frontend Developer & Digital Architect." />
+  <meta name="theme-color" content="#000000" id="themeColorMeta" />
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #000000;
+      --surface: #111111;
+      --surface-hover: #1a1a1a;
+      --border: rgba(255, 255, 255, 0.08);
+      
+      --text-main: #ffffff;
+      --text-muted: #888888;
+      
+      /* Default Accent relies on the theme */
+      --accent: #ffffff;
+      --accent-text: #000000;
+      
+      --radius-sm: 16px;
+      --radius-lg: 28px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --safe-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --surface-hover: #f0f0f0;
+      --border: rgba(0, 0, 0, 0.08);
+      
+      --text-main: #000000;
+      --text-muted: #666666;
+      
+      --accent: #000000;
+      --accent-text: #ffffff;
+    }
+
+    /* Accent Color Overrides */
+    [data-accent="cyan"] { --accent: #06b6d4; --accent-text: #000000; }
+    [data-accent="violet"] { --accent: #8b5cf6; --accent-text: #ffffff; }
+    [data-accent="emerald"] { --accent: #10b981; --accent-text: #000000; }[data-accent="rose"] { --accent: #f43f5e; --accent-text: #ffffff; }
+    [data-accent="amber"] { --accent: #f59e0b; --accent-text: #000000; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg); color: var(--text-main); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; user-select: none; }
+    body.locked { overflow: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Animations */
+    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* Dynamic Island */
+    .dynamic-island {
+      position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+      background: var(--accent); color: var(--accent-text);
+      padding: 12px 20px; border-radius: 40px; font-size: 0.9rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center; gap: 10px; z-index: 10000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+      min-width: 150px;
+    }
+    /* ADDED PADDING FROM TOP */
+    .dynamic-island.show { top: calc(env(safe-area-inset-top, 16px) + 16px); }
+    .dynamic-island.timer-mode { width: 90%; max-width: 350px; justify-content: space-between; padding: 12px 24px; }
+    
+    #notifyNormal { display: flex; align-items: center; gap: 10px; }
+    #notifyTimer { display: none; align-items: center; justify-content: space-between; width: 100%; }
+    .di-timer-text { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; color: var(--accent-text); }
+    .di-btn { background: var(--bg); color: var(--accent); border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 0.8rem; display: grid; place-items: center; cursor: pointer; transition: 0.2s; }
+    .di-btn:active { transform: scale(0.85); }
+
+    /* Top Nav */
+    .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; position: sticky; top: 0; background: rgba(var(--bg), 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 50; border-bottom: 1px solid transparent; transition: 0.3s; }
+    .top-nav.scrolled { border-bottom: 1px solid var(--border); }
+    .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .status-pill { background: var(--surface); border: 1px solid var(--border); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+    .status-dot { width: 8px; height: 8px; background: #34c759; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(52,199,89,0.4); } 70% { box-shadow: 0 0 0 6px rgba(52,199,89,0); } 100% { box-shadow: 0 0 0 0 rgba(52,199,89,0); } }
+    .sound-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 0.9rem; display: grid; place-items: center; cursor: pointer; transition: 0.2s; }
+    .sound-btn:active { transform: scale(0.9); background: var(--text-main); color: var(--bg); }
+
+    /* Main Layout */
+    .container { padding: 0 16px; display: flex; flex-direction: column; gap: 16px; max-width: 600px; margin: 0 auto; }
+    .section-title { font-size: 1.2rem; font-weight: 700; margin: 16px 0 0 8px; letter-spacing: -0.5px; }
+    .bento-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; transition: transform 0.2s ease, background 0.2s ease; }
+    
+    /* Hero */
+    .hero-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+    .hero-title { font-size: 1.8rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.5px; }
+    .typewriter { color: var(--text-muted); font-size: 1rem; font-weight: 500; margin-top: 4px; height: 20px; }
+    .bio-text { font-size: 0.95rem; line-height: 1.5; color: var(--text-muted); margin-bottom: 20px; }
+    .bio-text strong { color: var(--text-main); }
+    
+    /* Buttons */
+    .primary-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent); color: var(--accent-text); font-weight: 600; font-size: 0.95rem; padding: 14px 24px; border-radius: 100px; width: 100%; border: none; cursor: pointer; transition: 0.2s; }
+    .primary-btn:active { transform: scale(0.97); opacity: 0.9; }
+
+    /* Hold To Copy Blocks (UPDATED to single line row) */
+    .hold-row { display: flex; gap: 12px; margin-top: 12px; }
+    .hold-block { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; gap: 8px; cursor: pointer; transition: 0.2s; }
+    .hold-block:active { transform: scale(0.96); }
+    .hold-icon { font-size: 1.5rem; color: var(--accent); margin-bottom: 2px; transition: color 0.3s; }
+    .hold-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; display: block; }
+    
+    .touch-ring { position: absolute; width: 80px; height: 80px; border-radius: 50%; background: var(--accent); opacity: 0.15; transform: translate(-50%, -50%) scale(0); pointer-events: none; transition: transform 0.6s linear; }
+    .hold-active .touch-ring { transform: translate(-50%, -50%) scale(4); }
+
+    /* Scrollers */
+    .scroll-row { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; scrollbar-width: none; }
+    .scroll-row::-webkit-scrollbar { display: none; }
+    .social-btn { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; font-size: 1.4rem; color: var(--text-main); scroll-snap-align: start; transition: 0.2s; }
+    .social-btn:active { transform: scale(0.9); background: var(--accent); color: var(--accent-text); }
+
+    /* Tech Stack */
+    .tech-stack { padding: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .tech-tag { background: var(--bg); border: 1px solid var(--border); color: var(--text-main); padding: 8px 14px; border-radius: 12px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+
+    /* Projects */
+    .project-card { flex: 0 0 85%; scroll-snap-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+    .p-head { display: flex; justify-content: space-between; align-items: flex-start; }
+    .p-title { font-size: 1.2rem; font-weight: 700; }
+    .p-icon { width: 44px; height: 44px; border-radius: 14px; background: var(--border); display: grid; place-items: center; font-size: 1.2rem; }
+    .p-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+    .p-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+    .p-tag { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); }
+    .p-link { margin-top: 12px; display: block; text-align: center; padding: 12px; border-radius: 12px; background: var(--accent); color: var(--accent-text); font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
+    .p-link:active { transform: scale(0.97); }
+
+    /* Timeline */
+    .timeline { padding: 10px 0 10px 20px; border-left: 2px solid var(--border); margin-left: 10px; display: flex; flex-direction: column; gap: 24px; }
+    .t-item { position: relative; }
+    .t-dot { position: absolute; left: -27px; top: 4px; width: 12px; height: 12px; background: var(--bg); border: 2px solid var(--accent); border-radius: 50%; transition: border-color 0.3s; }
+    .t-year { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; display: block; }
+    .t-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
+    .t-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* Footer & Clock */
+    .site-footer { margin-top: 40px; padding: 30px 20px 120px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); }
+    .live-clock { font-family: var(--font-mono); font-size: 0.85rem; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 6px; background: var(--surface); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); }
+    .footer-text { font-size: 0.85rem; margin-bottom: 20px; }
+
+    /* Floating Scroll Ring */
+    .scroll-fab { position: fixed; bottom: calc(90px + var(--safe-bottom)); right: 20px; width: 50px; height: 50px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; z-index: 90; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.4); opacity: 0; transform: scale(0.8) translateY(20px); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; }
+    .scroll-fab.visible { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+    .scroll-fab svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+    .scroll-fab circle { fill: none; stroke-width: 3; stroke-linecap: round; }
+    .scroll-fab .bg-ring { stroke: var(--border); }
+    .scroll-fab .progress-ring { stroke: var(--accent); stroke-dasharray: 144; stroke-dashoffset: 144; transition: stroke-dashoffset 0.1s, stroke 0.3s; }
+    .scroll-fab i { color: var(--accent); font-size: 1.2rem; z-index: 2; transition: color 0.3s; }
+    .scroll-fab:active { transform: scale(0.9); }
+
+    /* Dock */
+    .dock-wrapper { position: fixed; bottom: var(--safe-bottom); left: 0; width: 100%; display: flex; justify-content: center; z-index: 100; pointer-events: none; }
+    .dock { pointer-events: auto; background: rgba(30, 30, 30, 0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px; border-radius: 100px; display: flex; gap: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    [data-theme="light"] .dock { background: rgba(255, 255, 255, 0.65); border-color: rgba(0, 0, 0, 0.1); }
+    .dock-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: transparent; color: #fff; font-size: 1.2rem; cursor: pointer; transition: 0.2s; display: grid; place-items: center; }
+    [data-theme="light"] .dock-btn { color: #000; }
+    .dock-btn:active { background: rgba(255,255,255,0.2); transform: scale(0.9); }[data-theme="light"] .dock-btn:active { background: rgba(0,0,0,0.1); }
+
+    /* Bottom Sheets */
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 200; opacity: 0; pointer-events: none; transition: 0.3s; }
+    .bottom-sheet { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--surface); border-radius: 32px 32px 0 0; padding: 0 24px calc(24px + var(--safe-bottom)); z-index: 250; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); display: flex; flex-direction: column; max-height: 85vh; overflow-y: auto; scrollbar-width: none; }
+    .bottom-sheet.open { transform: translateY(0); }
+    .drag-handle { width: 40px; height: 5px; background: var(--border); border-radius: 10px; margin: 12px auto 24px; }
+    .sheet-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.5px; }
+
+    /* CMD+K Search */
+    .search-input { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-sm); color: var(--text-main); font-size: 1rem; outline: none; margin-bottom: 16px; }
+    .cmd-list { display: flex; flex-direction: column; gap: 8px; }
+    .cmd-item { padding: 16px; background: var(--bg); border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.2s; }
+    .cmd-item:active { background: var(--border); transform: scale(0.98); }
+    .cmd-item i { width: 20px; color: var(--text-muted); }
+
+    /* Timer inside Sheet (UPDATED Edit UI) */
+    .timer-edit-wrap { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 10px 0 20px; }
+    .timer-input { background: transparent; border: none; border-bottom: 2px dashed var(--border); color: var(--text-main); font-family: var(--font-mono); font-size: 4rem; font-weight: 800; width: 100px; text-align: center; outline: none; transition: border-color 0.3s; border-radius: 0; padding: 0; }
+    .timer-input:focus { border-bottom-color: var(--accent); }
+    .timer-static { font-family: var(--font-mono); font-size: 4rem; font-weight: 800; color: var(--text-muted); }
+    .timer-actions { display: flex; gap: 12px; margin-bottom: 24px; }
+    .btn-secondary { flex: 1; background: var(--bg); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; font-weight: 600; padding: 16px; cursor: pointer; }
+    .btn-secondary:active { transform: scale(0.96); }
+    
+    /* Tasks */
+    .task-add { background: var(--accent); color: var(--accent-text); border: none; width: 48px; border-radius: var(--radius-sm); font-size: 1.2rem; font-weight: bold; transition: background 0.3s; }
+
+    /* Theme & Accent Toggles */
+    .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .theme-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; text-align: center; font-weight: 600; transition: 0.2s; }
+    .theme-card.active { border-color: var(--accent); background: var(--accent); color: var(--accent-text); }
+    
+    .accent-row { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 24px; padding: 0 10px; }
+    .color-swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .color-swatch.active { transform: scale(1.15); border-color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+    /* Resume Sheet Specifics */
+    .resume-block { background: var(--bg); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 12px; }
+    .r-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .r-sub { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; }
+    .r-text { font-size: 0.9rem; line-height: 1.5; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <!-- Dynamic Island -->
+  <div id="notifyPill" class="dynamic-island">
+    <div id="notifyNormal">
+      <i id="notifyIcon" class="fa-solid fa-bell"></i>
+      <span id="notifyText">Notification</span>
+    </div>
+    <div id="notifyTimer">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--bg);animation:pulse 2s infinite"></div>
+        <span class="di-timer-text" id="diTimerText">25:00</span>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="di-btn" id="diPauseBtn" onclick="toggleTimer()"><i class="fa-solid fa-pause"></i></button>
+        <button class="di-btn" onclick="resetTimer()"><i class="fa-solid fa-stop"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="top-nav" id="topNav">
+    <div class="logo">JS.</div>
+    <div class="nav-actions">
+      <div class="status-pill">
+        <div class="status-dot"></div> Available
+      </div>
+      <button class="sound-btn" id="soundToggleBtn" onclick="toggleSound()" title="Toggle Sound">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+    
+    <!-- Hero Bento -->
+    <div class="bento-card reveal">
+      <div class="hero-header">
+        <img src="profile.jpg" alt="Jino Sabu" class="avatar" onerror="this.src='https://ui-avatars.com/api/?name=Jino+Sabu&background=random&color=fff&size=200'">
+        <div>
+          <h1 class="hero-title">Hi, I'm Jino.</h1>
+          <div class="typewriter" id="typewriter"></div>
+        </div>
+      </div>
+      <p class="bio-text">
+        Mechanical Engineer turned Frontend Developer & AI Enthusiast. I build futuristic digital experiences that blend logic with design.<br><br>
+        🔧 Engineering smarter systems.<br>
+        🎨 Designing intuitive interfaces.<br>
+        🚀 Integrating AI into workflows.
+      </p>
+      
+      <button class="primary-btn" onclick="openSheet('resumeSheet')">
+        <i class="fa-regular fa-file-lines"></i> View Resume
+      </button>
+
+      <!-- Hold To Copy Row (Email & PayPal side-by-side) -->
+      <div class="hold-row">
+        <div class="hold-block" data-copy="jinosabu1999@gmail.com">
+          <div class="touch-ring"></div>
+          <i class="fa-regular fa-envelope hold-icon"></i>
+          <div>
+            <span class="hold-label">Hold for Email</span>
+          </div>
+        </div>
+
+        <div class="hold-block" data-copy="paypal.me/jinosabu1999">
+          <div class="touch-ring"></div>
+          <i class="fa-brands fa-paypal hold-icon"></i>
+          <div>
+            <span class="hold-label">Hold for PayPal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Socials Scroller -->
+    <div class="scroll-row reveal">
+      <a href="https://github.com/jinosabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-github"></i></a>
+      <a href="https://www.x.com/jinosabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://www.instagram.com/jinosabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.youtube.com/@JinoSabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.suno.com/@jinosabu1999" target="_blank" class="social-btn"><i class="fa-solid fa-music"></i></a>
+      <a href="https://www.pinterest.com/jinosabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-pinterest"></i></a>
+      <a href="https://www.telegram.me/jinosabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-telegram"></i></a>
+      <a href="https://ko-fi.com/jinosabu1999" target="_blank" class="social-btn"><i class="fa-solid fa-mug-hot"></i></a>
+    </div>
+
+    <!-- Tech Stack -->
+    <h2 class="section-title reveal">Tech Arsenal</h2>
+    <div class="bento-card tech-stack reveal">
+      <span class="tech-tag"><i class="fa-brands fa-react"></i> React</span>
+      <span class="tech-tag"><i class="fa-brands fa-node-js"></i> Node.js</span>
+      <span class="tech-tag"><i class="fa-brands fa-python"></i> Python</span>
+      <span class="tech-tag"><i class="fa-solid fa-brain"></i> AI / ML</span>
+      <span class="tech-tag"><i class="fa-brands fa-figma"></i> Figma</span>
+      <span class="tech-tag"><i class="fa-brands fa-aws"></i> Cloud</span>
+    </div>
+
+    <!-- Projects -->
+    <h2 class="section-title reveal">Selected Works</h2>
+    <div class="scroll-row reveal" id="projectContainer">
+      <!-- Injected via JS -->
+    </div>
+
+    <!-- Timeline/Journey -->
+    <h2 class="section-title reveal">Journey</h2>
+    <div class="bento-card reveal">
+      <div class="timeline">
+        <div class="t-item">
+          <div class="t-dot"></div>
+          <span class="t-year">2025</span>
+          <h3 class="t-title">Digital Ecosystems</h3>
+          <p class="t-desc">Building integrated tools like ToolTesseract and MultiKit.</p>
+        </div>
+        <div class="t-item">
+          <div class="t-dot"></div>
+          <span class="t-year">2023</span>
+          <h3 class="t-title">AI Integration</h3>
+          <p class="t-desc">Deep dive into LLMs and automation workflows.</p>
+        </div>
+        <div class="t-item">
+          <div class="t-dot"></div>
+          <span class="t-year">2021</span>
+          <h3 class="t-title">Frontend Pivot</h3>
+          <p class="t-desc">Shifted from mechanical systems to digital architecture.</p>
+        </div>
+      </div>
+    </div>
+    
+  </main>
+
+  <!-- Modern Footer -->
+  <footer class="site-footer reveal">
+    <div class="live-clock" title="Local Time in India">
+      <i class="fa-regular fa-clock" style="color:var(--text-muted)"></i> 
+      <span id="localTime">Loading time...</span> (IST)
+    </div>
+    <p class="footer-text">&copy; 2026 Jino Sabu. Built for the future.</p>
+  </footer>
+
+  <!-- Scroll Ring Floating FAB -->
+  <div class="scroll-fab" id="scrollFab" onclick="scrollToTop()">
+    <svg viewBox="0 0 50 50">
+      <circle class="bg-ring" cx="25" cy="25" r="23"></circle>
+      <circle class="progress-ring" id="progressRing" cx="25" cy="25" r="23"></circle>
+    </svg>
+    <i class="fa-solid fa-arrow-up"></i>
+  </div>
+
+  <!-- Bottom Dock -->
+  <div class="dock-wrapper">
+    <nav class="dock">
+      <button class="dock-btn" onclick="scrollToTop()"><i class="fa-solid fa-house"></i></button>
+      <button class="dock-btn" onclick="openSheet('searchSheet')"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="dock-btn" onclick="openSheet('vibeSheet')"><i class="fa-solid fa-bolt"></i></button>
+      <button class="dock-btn" onclick="openSheet('themeSheet')"><i class="fa-solid fa-palette"></i></button>
+    </nav>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="closeAllSheets()"></div>
+
+  <!-- CMD+K Search Sheet -->
+  <div class="bottom-sheet" id="searchSheet">
+    <div class="drag-handle"></div>
+    <input type="text" id="searchInput" class="search-input" placeholder="Search commands...">
+    <div class="cmd-list" id="cmdList">
+      <!-- Injected via JS -->
+    </div>
+  </div>
+
+  <!-- Resume Sheet -->
+  <div class="bottom-sheet" id="resumeSheet">
+    <div class="drag-handle"></div>
+    <h2 class="sheet-title">Curriculum Vitae</h2>
+    
+    <div class="resume-block">
+      <h3 class="r-title">Digital Architect</h3>
+      <p class="r-sub">Independent • 2021 - Present</p>
+      <p class="r-text">Architected multiple web platforms including ToolTesseract and Modus Audio. Specialized in React, intuitive UI design, and AI workflow integration.</p>
+    </div>
+    
+    <div class="resume-block">
+      <h3 class="r-title">Mechanical Engineer</h3>
+      <p class="r-sub">Pre-2021</p>
+      <p class="r-text">Designed mechanical systems with a focus on efficiency and logic. Transitioned systems-thinking into frontend software architecture.</p>
+    </div>
+
+    <button class="primary-btn" onclick="downloadResume()" style="margin-top:10px">
+      <i class="fa-solid fa-download"></i> Download Full PDF
+    </button>
+  </div>
+
+  <!-- Vibe / Tools Sheet -->
+  <div class="bottom-sheet" id="vibeSheet">
+    <div class="drag-handle"></div>
+    <h2 class="sheet-title">Focus Control</h2>
+
+    <!-- UI Clue for Editing Timer -->
+    <div style="text-align:center; color:var(--accent); font-size:0.85rem; font-weight:600; margin-bottom:-5px; transition: color 0.3s;">
+      <i class="fa-solid fa-pen"></i> Tap numbers to edit
+    </div>
+    
+    <div class="timer-edit-wrap">
+      <input type="number" id="customTimeInput" class="timer-input" value="25" min="1" max="120">
+      <span class="timer-static">:00</span>
+    </div>
+    <div class="timer-actions">
+      <button class="primary-btn" id="timerStart" onclick="toggleTimer()">Start Focus</button>
+      <button class="btn-secondary" onclick="resetTimer()"><i class="fa-solid fa-rotate-left"></i></button>
+    </div>
+    
+    <p style="text-align:center; font-size:0.85rem; color:var(--text-muted); margin-bottom:20px;">
+      Swipe down while running to minimize to Island.
+    </p>
+  </div>
+
+  <!-- Theme & Accent Sheet -->
+  <div class="bottom-sheet" id="themeSheet">
+    <div class="drag-handle"></div>
+    <h2 class="sheet-title">Appearance</h2>
+    
+    <div class="theme-grid">
+      <div class="theme-card active" id="btnDark" onclick="setTheme('dark')">
+        <i class="fa-solid fa-moon" style="margin-bottom:8px; display:block; font-size:1.5rem;"></i> Dark
+      </div>
+      <div class="theme-card" id="btnLight" onclick="setTheme('light')">
+        <i class="fa-solid fa-sun" style="margin-bottom:8px; display:block; font-size:1.5rem;"></i> Light
+      </div>
+    </div>
+
+    <!-- Accent Colors -->
+    <h3 class="sheet-title" style="font-size: 1.1rem; margin-top: 10px; margin-bottom: 12px;">Accent Color</h3>
+    <div class="accent-row">
+      <div class="color-swatch active" data-color="default" style="background: var(--text-main);" onclick="setAccent('default')"></div>
+      <div class="color-swatch" data-color="cyan" style="background: #06b6d4;" onclick="setAccent('cyan')"></div>
+      <div class="color-swatch" data-color="violet" style="background: #8b5cf6;" onclick="setAccent('violet')"></div>
+      <div class="color-swatch" data-color="emerald" style="background: #10b981;" onclick="setAccent('emerald')"></div>
+      <div class="color-swatch" data-color="rose" style="background: #f43f5e;" onclick="setAccent('rose')"></div>
+      <div class="color-swatch" data-color="amber" style="background: #f59e0b;" onclick="setAccent('amber')"></div>
+    </div>
+
+    <button class="primary-btn" style="width:100%" onclick="closeAllSheets()">Done</button>
+  </div>
+
+  <script>
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+
+    /* --- Spatial Audio Engine & Haptics --- */
+    let soundEnabled = true;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+
+    function initAudio() { if(!audioCtx) audioCtx = new AudioContext(); if(audioCtx.state === 'suspended') audioCtx.resume(); }
+    
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      $('#soundToggleBtn').innerHTML = soundEnabled ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark"></i>';
+      haptic();
+    }
+
+    function playSound(type) {
+      if(!soundEnabled) return;
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+      
+      if(type === 'pop') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+      } else if (type === 'click') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+      } else if (type === 'success') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(900, audioCtx.currentTime + 0.1);
+        gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+      }
+    }
+
+    const haptic = (pattern = [50]) => { if(navigator.vibrate) navigator.vibrate(pattern); };
+
+    /* --- Hold To Copy Engine --- */
+    let holdTimer;
+    $$('.hold-block').forEach(block => {
+      const ring = block.querySelector('.touch-ring');
+      const textToCopy = block.getAttribute('data-copy');
+      
+      const startHold = (e) => {
+        e.preventDefault();
+        block.classList.add('hold-active');
+        if(e.touches) {
+          const rect = block.getBoundingClientRect();
+          const x = e.touches[0].clientX - rect.left;
+          const y = e.touches[0].clientY - rect.top;
+          ring.style.left = x + 'px'; ring.style.top = y + 'px';
+        } else {
+          ring.style.left = '50%'; ring.style.top = '50%';
+        }
+        
+        holdTimer = setTimeout(() => {
+          navigator.clipboard.writeText(textToCopy);
+          haptic([100, 50, 100]); // Heavy double buzz
+          playSound('success');
+          showNotify('Copied to clipboard!', 'fa-solid fa-copy');
+          block.classList.remove('hold-active');
+        }, 600); // 600ms hold required
+      };
+
+      const endHold = () => {
+        clearTimeout(holdTimer);
+        block.classList.remove('hold-active');
+      };
+
+      block.addEventListener('touchstart', startHold);
+      block.addEventListener('touchend', endHold);
+      block.addEventListener('touchcancel', endHold);
+      block.addEventListener('mousedown', startHold);
+      block.addEventListener('mouseup', endHold);
+      block.addEventListener('mouseleave', endHold);
+    });
+
+    /* --- Dynamic Island Normal --- */
+    let notifyTimeout;
+    function showNotify(msg, icon = 'fa-solid fa-check') {
+      const pill = $('#notifyPill');
+      $('#notifyNormal').style.display = 'flex';
+      $('#notifyTimer').style.display = 'none';
+      pill.classList.remove('timer-mode');
+      
+      $('#notifyIcon').className = icon;
+      $('#notifyText').textContent = msg;
+      pill.classList.add('show');
+      
+      clearTimeout(notifyTimeout);
+      notifyTimeout = setTimeout(() => {
+        // If timer is running in background, switch back to timer mode instead of hiding
+        if(timerInt && !$('#vibeSheet').classList.contains('open')) {
+          activateIslandTimer();
+        } else {
+          pill.classList.remove('show');
+        }
+      }, 3000);
+    }
+
+    /* --- Focus Timer & Dynamic Island --- */
+    let timerInt, timeLeft = 1500;
+    const timeInput = $('#customTimeInput');
+    
+    function formatTime(sec) {
+      const m = Math.floor(sec/60).toString().padStart(2,'0');
+      const s = (sec%60).toString().padStart(2,'0');
+      return `${m}:${s}`;
+    }
+
+    function toggleTimer() {
+      haptic(); playSound('click');
+      const btn = $('#timerStart');
+      const diBtn = $('#diPauseBtn');
+      
+      if(timerInt) {
+        // Pause
+        clearInterval(timerInt); timerInt = null;
+        btn.textContent = 'Resume Focus';
+        diBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+      } else {
+        // Start
+        if(timeLeft === 1500 && timeInput.value != 25) {
+          timeLeft = parseInt(timeInput.value) * 60;
+        }
+        btn.textContent = 'Pause Focus';
+        diBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        
+        timerInt = setInterval(() => {
+          if(timeLeft > 0) { 
+            timeLeft--; 
+            const formatted = formatTime(timeLeft);
+            $('#diTimerText').textContent = formatted;
+            if(!$('#vibeSheet').classList.contains('open')) {
+               document.title = `${formatted} - Focus`;
+            }
+          } else {
+            resetTimer();
+            haptic([100, 200, 100, 200]); playSound('success');
+            showNotify('Session Complete!', 'fa-solid fa-fire');
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      haptic(); playSound('click');
+      clearInterval(timerInt); timerInt = null;
+      timeLeft = parseInt(timeInput.value || 25) * 60;
+      $('#diTimerText').textContent = formatTime(timeLeft);
+      $('#timerStart').textContent = 'Start Focus';
+      $('#notifyPill').classList.remove('show');
+      document.title = "Jino Sabu | Digital Architect";
+    }
+
+    function activateIslandTimer() {
+      const pill = $('#notifyPill');
+      $('#notifyNormal').style.display = 'none';
+      $('#notifyTimer').style.display = 'flex';
+      pill.classList.add('timer-mode');
+      pill.classList.add('show');
+    }
+
+    timeInput.addEventListener('change', () => {
+      if(!timerInt) {
+        let val = parseInt(timeInput.value);
+        if(val < 1) val = 1; if(val > 120) val = 120;
+        timeInput.value = val;
+        timeLeft = val * 60;
+      }
+    });
+
+    /* --- Scroll Ring & Reveal Animations --- */
+    const progressRing = $('#progressRing');
+    const scrollFab = $('#scrollFab');
+    const circumference = 23 * 2 * Math.PI; 
+    progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
+    progressRing.style.strokeDashoffset = circumference;
+
+    window.addEventListener('scroll', () => {
+      const st = window.scrollY; 
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollFraction = st / height;
+      
+      const offset = circumference - (scrollFraction * circumference);
+      progressRing.style.strokeDashoffset = offset;
+
+      if (st > 200) scrollFab.classList.add('visible');
+      else scrollFab.classList.remove('visible');
+
+      if (st > 20) $('#topNav').classList.add('scrolled');
+      else $('#topNav').classList.remove('scrolled');
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* --- Bottom Sheets --- */
+    function openSheet(id) {
+      playSound('pop'); haptic();
+      $('#overlay').style.opacity = '1';
+      $('#overlay').style.pointerEvents = 'auto';
+      $('#'+id).classList.add('open');
+      document.body.classList.add('locked');
+      
+      if(id === 'searchSheet') {
+        setTimeout(() => $('#searchInput').focus(), 100);
+        renderCmds('');
+      }
+      if(id === 'vibeSheet' && timerInt) {
+        $('#notifyPill').classList.remove('show');
+      }
+    }
+    
+    function closeAllSheets() {
+      document.querySelectorAll('.bottom-sheet').forEach(s => s.classList.remove('open'));
+      $('#overlay').style.opacity = '0';
+      $('#overlay').style.pointerEvents = 'none';
+      document.body.classList.remove('locked');
+      $('#searchInput').blur();
+      
+      if(timerInt) activateIslandTimer();
+    }
+
+    let touchY = 0;
+    document.querySelectorAll('.bottom-sheet').forEach(sheet => {
+      sheet.addEventListener('touchstart', e => touchY = e.touches[0].clientY, {passive: true});
+      sheet.addEventListener('touchend', e => {
+        if (e.changedTouches[0].clientY - touchY > 80) closeAllSheets();
+      }, {passive: true});
+    });
+
+    /* --- CMD+K Spotlight Search --- */
+    const commands =[
+      { t: 'Toggle Dark Mode', i: 'fa-moon', a: () => setTheme('dark') },
+      { t: 'Toggle Light Mode', i: 'fa-sun', a: () => setTheme('light') },
+      { t: 'View Resume', i: 'fa-file-lines', a: () => { closeAllSheets(); setTimeout(()=>openSheet('resumeSheet'),300); } },
+      { t: 'Focus Timer', i: 'fa-bolt', a: () => { closeAllSheets(); setTimeout(()=>openSheet('vibeSheet'),300); } },
+      { t: 'Email Jino', i: 'fa-envelope', a: () => window.location.href='mailto:jinosabu1999@gmail.com' }
+    ];
+    
+    function renderCmds(query) {
+      const q = query.toLowerCase();
+      const filtered = commands.filter(c => c.t.toLowerCase().includes(q));
+      $('#cmdList').innerHTML = filtered.map((c, i) => `
+        <div class="cmd-item" onclick="playSound('click'); haptic(); commands[${i}].a(); if('${c.t}' !== 'View Resume' && '${c.t}' !== 'Focus Timer') closeAllSheets();">
+          <i class="fa-solid ${c.i}"></i> ${c.t}
+        </div>
+      `).join('');
+    }
+    $('#searchInput').addEventListener('input', e => renderCmds(e.target.value));
+
+    /* --- Theme & Accent --- */
+    function setTheme(mode) {
+      playSound('click'); haptic();
+      document.documentElement.setAttribute('data-theme', mode);
+      localStorage.setItem('theme', mode);
+      $('#btnDark').classList.toggle('active', mode === 'dark');
+      $('#btnLight').classList.toggle('active', mode === 'light');
+      $('#themeColorMeta').setAttribute('content', mode === 'dark' ? '#000000' : '#f5f5f7');
+    }
+    if(localStorage.getItem('theme') === 'light') setTheme('light');
+
+    function setAccent(color) {
+      playSound('click'); haptic();
+      document.documentElement.setAttribute('data-accent', color);
+      localStorage.setItem('accent', color);
+      $$('.color-swatch').forEach(el => el.classList.remove('active'));
+      $(`.color-swatch[data-color="${color}"]`).classList.add('active');
+    }
+    const savedAccent = localStorage.getItem('accent') || 'default';
+    setAccent(savedAccent);
+
+    /* --- Misc Functions --- */
+    function downloadResume() {
+      playSound('click'); haptic();
+      showNotify('Downloading PDF...', 'fa-solid fa-download');
+    }
+
+    function scrollToTop() {
+      playSound('click'); haptic();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateTime() {
+      const now = new Date();
+      const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true };
+      $('#localTime').textContent = now.toLocaleTimeString('en-IN', options);
+    }
+    setInterval(updateTime, 1000); updateTime();
+
+    /* --- Inject Projects Data --- */
+    const projects =[
+      { title: 'Multi Tool Kit', desc: 'Swiss army knife for the web. Fast, sleek, packed with utilities.', tags:['Vue', 'PWA', 'Tools'], icon: 'fa-solid fa-toolbox', url: 'https://v0-multi-tool-app.vercel.app' },
+      { title: 'ToolTesseract', desc: 'Productivity dashboard with a futuristic user interface.', tags: ['React', 'UI Design'], icon: 'fa-solid fa-cube', url: 'https://tooltesseract.vercel.app' },
+      { title: 'Modus Audio', desc: 'Browser-based audio cutter and editor built for speed.', tags: ['Audio', 'Media'], icon: 'fa-solid fa-music', url: 'https://modus-audio.vercel.app' },
+      { title: 'NexLoft Editor', desc: 'Minimalist code playground for frontend developers.', tags:['Code', 'IDE'], icon: 'fa-solid fa-code', url: 'https://nexloft.vercel.app' }
+    ];
+    projects.forEach(p => {
+      $('#projectContainer').innerHTML += `
+        <div class="project-card">
+          <div class="p-head"><h3 class="p-title">${p.title}</h3><div class="p-icon"><i class="${p.icon}"></i></div></div>
+          <p class="p-desc">${p.desc}</p>
+          <div class="p-tags">${p.tags.map(t => `<span class="p-tag">${t}</span>`).join('')}</div>
+          <a href="${p.url}" target="_blank" class="p-link" onclick="playSound('click'); haptic()">View Project</a>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
