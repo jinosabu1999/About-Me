@@ -123,7 +123,7 @@ portfolio
 
 Clone the repository
 
-git clone https://github.com/yourusername/repository-name.git
+git clone https://github.com/jinosabu1999/About-Me.git
 
 Navigate to the project folder
 
