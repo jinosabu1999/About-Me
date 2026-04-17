@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-accent="default">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Jino Sabu | Digital Architect</title>
+  
+  <meta name="description" content="Mechanical Engineer turned Frontend Developer & Digital Architect." />
+  <meta name="theme-color" content="#000000" id="themeColorMeta" />
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- html2canvas for Beautiful Note Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #000000;
+      --surface: #111111;
+      --surface-hover: #1a1a1a;
+      --border: rgba(255, 255, 255, 0.08);
+      
+      --text-main: #ffffff;
+      --text-muted: #888888;
+      
+      /* Default Accent relies on the theme */
+      --accent: #ffffff;
+      --accent-text: #000000;
+      
+      --radius-sm: 16px;
+      --radius-lg: 28px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --safe-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --surface-hover: #f0f0f0;
+      --border: rgba(0, 0, 0, 0.08);
+      
+      --text-main: #000000;
+      --text-muted: #666666;
+      
+      --accent: #000000;
+      --accent-text: #ffffff;
+    }
+
+    /* Accent Color Overrides */
+    [data-accent="cyan"] { --accent: #06b6d4; --accent-text: #000000; }
+    [data-accent="violet"] { --accent: #8b5cf6; --accent-text: #ffffff; }
+    [data-accent="emerald"] { --accent: #10b981; --accent-text: #000000; }
+    [data-accent="rose"] { --accent: #f43f5e; --accent-text: #ffffff; }
+    [data-accent="amber"] { --accent: #f59e0b; --accent-text: #000000; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg); color: var(--text-main); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; user-select: none; }
+    body.locked { overflow: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Animations */
+    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Dynamic Island */
+    .dynamic-island {
+      position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+      background: var(--accent); color: var(--accent-text);
+      padding: 12px 20px; border-radius: 40px; font-size: 0.9rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center; gap: 10px; z-index: 10000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+      min-width: 150px;
+      cursor: pointer;
+    }
+    .dynamic-island.show { top: calc(env(safe-area-inset-top, 16px) + 16px); }
+    .dynamic-island.timer-mode { width: 90%; max-width: 350px; justify-content: space-between; padding: 12px 24px; }
+    
+    #notifyNormal { display: flex; align-items: center; gap: 10px; pointer-events: none; }
+    #notifyTimer, #notifyStopwatch { display: none; align-items: center; justify-content: space-between; width: 100%; }
+    .di-timer-text { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; color: var(--accent-text); font-variant-numeric: tabular-nums; pointer-events: none; }
+    .di-btn { background: var(--bg); color: var(--accent); border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 0.8rem; display: grid; place-items: center; cursor: pointer; transition: 0.2s; pointer-events: auto; }
+    .di-btn:active { transform: scale(0.85); }
+
+    /* Top Nav */
+    .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; position: sticky; top: 0; background: rgba(var(--bg), 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 50; border-bottom: 1px solid transparent; transition: 0.3s; }
+    .top-nav.scrolled { border-bottom: 1px solid var(--border); }
+    .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .status-pill { background: var(--surface); border: 1px solid var(--border); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+    .status-dot { width: 8px; height: 8px; background: #34c759; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(52,199,89,0.4); } 70% { box-shadow: 0 0 0 6px rgba(52,199,89,0); } 100% { box-shadow: 0 0 0 0 rgba(52,199,89,0); } }
+    .sound-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); color: var(--text-main); font-size: 0.9rem; display: grid; place-items: center; cursor: pointer; transition: 0.2s; }
+    .sound-btn:active { transform: scale(0.9); background: var(--text-main); color: var(--bg); }
+
+    /* Main Layout */
+    .container { padding: 0 16px; display: flex; flex-direction: column; gap: 16px; max-width: 600px; margin: 0 auto; }
+    .section-title { font-size: 1.2rem; font-weight: 700; margin: 16px 0 0 8px; letter-spacing: -0.5px; }
+    .bento-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; transition: transform 0.2s ease, background 0.2s ease; }
+    
+    /* Hero */
+    .hero-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+    .hero-title { font-size: 1.8rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.5px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .secret-badge { display: inline-flex; align-items: center; background: var(--surface-hover); border: 1px solid var(--accent); color: var(--text-main); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: transform 0.2s; white-space: nowrap; }
+    .secret-badge:active { transform: scale(0.9); }
+    .typewriter { color: var(--text-muted); font-size: 1rem; font-weight: 500; margin-top: 4px; height: 20px; }
+    .bio-text { font-size: 0.95rem; line-height: 1.5; color: var(--text-muted); margin-bottom: 20px; }
+    .bio-text strong { color: var(--text-main); }
+    
+    /* Buttons */
+    .primary-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent); color: var(--accent-text); font-weight: 600; font-size: 0.95rem; padding: 14px 24px; border-radius: 100px; width: 100%; border: none; cursor: pointer; transition: 0.2s; }
+    .primary-btn:active { transform: scale(0.97); opacity: 0.9; }
+
+    /* Hold To Copy Blocks */
+    .hold-row { display: flex; gap: 12px; margin-top: 12px; }
+    .hold-block { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; gap: 8px; cursor: pointer; transition: 0.2s; }
+    .hold-block:active { transform: scale(0.96); }
+    .hold-icon { font-size: 1.5rem; color: var(--accent); margin-bottom: 2px; transition: color 0.3s; }
+    .hold-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; display: block; }
+    .touch-ring { position: absolute; width: 80px; height: 80px; border-radius: 50%; background: var(--accent); opacity: 0.15; transform: translate(-50%, -50%) scale(0); pointer-events: none; transition: transform 0.6s linear; }
+    .hold-active .touch-ring { transform: translate(-50%, -50%) scale(4); }
+
+    /* Scrollers */
+    .scroll-row { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; scrollbar-width: none; }
+    .scroll-row::-webkit-scrollbar { display: none; }
+    .social-btn { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; font-size: 1.4rem; color: var(--text-main); scroll-snap-align: start; transition: 0.2s; }
+    .social-btn:active { transform: scale(0.9); background: var(--accent); color: var(--accent-text); }
+
+    /* Tech Stack & HUD */
+    .tech-stack { padding: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .tech-tag { background: var(--bg); border: 1px solid var(--border); color: var(--text-main); padding: 8px 14px; border-radius: 12px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+
+    .system-hud { display: flex; gap: 12px; margin-top: 12px; }
+    .hud-box { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 12px; }
+    .hud-icon { font-size: 1.5rem; color: var(--accent); width: 30px; text-align: center; }
+    .hud-data { display: flex; flex-direction: column; }
+    .hud-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;}
+    .hud-value { font-size: 1rem; font-weight: 700; font-family: var(--font-mono); }
+
+    /* Geek Mode Overlay */
+    #geekModeHUD { position: fixed; top: calc(env(safe-area-inset-top, 20px) + 80px); left: 16px; background: rgba(0,0,0,0.8); border: 1px solid #0f0; color: #0f0; font-family: var(--font-mono); font-size: 0.75rem; padding: 10px; border-radius: 8px; z-index: 9999; pointer-events: none; display: none; flex-direction: column; gap: 6px; box-shadow: 0 0 15px rgba(0,255,0,0.15); backdrop-filter: blur(5px); }
+
+    /* Projects */
+    .project-card { flex: 0 0 85%; scroll-snap-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+    .p-head { display: flex; justify-content: space-between; align-items: flex-start; }
+    .p-title { font-size: 1.2rem; font-weight: 700; }
+    .p-icon { width: 44px; height: 44px; border-radius: 14px; background: var(--border); display: grid; place-items: center; font-size: 1.2rem; }
+    .p-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+    .p-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+    .p-tag { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); }
+    .p-link { margin-top: 12px; display: block; text-align: center; padding: 12px; border-radius: 12px; background: var(--accent); color: var(--accent-text); font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
+    .p-link:active { transform: scale(0.97); }
+
+    /* Timeline */
+    .timeline { padding: 10px 0 10px 20px; border-left: 2px solid var(--border); margin-left: 10px; display: flex; flex-direction: column; gap: 24px; }
+    .t-item { position: relative; }
+    .t-dot { position: absolute; left: -27px; top: 4px; width: 12px; height: 12px; background: var(--bg); border: 2px solid var(--accent); border-radius: 50%; transition: border-color 0.3s; }
+    .t-year { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; display: block; }
+    .t-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
+    .t-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* Footer & Clock */
+    .site-footer { margin-top: 40px; padding: 30px 20px 120px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); }
+    .live-clock { font-family: var(--font-mono); font-size: 0.85rem; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 6px; background: var(--surface); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); }
+    .footer-text { font-size: 0.85rem; margin-bottom: 20px; }
+
+    /* Floating Scroll Ring */
+    .scroll-fab { position: fixed; bottom: calc(90px + var(--safe-bottom)); right: 20px; width: 50px; height: 50px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; z-index: 90; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.4); opacity: 0; transform: scale(0.8) translateY(20px); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; }
+    .scroll-fab.visible { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+    .scroll-fab svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+    .scroll-fab circle { fill: none; stroke-width: 3; stroke-linecap: round; }
+    .scroll-fab .bg-ring { stroke: var(--border); }
+    .scroll-fab .progress-ring { stroke: var(--accent); stroke-dasharray: 144; stroke-dashoffset: 144; transition: stroke-dashoffset 0.1s, stroke 0.3s; }
+    .scroll-fab i { color: var(--accent); font-size: 1.2rem; z-index: 2; transition: color 0.3s; }
+    .scroll-fab:active { transform: scale(0.9); }
+
+    /* Dock */
+    .dock-wrapper { position: fixed; bottom: var(--safe-bottom); left: 0; width: 100%; display: flex; justify-content: center; z-index: 100; pointer-events: none; }
+    .dock { pointer-events: auto; background: rgba(30, 30, 30, 0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px; border-radius: 100px; display: flex; gap: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    [data-theme="light"] .dock { background: rgba(255, 255, 255, 0.65); border-color: rgba(0, 0, 0, 0.1); }
+    .dock-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: transparent; color: #fff; font-size: 1.2rem; cursor: pointer; transition: 0.2s; display: grid; place-items: center; }
+    [data-theme="light"] .dock-btn { color: #000; }
+    .dock-btn:active { background: rgba(255,255,255,0.2); transform: scale(0.9); }[data-theme="light"] .dock-btn:active { background: rgba(0,0,0,0.1); }
+
+    /* Bottom Sheets */
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 200; opacity: 0; pointer-events: none; transition: 0.3s; }
+    .bottom-sheet { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--surface); border-radius: 32px 32px 0 0; padding: 0 24px calc(24px + var(--safe-bottom)); z-index: 250; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); display: flex; flex-direction: column; max-height: 85vh; overflow-y: auto; scrollbar-width: none; }
+    .bottom-sheet.open { transform: translateY(0); }
+    .drag-handle { width: 40px; height: 5px; background: var(--accent); opacity: 0.8; border-radius: 10px; margin: 12px auto 20px; transition: background 0.3s; }
+    .sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .sheet-title { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px; margin: 0; }
+    
+    .sheet-close-btn { background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 1.2rem; cursor: pointer; transition: 0.2s; }
+    .sheet-close-btn:active { transform: scale(0.9); background: var(--text-main); color: var(--bg); }
+
+    /* CMD+K Search */
+    .search-input { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-sm); color: var(--text-main); font-size: 1rem; outline: none; margin-bottom: 16px; transition: border-color 0.3s; }
+    .search-input:focus { border-color: var(--accent); }
+    .cmd-list { display: flex; flex-direction: column; gap: 8px; }
+    .cmd-item { padding: 16px; background: var(--bg); border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.2s; }
+    .cmd-item:active { background: var(--border); transform: scale(0.98); }
+    .cmd-item i { width: 20px; color: var(--text-muted); }
+
+    /* Segmented Controls (Vibe Panel) */
+    .segment-ctrl { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 4px; margin-bottom: 24px; }
+    .segment-btn { flex: 1; text-align: center; padding: 10px 2px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.3s; border: none; background: transparent; }
+    .segment-btn.active { background: var(--surface); color: var(--text-main); box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    /* Tools Shared UI */
+    .timer-edit-wrap { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 10px 0 20px; }
+    .timer-input { background: transparent; border: none; border-bottom: 2px dashed var(--border); color: var(--text-main); font-family: var(--font-mono); font-size: 4rem; font-weight: 800; width: 100px; text-align: center; outline: none; transition: border-color 0.3s; border-radius: 0; padding: 0; }
+    .timer-input:focus { border-bottom-color: var(--accent); }
+    .timer-static { font-family: var(--font-mono); font-size: 4rem; font-weight: 800; color: var(--text-muted); }
+    .timer-actions { display: flex; gap: 12px; margin-bottom: 12px; }
+    .btn-secondary { flex: 1; background: var(--bg); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; font-weight: 600; padding: 16px; cursor: pointer; transition: 0.2s; display: inline-flex; justify-content: center; align-items: center; gap: 8px; }
+    .btn-secondary:active { transform: scale(0.96); }
+
+    /* Range Slider */
+    input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--accent); cursor: pointer; margin-top: -8px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+    input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: var(--border); border-radius: 2px; }
+
+    /* Theme & Accent Toggles */
+    .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .theme-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; text-align: center; font-weight: 600; transition: 0.2s; cursor: pointer; }
+    .theme-card.active { border-color: var(--accent); background: var(--accent); color: var(--accent-text); }
+    
+    .accent-row { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 24px; padding: 0 10px; }
+    .color-swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .color-swatch.active { transform: scale(1.15); border-color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    
+    /* Stopwatch & QR Specifics */
+    .sw-display { font-family: var(--font-mono); font-size: 3.5rem; font-weight: 800; text-align: center; color: var(--accent); margin-bottom: 20px; font-variant-numeric: tabular-nums; }
+    .laps-container { max-height: 150px; overflow-y: auto; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 8px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; scrollbar-width: none; }
+    .lap-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid var(--border); animation: fadeIn 0.3s; }
+    .lap-item:last-child { border-bottom: none; }
+    
+    .qr-box { background: #ffffff; border-radius: var(--radius-sm); padding: 16px; display: inline-block; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .qr-box img { width: 200px; height: 200px; display: block; }
+
+    /* Smart Scratchpad Specifics */
+    .notes-list { display: flex; flex-direction: column; gap: 12px; max-height: 50vh; overflow-y: auto; margin-bottom: 16px; scrollbar-width: none; }
+    .note-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; cursor: pointer; transition: 0.2s; position: relative; }
+    .note-card:active { transform: scale(0.98); background: var(--surface-hover); }
+    .note-title { font-weight: 700; margin-bottom: 4px; font-size: 1.05rem; }
+    .note-preview { font-size: 0.85rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px; }
+    .note-time { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+    
+    .scratchpad-editor { width: 100%; min-height: 250px; max-height: 50vh; overflow-y: auto; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; color: var(--text-main); font-family: var(--font-sans); font-size: 0.95rem; outline: none; margin-bottom: 12px; line-height: 1.6; }
+    .scratchpad-editor input[type="checkbox"] { margin-right: 8px; accent-color: var(--accent); transform: scale(1.2); cursor: pointer; }
+    
+    /* Slash Menu */
+    .slash-menu { position: absolute; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 1000; width: 200px; display: none; flex-direction: column; padding: 6px; }
+    .slash-item { padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+    .slash-item:hover { background: var(--bg); color: var(--accent); }
+    .slash-item i { color: var(--text-muted); width: 16px; }
+
+    /* Lists (Password & Clipboard) */
+    .data-list { display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto; margin-top: 16px; scrollbar-width: none; }
+    .data-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; font-family: var(--font-mono); font-size: 0.95rem; animation: fadeIn 0.3s; }
+    .data-actions { display: flex; gap: 12px; align-items: center; }
+    .data-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; transition: 0.2s; display: grid; place-items: center; width: 24px; height: 24px; }
+    .data-btn:hover { color: var(--accent); transform: scale(1.1); }
+    .data-btn.delete:hover { color: #ff3b30; }
+
+    /* Capture Canvas Container */
+    #exportCanvasContainer { position: absolute; left: -9999px; top: -9999px; width: 600px; padding: 40px; background: linear-gradient(135deg, var(--bg) 0%, var(--surface) 100%); color: var(--text-main); font-family: var(--font-sans); border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    #exportCanvasContainer h3 { font-size: 1.5rem; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    #exportCanvasContainer .content { font-size: 1.1rem; line-height: 1.6; white-space: pre-wrap; }
+    #exportCanvasContainer .watermark { margin-top: 30px; font-size: 0.8rem; color: var(--text-muted); text-align: right; font-family: var(--font-mono); }
+  </style>
+</head>
+<body>
+
+  <!-- Hidden Container for Image Export -->
+  <div id="exportCanvasContainer">
+    <h3 id="exportCanvasTitle">Note</h3>
+    <div id="exportCanvasContent" class="content"></div>
+    <div class="watermark">Created in Jino Sabu's Digital Toolkit</div>
+  </div>
+
+  <!-- Geek Mode Profiler HUD -->
+  <div id="geekModeHUD">
+    <div style="color:var(--text-main); font-weight:700; margin-bottom:4px; font-size:0.8rem;">GEEK_MODE <i class="fa-solid fa-microchip"></i></div>
+    <div>FPS: <span id="geekFps" style="color:#0f0;">0</span></div>
+    <div>MEM: <span id="geekMem" style="color:#0f0;">N/A</span></div>
+  </div>
+
+  <!-- Dynamic Island -->
+  <div id="notifyPill" class="dynamic-island">
+    <div id="notifyNormal">
+      <i id="notifyIcon" class="fa-solid fa-bell"></i>
+      <span id="notifyText">Notification</span>
+    </div>
+    
+    <div id="notifyTimer">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--bg);animation:pulse 2s infinite"></div>
+        <span class="di-timer-text" id="diTimerText">25:00</span>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="di-btn" id="diPauseBtn" onclick="toggleTimer()"><i class="fa-solid fa-pause"></i></button>
+        <button class="di-btn" onclick="resetTimer()"><i class="fa-solid fa-stop"></i></button>
+      </div>
+    </div>
+    
+    <div id="notifyStopwatch">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-stopwatch" style="color:var(--bg);"></i>
+        <span class="di-timer-text" id="diStopwatchText">00:00.00</span>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="di-btn" id="diSwLapBtn" onclick="lapStopwatch()"><i class="fa-solid fa-flag"></i></button>
+        <button class="di-btn" id="diSwPauseBtn" onclick="toggleStopwatch()"><i class="fa-solid fa-pause"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="top-nav" id="topNav">
+    <div class="logo">JS.</div>
+    <div class="nav-actions">
+      <div class="status-pill" id="networkStatusPill">
+        <div class="status-dot"></div> Available
+      </div>
+      <button class="sound-btn" id="soundToggleBtn" onclick="toggleSound()" title="Toggle Sound">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+    
+    <!-- Hero Bento -->
+    <div class="bento-card reveal">
+      <div class="hero-header">
+        <img src="profile.jpg" alt="Jino Sabu" class="avatar" onerror="this.src='https://ui-avatars.com/api/?name=Jino+Sabu&background=random&color=fff&size=200'">
+        <div>
+          <h1 class="hero-title" id="mainTitle">Hi, I'm Jino.</h1>
+          <div class="typewriter" id="typewriter"></div>
+        </div>
+      </div>
+      <p class="bio-text">
+        Mechanical Engineer turned Frontend Developer & Digital Architect. I build futuristic digital experiences that blend logic with design.<br><br>
+        🔧 Engineering smarter systems.<br>
+        🎨 Designing intuitive interfaces.<br>
+        🚀 Building interactive workflows.
+      </p>
+      
+      <!-- Smart Scratchpad Button -->
+      <button class="primary-btn" onclick="openSheet('notesSheet')">
+        <i class="fa-solid fa-pen-nib"></i> Smart Scratchpad
+      </button>
+
+      <!-- Hold To Copy Row -->
+      <div class="hold-row">
+        <div class="hold-block" data-copy="jinosabu1999@gmail.com">
+          <div class="touch-ring"></div>
+          <i class="fa-regular fa-envelope hold-icon"></i>
+          <div><span class="hold-label">Hold for Email</span></div>
+        </div>
+
+        <div class="hold-block" data-copy="paypal.me/jinosabu1999">
+          <div class="touch-ring"></div>
+          <i class="fa-brands fa-paypal hold-icon"></i>
+          <div><span class="hold-label">Hold for PayPal</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Socials Scroller -->
+    <div class="scroll-row reveal">
+      <a href="https://github.com/jinosabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-github"></i></a>
+      <a href="https://www.x.com/jinosabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://www.instagram.com/jinosabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.youtube.com/@JinoSabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.suno.com/@jinosabu1999" target="_blank" class="social-btn"><i class="fa-solid fa-music"></i></a>
+      <a href="https://www.pinterest.com/jinosabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-pinterest"></i></a>
+      <a href="https://www.telegram.me/jinosabu1999" target="_blank" class="social-btn"><i class="fa-brands fa-telegram"></i></a>
+      <a href="https://ko-fi.com/jinosabu1999" target="_blank" class="social-btn"><i class="fa-solid fa-mug-hot"></i></a>
+    </div>
+
+    <!-- Tech Stack -->
+    <h2 class="section-title reveal">Tech Arsenal</h2>
+    <div class="bento-card tech-stack reveal">
+      <span class="tech-tag"><i class="fa-brands fa-react"></i> React</span>
+      <span class="tech-tag"><i class="fa-brands fa-node-js"></i> Node.js</span>
+      <span class="tech-tag"><i class="fa-brands fa-python"></i> Python</span>
+      <span class="tech-tag"><i class="fa-brands fa-figma"></i> Figma</span>
+      <span class="tech-tag"><i class="fa-brands fa-aws"></i> Cloud</span>
+      <span class="tech-tag"><i class="fa-solid fa-database"></i> Databases</span>
+    </div>
+
+    <!-- Live System HUD -->
+    <div class="bento-card reveal system-hud">
+      <div class="hud-box">
+        <i class="fa-solid fa-battery-half hud-icon" id="hudBatIcon"></i>
+        <div class="hud-data">
+          <span class="hud-label">Power</span>
+          <span class="hud-value" id="hudBatVal">--%</span>
+        </div>
+      </div>
+      <div class="hud-box">
+        <i class="fa-solid fa-wifi hud-icon"></i>
+        <div class="hud-data">
+          <span class="hud-label">Network</span>
+          <span class="hud-value" id="hudNetVal">--</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- What I Do -->
+    <h2 class="section-title reveal">What I Do</h2>
+    <div class="bento-card reveal" style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: flex; gap: 16px; align-items: center;">
+        <div style="font-size: 2rem; color: var(--accent); min-width: 40px; text-align: center;"><i class="fa-solid fa-code"></i></div>
+        <div>
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 4px;">Frontend Engineering</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.4;">Crafting performant, pixel-perfect user interfaces with modern frameworks.</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 16px; align-items: center;">
+        <div style="font-size: 2rem; color: var(--accent); min-width: 40px; text-align: center;"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div>
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 4px;">UI/UX Design</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.4;">Designing intuitive, futuristic experiences that delight users.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <h2 class="section-title reveal">Selected Works</h2>
+    <div class="scroll-row reveal" id="projectContainer">
+      <!-- Injected via JS -->
+    </div>
+
+    <!-- Timeline/Journey -->
+    <h2 class="section-title reveal">Journey</h2>
+    <div class="bento-card reveal">
+      <div class="timeline">
+        <div class="t-item">
+          <div class="t-dot"></div>
+          <span class="t-year">2025</span>
+          <h3 class="t-title">Digital Ecosystems</h3>
+          <p class="t-desc">Building integrated tools like ToolTesseract and MultiKit.</p>
+        </div>
+        <div class="t-item">
+          <div class="t-dot"></div>
+          <span class="t-year">2023</span>
+          <h3 class="t-title">Advanced Workflows</h3>
+          <p class="t-desc">Deep dive into custom logic and automation workflows.</p>
+        </div>
+        <div class="t-item">
+          <div class="t-dot"></div>
+          <span class="t-year">2021</span>
+          <h3 class="t-title">Frontend Pivot</h3>
+          <p class="t-desc">Shifted from mechanical systems to digital architecture.</p>
+        </div>
+      </div>
+    </div>
+    
+  </main>
+
+  <!-- Modern Footer -->
+  <footer class="site-footer reveal">
+    <div class="live-clock" title="Local Time in India">
+      <i class="fa-regular fa-clock" style="color:var(--text-muted)"></i> 
+      <span id="localTime">Loading time...</span> (IST)
+    </div>
+    <p class="footer-text">&copy; 2026 Jino Sabu. Built for the future.</p>
+  </footer>
+
+  <!-- Scroll Ring Floating FAB -->
+  <div class="scroll-fab" id="scrollFab" onclick="scrollToTop()">
+    <svg viewBox="0 0 50 50">
+      <circle class="bg-ring" cx="25" cy="25" r="23"></circle>
+      <circle class="progress-ring" id="progressRing" cx="25" cy="25" r="23"></circle>
+    </svg>
+    <i class="fa-solid fa-arrow-up"></i>
+  </div>
+
+  <!-- Bottom Dock -->
+  <div class="dock-wrapper">
+    <nav class="dock">
+      <button class="dock-btn" onclick="scrollToTop()"><i class="fa-solid fa-house"></i></button>
+      <button class="dock-btn" onclick="openSheet('searchSheet')"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="dock-btn" onclick="openSheet('vibeSheet')"><i class="fa-solid fa-bolt"></i></button>
+      <button class="dock-btn" onclick="openSheet('themeSheet')"><i class="fa-solid fa-palette"></i></button>
+    </nav>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="closeAllSheets()"></div>
+
+  <!-- CMD+K Search Sheet -->
+  <div class="bottom-sheet" id="searchSheet">
+    <div class="drag-handle"></div>
+    <div class="sheet-header">
+      <h2 class="sheet-title">Commands</h2>
+      <button class="sheet-close-btn" onclick="closeAllSheets()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <input type="text" id="searchInput" class="search-input" placeholder="Search commands or tasks...">
+    <div class="cmd-list" id="cmdList">
+      <!-- Injected via JS -->
+    </div>
+  </div>
+
+  <!-- Smart Scratchpad Sheet -->
+  <div class="bottom-sheet" id="notesSheet">
+    <div class="drag-handle"></div>
+    
+    <!-- Notes List View -->
+    <div id="notesListView">
+      <div class="sheet-header" style="margin-bottom: 16px;">
+        <h2 class="sheet-title">Smart Scratchpad</h2>
+        <button class="sheet-close-btn" onclick="closeAllSheets()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
+        Your personal container for thoughts and ideas. Stored locally.
+      </p>
+      
+      <div id="savedNotesContainer" class="notes-list">
+        <!-- Notes injected here -->
+      </div>
+      
+      <button class="primary-btn" onclick="createNewNote()"><i class="fa-solid fa-plus"></i> New Note</button>
+    </div>
+
+    <!-- Active Editor View -->
+    <div id="notesEditView" style="display: none;">
+      <div class="sheet-header" style="margin-bottom: 8px;">
+        <input type="text" id="noteTitleInput" value="Untitled Note" style="background:transparent; border:none; color:var(--text-main); font-size:1.4rem; font-weight:700; outline:none; width:100%;" placeholder="Note Title">
+        <button class="sheet-close-btn" onclick="backToNotesList()"><i class="fa-solid fa-chevron-down"></i></button>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px;">Type '/' for commands.</p>
+      
+      <div style="position: relative;">
+        <!-- Editor Container -->
+        <div id="scratchpadEditor" class="scratchpad-editor" contenteditable="true" placeholder="Start typing here..."></div>
+        
+        <!-- Slash Menu -->
+        <div id="slashMenu" class="slash-menu">
+          <div class="slash-item" onclick="insertSlashCommand('<input type=\'checkbox\'> ')"><i class="fa-solid fa-check-square"></i> Checkbox</div>
+          <div class="slash-item" onclick="insertSlashCommand(new Date().toLocaleDateString())"><i class="fa-solid fa-calendar"></i> Today's Date</div>
+          <div class="slash-item" onclick="insertSlashCommand(new Date().toLocaleTimeString())"><i class="fa-solid fa-clock"></i> Current Time</div>
+          <div class="slash-item" onclick="insertSlashCommand('<h3>Meeting Notes</h3><ul><li><strong>Attendees:</strong> </li><li><strong>Goals:</strong> </li></ul>')"><i class="fa-solid fa-users"></i> Meeting Template</div>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 16px; padding: 0 4px;">
+        <span id="scratchpadStatus">Editing...</span>
+        <span id="scratchpadLength">0 chars</span>
+      </div>
+
+      <div class="timer-actions">
+        <button class="primary-btn" onclick="saveActiveNote()" style="flex: 1;"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+        <button class="btn-secondary" onclick="exportNoteAsImage()" title="Export as Image" style="flex: 0.2;"><i class="fa-solid fa-image"></i></button>
+        <button class="btn-secondary" onclick="copyScratchpad()" title="Copy to clipboard" style="flex: 0.2;"><i class="fa-solid fa-copy"></i></button>
+        <button class="btn-secondary" onclick="deleteActiveNote()" title="Delete note" style="flex: 0.2; color: #ff3b30; border-color: rgba(255, 59, 48, 0.3);"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modern Segmented Vibe/Tools Sheet -->
+  <div class="bottom-sheet" id="vibeSheet">
+    <div class="drag-handle"></div>
+    <div class="sheet-header">
+      <h2 class="sheet-title">Digital Toolkit</h2>
+      <button class="sheet-close-btn" onclick="closeAllSheets()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Segmented Control Tabs -->
+    <div class="segment-ctrl">
+      <button class="segment-btn active" onclick="switchTab('tabFocus')"><i class="fa-solid fa-bolt"></i> Focus</button>
+      <button class="segment-btn" onclick="switchTab('tabStopwatch')"><i class="fa-solid fa-stopwatch"></i> Clock</button>
+      <button class="segment-btn" onclick="switchTab('tabQR')"><i class="fa-solid fa-qrcode"></i> Beam</button>
+      <button class="segment-btn" onclick="switchTab('tabPass')"><i class="fa-solid fa-key"></i> Key</button>
+      <button class="segment-btn" onclick="switchTab('tabClip')"><i class="fa-solid fa-clipboard-list"></i> Clip</button>
+    </div>
+
+    <!-- Tab 1: Focus Timer -->
+    <div id="tabFocus" class="tab-content active">
+      <div style="text-align:center; color:var(--accent); font-size:0.85rem; font-weight:600; margin-bottom:-5px;">
+        <i class="fa-solid fa-pen"></i> Tap numbers to edit
+      </div>
+      <div class="timer-edit-wrap">
+        <input type="number" id="customTimeInput" class="timer-input" value="25" min="1" max="120">
+        <span class="timer-static">:00</span>
+      </div>
+      <div class="timer-actions">
+        <button class="primary-btn" id="timerStart" onclick="toggleTimer()">Start Focus</button>
+        <button class="btn-secondary" style="flex:0.3;" title="Picture-in-Picture" onclick="requestPiP()"><i class="fa-regular fa-window-restore"></i></button>
+        <button class="btn-secondary" style="flex:0.3;" onclick="resetTimer()"><i class="fa-solid fa-rotate-left"></i></button>
+      </div>
+      <p style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-bottom:20px;">
+        Allow Notifications to get alerted when done.
+      </p>
+    </div>
+
+    <!-- Tab 2: Precision Stopwatch -->
+    <div id="tabStopwatch" class="tab-content">
+      <div class="sw-display" id="stopwatchDisplay">00:00.00</div>
+      <div class="timer-actions">
+        <button class="primary-btn" id="swStartBtn" onclick="toggleStopwatch()">Start</button>
+        <button class="btn-secondary" style="flex:0.2;" title="Picture-in-Picture" onclick="requestPiP()"><i class="fa-regular fa-window-restore"></i></button>
+        <button class="btn-secondary" style="flex:0.2;" onclick="lapStopwatch()"><i class="fa-solid fa-flag"></i></button>
+        <button class="btn-secondary" style="flex:0.2;" onclick="resetStopwatch()"><i class="fa-solid fa-rotate-left"></i></button>
+      </div>
+      <div id="lapsContainer" class="laps-container" style="display: none;"></div>
+    </div>
+
+    <!-- Tab 3: QR Generator -->
+    <div id="tabQR" class="tab-content">
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; text-align: center;">
+        Instantly beam links or text to a mobile device.
+      </p>
+      <input type="text" id="qrInput" class="search-input" placeholder="Paste URL or text here..." style="margin-bottom: 12px;">
+      <button class="primary-btn" onclick="generateQR()" style="margin-bottom: 24px;">Generate QR Code</button>
+      
+      <div id="qrResultWrap" style="display:none; text-align: center;">
+        <div class="qr-box">
+          <img id="qrImage" src="" alt="Generated QR Code">
+        </div>
+        <button class="primary-btn" onclick="downloadQR()" style="width: 100%; margin-top: 16px;"><i class="fa-solid fa-download"></i> Save Image</button>
+      </div>
+    </div>
+
+    <!-- Tab 4: Password Generator -->
+    <div id="tabPass" class="tab-content">
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; text-align: center;">
+        Generate secure random passwords locally.
+      </p>
+      <div class="sw-display" id="passDisplay" style="font-size: 2rem; margin-bottom: 20px; word-break: break-all; min-height: 48px;">••••••••••••••••</div>
+      <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 24px; padding: 0 10px;">
+         <input type="range" id="passLen" min="8" max="32" value="16" style="flex:1;">
+         <span id="passLenText" style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; width: 30px; text-align: center;">16</span>
+      </div>
+      
+      <div class="timer-actions">
+        <button class="primary-btn" onclick="generatePassword()" style="flex: 1;">Generate</button>
+        <button class="btn-secondary" style="flex:0.2;" onclick="saveCurrentPassword()" title="Save Password"><i class="fa-solid fa-floppy-disk"></i></button>
+        <button class="btn-secondary" style="flex:0.2;" onclick="copyCurrentPassword()" title="Copy Password"><i class="fa-solid fa-copy"></i></button>
+      </div>
+      
+      <h3 style="font-size: 0.95rem; margin-top: 20px; color: var(--text-muted);">Saved Passwords</h3>
+      <div id="passHistoryList" class="data-list"></div>
+    </div>
+
+    <!-- Tab 5: Session Clipboard -->
+    <div id="tabClip" class="tab-content">
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; text-align: center;">
+        Recently copied items from this session.
+      </p>
+      <div id="clipHistoryList" class="data-list"></div>
+    </div>
+
+  </div>
+
+  <!-- Theme & Accent Sheet -->
+  <div class="bottom-sheet" id="themeSheet">
+    <div class="drag-handle"></div>
+    <div class="sheet-header">
+      <h2 class="sheet-title">Appearance</h2>
+      <button class="sheet-close-btn" onclick="closeAllSheets()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <div class="theme-grid">
+      <div class="theme-card active" id="btnDark" onclick="setTheme('dark')">
+        <i class="fa-solid fa-moon" style="margin-bottom:8px; display:block; font-size:1.5rem;"></i> Dark
+      </div>
+      <div class="theme-card" id="btnLight" onclick="setTheme('light')">
+        <i class="fa-solid fa-sun" style="margin-bottom:8px; display:block; font-size:1.5rem;"></i> Light
+      </div>
+    </div>
+
+    <h3 class="sheet-title" style="font-size: 1.1rem; margin-top: 10px; margin-bottom: 12px;">Accent Color</h3>
+    <div class="accent-row">
+      <div class="color-swatch active" data-color="default" style="background: var(--text-main);" onclick="setAccent('default')"></div>
+      <div class="color-swatch" data-color="cyan" style="background: #06b6d4;" onclick="setAccent('cyan')"></div>
+      <div class="color-swatch" data-color="violet" style="background: #8b5cf6;" onclick="setAccent('violet')"></div>
+      <div class="color-swatch" data-color="emerald" style="background: #10b981;" onclick="setAccent('emerald')"></div>
+      <div class="color-swatch" data-color="rose" style="background: #f43f5e;" onclick="setAccent('rose')"></div>
+      <div class="color-swatch" data-color="amber" style="background: #f59e0b;" onclick="setAccent('amber')"></div>
+    </div>
+
+    <button class="primary-btn" style="width:100%; margin-top: 10px;" onclick="closeAllSheets()">Done</button>
+  </div>
+
+  <script>
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+
+    /* --- Time-Restricted Secret Badges --- */
+    function checkSecretBadges() {
+      const hr = new Date().getHours();
+      const day = new Date().getDay();
+      const titleEl = $('#mainTitle');
+      
+      if (hr >= 2 && hr < 5) {
+        titleEl.innerHTML += `<span class="secret-badge" onclick="showNotify('Late night debugging? Me too.', 'fa-solid fa-moon')">🦉 Night Owl</span>`;
+      } else if (day === 0) { // Sunday
+        titleEl.innerHTML += `<span class="secret-badge" onclick="showNotify('Building on a Sunday? Respect.', 'fa-solid fa-fire')">⚔️ Weekend Warrior</span>`;
+      }
+    }
+    checkSecretBadges();
+
+    /* --- Geek Mode (Performance Profiler) --- */
+    let geekModeActive = false;
+    let frameCount = 0;
+    let lastTime = performance.now();
+
+    function toggleGeekMode() {
+      geekModeActive = !geekModeActive;
+      haptic(); playSound('click');
+      const hud = $('#geekModeHUD');
+      if(geekModeActive) {
+        hud.style.display = 'flex';
+        requestAnimationFrame(geekLoop);
+        showNotify("Geek Mode Activated", "fa-solid fa-microchip");
+      } else {
+        hud.style.display = 'none';
+      }
+    }
+
+    function geekLoop() {
+      if(!geekModeActive) return;
+      const now = performance.now();
+      frameCount++;
+      if(now - lastTime >= 1000) {
+        $('#geekFps').innerText = frameCount;
+        let mem = 'N/A';
+        if(performance.memory) mem = (performance.memory.usedJSHeapSize / 1048576).toFixed(1) + ' MB';
+        $('#geekMem').innerText = mem;
+        frameCount = 0; lastTime = now;
+      }
+      requestAnimationFrame(geekLoop);
+    }
+
+    /* --- Live Device HUD (Battery & Network) --- */
+    function initSystemHUD() {
+      // Network
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (conn) {
+        $('#hudNetVal').innerText = (conn.effectiveType || 'online').toUpperCase();
+        conn.addEventListener('change', () => $('#hudNetVal').innerText = conn.effectiveType.toUpperCase());
+      } else {
+        $('#hudNetVal').innerText = navigator.onLine ? 'ONLINE' : 'OFFLINE';
+      }
+
+      // Battery
+      if (navigator.getBattery) {
+        navigator.getBattery().then(bat => {
+          const updateBat = () => {
+            $('#hudBatVal').innerText = Math.round(bat.level * 100) + '%';
+            $('#hudBatIcon').className = bat.charging ? 'fa-solid fa-bolt hud-icon' : 'fa-solid fa-battery-half hud-icon';
+          };
+          updateBat();
+          bat.addEventListener('levelchange', updateBat);
+          bat.addEventListener('chargingchange', updateBat);
+        });
+      } else {
+        $('#hudBatVal').innerText = 'N/A';
+      }
+    }
+    initSystemHUD();
+
+    /* --- System Network Status Pill --- */
+    function updateSystemStatus() {
+      const pill = $('#networkStatusPill');
+      if (!navigator.onLine) {
+        pill.innerHTML = `<div class="status-dot" style="background:#ff3b30; animation:none;"></div> Offline`;
+      } else {
+        pill.innerHTML = `<div class="status-dot"></div> Available`;
+      }
+    }
+    window.addEventListener('online', updateSystemStatus);
+    window.addEventListener('offline', updateSystemStatus);
+    updateSystemStatus();
+
+    /* --- Request Web Notifications --- */
+    if ("Notification" in window) {
+      if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+        Notification.requestPermission();
+      }
+    }
+    function sendOSNotification(title, body) {
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification(title, { body: body, icon: 'profile.jpg' });
+      }
+    }
+
+    /* --- Document Picture-in-Picture (PiP) API --- */
+    let pipWindow = null;
+    async function requestPiP() {
+      if (!('documentPictureInPicture' in window)) {
+        showNotify("PiP not supported in this browser.", "fa-solid fa-triangle-exclamation");
+        return;
+      }
+      try {
+        pipWindow = await window.documentPictureInPicture.requestWindow({ width: 300, height: 150 });
+        const pipContainer = pipWindow.document.createElement('div');
+        pipContainer.id = "pipDisplay";
+        pipContainer.style.cssText = "display:flex; align-items:center; justify-content:center; height:100vh; font-family:monospace; font-size:3rem; background:#000; color:#fff; margin:0;";
+        
+        let initialText = "00:00";
+        if(activeIslandApp === 'timer') initialText = $('#diTimerText').textContent;
+        else if (activeIslandApp === 'stopwatch') initialText = $('#diStopwatchText').textContent;
+
+        pipContainer.innerText = initialText;
+        pipWindow.document.body.appendChild(pipContainer);
+        pipWindow.document.body.style.margin = "0";
+        showNotify("PiP Window Opened", "fa-regular fa-window-restore");
+        
+        pipWindow.addEventListener("pagehide", () => { pipWindow = null; });
+      } catch(err) {
+        showNotify("Failed to open PiP", "fa-solid fa-xmark");
+      }
+    }
+
+    /* --- Session Clipboard Manager --- */
+    let sessionClipboard = [];
+    
+    function renderClipboard() {
+      const container = $('#clipHistoryList');
+      if(sessionClipboard.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding: 10px;">Clipboard empty.</p>';
+        return;
+      }
+      container.innerHTML = sessionClipboard.map((text, idx) => {
+        const preview = text.length > 25 ? text.substring(0,25) + '...' : text;
+        return `
+        <div class="data-item">
+          <span style="word-break: break-all; padding-right:10px;">${preview}</span>
+          <div class="data-actions">
+            <button class="data-btn" onclick="globalCopyText('${escapeHtml(text)}', true)" title="Copy"><i class="fa-solid fa-copy"></i></button>
+          </div>
+        </div>
+      `}).join('');
+    }
+
+    function escapeHtml(unsafe) {
+      return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    /* --- Global Fallback Copy Utility --- */
+    function globalCopyText(text, skipHistory = false) {
+      // Add to session history
+      if(!skipHistory) {
+         sessionClipboard = sessionClipboard.filter(item => item !== text); // remove dupes
+         sessionClipboard.unshift(text);
+         if(sessionClipboard.length > 5) sessionClipboard.pop();
+         renderClipboard();
+      }
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+          showNotify('Copied to clipboard!', 'fa-solid fa-copy');
+          playSound('success');
+        }).catch(err => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      let textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showNotify('Copied to clipboard!', 'fa-solid fa-copy');
+        playSound('success');
+      } catch (err) {
+        showNotify('Failed to copy', 'fa-solid fa-xmark');
+      }
+      document.body.removeChild(textArea);
+    }
+
+    /* --- Spatial Audio Engine & Haptics --- */
+    let soundEnabled = true;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+
+    function initAudio() { if(!audioCtx) audioCtx = new AudioContext(); if(audioCtx.state === 'suspended') audioCtx.resume(); }
+    
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      $('#soundToggleBtn').innerHTML = soundEnabled ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark"></i>';
+      haptic();
+    }
+
+    function playSound(type) {
+      if(!soundEnabled) return;
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+      
+      if(type === 'pop') {
+        osc.type = 'sine'; osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+      } else if (type === 'click') {
+        osc.type = 'triangle'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+      } else if (type === 'success') {
+        osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(900, audioCtx.currentTime + 0.1);
+        gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+      }
+    }
+
+    // Upgraded Custom Haptics
+    const haptic = (pattern =[50]) => { if(navigator.vibrate) navigator.vibrate(pattern); };
+
+    /* --- Hold To Copy Engine --- */
+    $$('.hold-block').forEach(block => {
+      const ring = block.querySelector('.touch-ring');
+      const textToCopy = block.getAttribute('data-copy');
+      let startT = 0;
+      let holdInt;
+
+      const startHold = (e) => {
+        startT = Date.now();
+        block.classList.add('hold-active');
+        if(e.touches) {
+          const rect = block.getBoundingClientRect();
+          ring.style.left = (e.touches[0].clientX - rect.left) + 'px';
+          ring.style.top = (e.touches[0].clientY - rect.top) + 'px';
+        }
+        holdInt = setTimeout(() => { haptic([100, 50, 100]); }, 500); 
+      };
+
+      const endHold = (e) => {
+        clearTimeout(holdInt);
+        block.classList.remove('hold-active');
+        if(startT !== 0 && (Date.now() - startT >= 500)) {
+           globalCopyText(textToCopy);
+        }
+        startT = 0;
+      };
+
+      block.addEventListener('touchstart', startHold, {passive: true});
+      block.addEventListener('touchend', endHold);
+      block.addEventListener('mousedown', startHold);
+      block.addEventListener('mouseup', endHold);
+      block.addEventListener('mouseleave', () => { clearTimeout(holdInt); block.classList.remove('hold-active'); startT = 0; });
+      block.addEventListener('touchcancel', () => { clearTimeout(holdInt); block.classList.remove('hold-active'); startT = 0; });
+    });
+
+    /* --- Dynamic Island State Manager --- */
+    let notifyTimeout;
+    let activeIslandApp = null; 
+
+    function showNotify(msg, icon = 'fa-solid fa-check') {
+      const pill = $('#notifyPill');
+      $('#notifyNormal').style.display = 'flex';
+      $('#notifyTimer').style.display = 'none';
+      $('#notifyStopwatch').style.display = 'none';
+      pill.classList.remove('timer-mode');
+      
+      $('#notifyIcon').className = icon;
+      $('#notifyText').textContent = msg;
+      pill.classList.add('show');
+      
+      clearTimeout(notifyTimeout);
+      notifyTimeout = setTimeout(() => {
+        if(!$('#vibeSheet').classList.contains('open')) {
+           if(activeIslandApp === 'timer' && timerInt) activateIslandTimer();
+           else if(activeIslandApp === 'stopwatch' && swInterval) activateIslandStopwatch();
+           else pill.classList.remove('show');
+        } else {
+           pill.classList.remove('show');
+        }
+      }, 3000);
+    }
+
+    function activateIslandTimer() {
+      const pill = $('#notifyPill');
+      $('#notifyNormal').style.display = 'none';
+      $('#notifyStopwatch').style.display = 'none';
+      $('#notifyTimer').style.display = 'flex';
+      pill.classList.add('timer-mode');
+      pill.classList.add('show');
+    }
+
+    function activateIslandStopwatch() {
+      const pill = $('#notifyPill');
+      $('#notifyNormal').style.display = 'none';
+      $('#notifyTimer').style.display = 'none';
+      $('#notifyStopwatch').style.display = 'flex';
+      pill.classList.add('timer-mode');
+      pill.classList.add('show');
+    }
+
+    $('#notifyPill').addEventListener('click', (e) => {
+      if(e.target.closest('.di-btn')) return; 
+      if(activeIslandApp === 'timer') {
+        openSheet('vibeSheet');
+        switchTab('tabFocus');
+      } else if (activeIslandApp === 'stopwatch') {
+        openSheet('vibeSheet');
+        switchTab('tabStopwatch');
+      }
+    });
+
+    /* --- Focus Timer --- */
+    let timerInt, timeLeft = 1500;
+    const timeInput = $('#customTimeInput');
+    
+    function formatTime(sec) {
+      const m = Math.floor(sec/60).toString().padStart(2,'0');
+      const s = (sec%60).toString().padStart(2,'0');
+      return `${m}:${s}`;
+    }
+
+    function toggleTimer() {
+      if ("Notification" in window && Notification.permission !== "granted") Notification.requestPermission();
+      
+      haptic([50]); playSound('click');
+      const btn = $('#timerStart');
+      const diBtn = $('#diPauseBtn');
+      
+      if(timerInt) {
+        clearInterval(timerInt); timerInt = null;
+        btn.textContent = 'Resume Focus';
+        diBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+      } else {
+        activeIslandApp = 'timer'; 
+        if(timeLeft === 1500 && timeInput.value != 25) timeLeft = parseInt(timeInput.value) * 60;
+        btn.textContent = 'Pause Focus';
+        diBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        
+        timerInt = setInterval(() => {
+          if(timeLeft > 0) { 
+            timeLeft--; 
+            const formatted = formatTime(timeLeft);
+            $('#diTimerText').textContent = formatted;
+            if(!$('#vibeSheet').classList.contains('open')) document.title = `${formatted} - Focus`;
+            if(pipWindow) pipWindow.document.getElementById('pipDisplay').innerText = formatted;
+          } else {
+            resetTimer();
+            haptic([100, 200, 100, 200]); playSound('success');
+            showNotify('Session Complete!', 'fa-solid fa-fire');
+            sendOSNotification('Focus Session Complete!', 'Time to take a break. Great job!');
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      haptic([50]); playSound('click');
+      clearInterval(timerInt); timerInt = null;
+      timeLeft = parseInt(timeInput.value || 25) * 60;
+      $('#diTimerText').textContent = formatTime(timeLeft);
+      $('#timerStart').textContent = 'Start Focus';
+      document.title = "Jino Sabu | Digital Architect";
+      if(pipWindow && activeIslandApp === 'timer') pipWindow.document.getElementById('pipDisplay').innerText = formatTime(timeLeft);
+      
+      if(activeIslandApp === 'timer') {
+        activeIslandApp = swInterval ? 'stopwatch' : null;
+        if(activeIslandApp === 'stopwatch') activateIslandStopwatch();
+        else $('#notifyPill').classList.remove('show');
+      }
+    }
+
+    timeInput.addEventListener('change', () => {
+      if(!timerInt) {
+        let val = parseInt(timeInput.value);
+        if(val < 1) val = 1; if(val > 120) val = 120;
+        timeInput.value = val; timeLeft = val * 60;
+      }
+    });
+
+    /* --- Precision Stopwatch --- */
+    let swStartTime = 0, swElapsedTime = 0, swInterval = null, lapCount = 0;
+
+    function formatStopwatch(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const m = String(Math.floor(totalSec / 60)).padStart(2, '0');
+      const s = String(totalSec % 60).padStart(2, '0');
+      const centi = String(Math.floor((ms % 1000) / 10)).padStart(2, '0');
+      return `${m}:${s}.${centi}`;
+    }
+
+    function updateStopwatch() {
+      if(!swInterval) return;
+      const now = performance.now();
+      const diff = swElapsedTime + (now - swStartTime);
+      const formatted = formatStopwatch(diff);
+      
+      $('#stopwatchDisplay').textContent = formatted;
+      if ($('#notifyPill').classList.contains('show') && activeIslandApp === 'stopwatch') {
+         $('#diStopwatchText').textContent = formatted;
+      }
+      if (pipWindow && activeIslandApp === 'stopwatch') {
+         pipWindow.document.getElementById('pipDisplay').innerText = formatted;
+      }
+      swInterval = requestAnimationFrame(updateStopwatch);
+    }
+
+    function toggleStopwatch() {
+      haptic([50]); playSound('click');
+      const btn = $('#swStartBtn');
+      const diBtn = $('#diSwPauseBtn');
+      
+      if (swInterval) {
+        cancelAnimationFrame(swInterval);
+        swInterval = null;
+        swElapsedTime += performance.now() - swStartTime;
+        btn.textContent = 'Resume';
+        diBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+      } else {
+        activeIslandApp = 'stopwatch';
+        swStartTime = performance.now();
+        swInterval = requestAnimationFrame(updateStopwatch);
+        btn.textContent = 'Pause';
+        diBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+      }
+    }
+
+    function lapStopwatch() {
+      if (!swInterval && swElapsedTime === 0) return;
+      haptic([50]); playSound('pop');
+      lapCount++;
+      const diff = swInterval ? swElapsedTime + (performance.now() - swStartTime) : swElapsedTime;
+      const lapsWrap = $('#lapsContainer');
+      lapsWrap.style.display = 'block';
+      
+      const lapEl = document.createElement('div');
+      lapEl.className = 'lap-item';
+      lapEl.innerHTML = `<span>Lap ${lapCount}</span> <span style="color:var(--text-main)">${formatStopwatch(diff)}</span>`;
+      lapsWrap.prepend(lapEl);
+    }
+
+    function resetStopwatch() {
+      haptic([50]); playSound('click');
+      cancelAnimationFrame(swInterval);
+      swInterval = null; swStartTime = 0; swElapsedTime = 0; lapCount = 0;
+      $('#stopwatchDisplay').textContent = '00:00.00';
+      $('#diStopwatchText').textContent = '00:00.00';
+      $('#swStartBtn').textContent = 'Start';
+      $('#lapsContainer').style.display = 'none';
+      $('#lapsContainer').innerHTML = '';
+      if(pipWindow && activeIslandApp === 'stopwatch') pipWindow.document.getElementById('pipDisplay').innerText = '00:00.00';
+      
+      if(activeIslandApp === 'stopwatch') {
+        activeIslandApp = timerInt ? 'timer' : null;
+        if(activeIslandApp === 'timer') activateIslandTimer();
+        else $('#notifyPill').classList.remove('show');
+      }
+    }
+
+    /* --- Password Generator & History --- */
+    $('#passLen').addEventListener('input', e => $('#passLenText').textContent = e.target.value);
+    
+    let savedPasswords = JSON.parse(localStorage.getItem('jsPasswords') || '[]');
+    savedPasswords.forEach(p => p.visible = false);
+
+    function renderPasswords() {
+      const container = $('#passHistoryList');
+      if(savedPasswords.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding: 10px;">No saved passwords.</p>';
+        return;
+      }
+      container.innerHTML = savedPasswords.map((p, index) => {
+        const displayTxt = p.visible ? p.pass : '•'.repeat(Math.min(p.pass.length, 16));
+        const eyeIcon = p.visible ? 'fa-eye-slash' : 'fa-eye';
+        return `
+        <div class="data-item">
+          <span style="word-break: break-all; padding-right:10px;">${displayTxt}</span>
+          <div class="data-actions">
+            <button class="data-btn" onclick="togglePassView(${index})" title="Show/Hide"><i class="fa-solid ${eyeIcon}"></i></button>
+            <button class="data-btn" onclick="copySpecificPass('${p.pass}')" title="Copy"><i class="fa-solid fa-copy"></i></button>
+            <button class="data-btn delete" onclick="deletePass(${index})" title="Delete"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+      `}).join('');
+    }
+
+    function generatePassword() {
+      haptic([50]); playSound('click');
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+      let pass = "";
+      const len = $('#passLen').value;
+      for(let i = 0; i < len; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+      $('#passDisplay').textContent = pass;
+    }
+
+    function saveCurrentPassword() {
+      const pass = $('#passDisplay').textContent;
+      if(pass && !pass.includes("••••")) {
+        haptic([100, 50, 100]); // Heartbeat vibration
+        savedPasswords.unshift({ id: Date.now(), pass: pass, visible: false });
+        if(savedPasswords.length > 20) savedPasswords.pop();
+        
+        const storageData = savedPasswords.map(p => ({ id: p.id, pass: p.pass }));
+        localStorage.setItem('jsPasswords', JSON.stringify(storageData));
+        
+        renderPasswords();
+        playSound('success');
+        showNotify('Password Saved', 'fa-solid fa-floppy-disk');
+      } else {
+        haptic([50]); playSound('click');
+        showNotify('Generate a password first', 'fa-solid fa-triangle-exclamation');
+      }
+    }
+
+    function togglePassView(index) {
+      haptic([50]);
+      savedPasswords[index].visible = !savedPasswords[index].visible;
+      renderPasswords();
+    }
+
+    function copyCurrentPassword() {
+      const pass = $('#passDisplay').textContent;
+      if(pass && !pass.includes("••••")) globalCopyText(pass);
+      else showNotify('Generate a password first', 'fa-solid fa-triangle-exclamation');
+    }
+
+    function copySpecificPass(pass) {
+      globalCopyText(pass);
+    }
+
+    function deletePass(index) {
+      haptic([200]); // Long buzz
+      playSound('pop');
+      savedPasswords.splice(index, 1);
+      const storageData = savedPasswords.map(p => ({ id: p.id, pass: p.pass }));
+      localStorage.setItem('jsPasswords', JSON.stringify(storageData));
+      renderPasswords();
+    }
+    
+    renderPasswords();
+
+    /* --- Vibe Panel Segmented Tabs --- */
+    function switchTab(tabId) {
+      haptic([50]); playSound('click');
+      $$('.segment-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      $$('.tab-content').forEach(content => content.classList.remove('active'));
+      $(`#${tabId}`).classList.add('active');
+    }
+
+    /* --- Modern QR Generator --- */
+    function generateQR() {
+      haptic([50]); playSound('pop');
+      const input = $('#qrInput').value.trim();
+      const wrap = $('#qrResultWrap');
+      const img = $('#qrImage');
+      
+      if (!input) {
+        showNotify('Please enter a URL or text', 'fa-solid fa-triangle-exclamation');
+        return;
+      }
+      img.src = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(input)}&margin=0`;
+      img.onload = () => {
+        wrap.style.display = 'block';
+        showNotify('QR Code Generated', 'fa-solid fa-qrcode');
+      };
+    }
+
+    async function downloadQR() {
+      haptic([50]); playSound('click');
+      const img = $('#qrImage');
+      if (!img.src) return;
+      try {
+        const response = await fetch(img.src);
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Jino_Sabu_QR.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showNotify('QR Saved Successfully!', 'fa-solid fa-download');
+      } catch(err) {
+        showNotify('Download Failed', 'fa-solid fa-xmark');
+      }
+    }
+
+    /* --- Supercharged Scratchpad (Cards & Editor) --- */
+    let myNotes = JSON.parse(localStorage.getItem('jsSmartNotes') || '[]');
+    let currentNoteId = null;
+    const editor = $('#scratchpadEditor');
+    const slashMenu = $('#slashMenu');
+
+    function renderNotes() {
+      const container = $('#savedNotesContainer');
+      if (myNotes.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:0.9rem; padding: 20px;">No notes yet. Create your first one!</p>';
+        return;
+      }
+      container.innerHTML = myNotes.map(n => {
+        const preview = n.content.replace(/<[^>]*>?/gm, ' ').substring(0, 60) || 'Empty note...';
+        return `
+        <div class="note-card" onclick="openNote(${n.id})">
+          <div class="note-title">${n.title || 'Untitled'}</div>
+          <div class="note-preview">${preview}...</div>
+          <div class="note-time">${n.timestamp}</div>
+        </div>
+      `}).join('');
+    }
+
+    function createNewNote() {
+      haptic([50]); playSound('click');
+      currentNoteId = Date.now();
+      $('#noteTitleInput').value = '';
+      editor.innerHTML = '';
+      $('#scratchpadLength').textContent = '0 chars';
+      $('#scratchpadStatus').textContent = 'Unsaved Note';
+      $('#notesListView').style.display = 'none';
+      $('#notesEditView').style.display = 'block';
+      setTimeout(() => editor.focus(), 100);
+    }
+
+    function openNote(id) {
+      haptic([50]); playSound('click');
+      const note = myNotes.find(n => n.id === id);
+      if(!note) return;
+      currentNoteId = id;
+      $('#noteTitleInput').value = note.title;
+      editor.innerHTML = note.content;
+      $('#scratchpadLength').textContent = `${editor.innerText.length} chars`;
+      $('#scratchpadStatus').textContent = `Last saved: ${note.timestamp}`;
+      $('#notesListView').style.display = 'none';
+      $('#notesEditView').style.display = 'block';
+    }
+
+    function backToNotesList() {
+      saveActiveNote(true); 
+      $('#notesEditView').style.display = 'none';
+      $('#notesListView').style.display = 'block';
+      renderNotes();
+    }
+
+    function saveActiveNote(silent = false) {
+      if(!currentNoteId) return;
+      
+      const title = $('#noteTitleInput').value.trim() || 'Untitled Note';
+      let content = editor.innerHTML;
+      if (editor.innerText.trim() === '' && !content.includes('input')) content = ''; 
+      
+      const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      const dateStr = new Date().toLocaleDateString();
+      
+      const existingIdx = myNotes.findIndex(n => n.id === currentNoteId);
+      const noteObj = { id: currentNoteId, title, content, timestamp: `${dateStr} ${timeStr}` };
+      
+      if(existingIdx >= 0) myNotes[existingIdx] = noteObj;
+      else if(content !== '' || title !== 'Untitled Note') myNotes.unshift(noteObj);
+      
+      localStorage.setItem('jsSmartNotes', JSON.stringify(myNotes));
+      $('#scratchpadStatus').textContent = `Saved at ${timeStr}`;
+      
+      if(!silent) { haptic([100, 50, 100]); playSound('success'); showNotify('Note Saved', 'fa-solid fa-floppy-disk'); }
+    }
+
+    function deleteActiveNote() {
+      haptic([200]); playSound('pop');
+      myNotes = myNotes.filter(n => n.id !== currentNoteId);
+      localStorage.setItem('jsSmartNotes', JSON.stringify(myNotes));
+      showNotify('Note Deleted', 'fa-solid fa-trash');
+      backToNotesList();
+    }
+
+    function copyScratchpad() {
+      const text = editor.innerText;
+      if(!text.trim()) return showNotify('Nothing to copy', 'fa-solid fa-xmark');
+      globalCopyText(text);
+    }
+
+    // Export Note as Beautiful Image
+    function exportNoteAsImage() {
+      if(!editor.innerText.trim() && !$('#noteTitleInput').value.trim()) return showNotify('Note is empty', 'fa-solid fa-triangle-exclamation');
+      haptic([50]); playSound('pop');
+      showNotify('Generating Image...', 'fa-solid fa-camera');
+      
+      const exportContainer = $('#exportCanvasContainer');
+      $('#exportCanvasTitle').innerText = $('#noteTitleInput').value || 'Note';
+      $('#exportCanvasContent').innerHTML = editor.innerHTML;
+      
+      html2canvas(exportContainer, { backgroundColor: null, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Jino_Note_${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showNotify('Image Exported!', 'fa-solid fa-image');
+      });
+    }
+
+    // Fixed Slash Menu Logic
+    editor.addEventListener('input', () => {
+      $('#scratchpadLength').textContent = `${editor.innerText.length} chars`;
+      $('#scratchpadStatus').textContent = 'Unsaved changes...';
+    });
+
+    editor.addEventListener('keyup', (e) => {
+      const selection = window.getSelection();
+      if(selection.focusNode && selection.focusNode.nodeType === 3) {
+        const text = selection.focusNode.textContent;
+        const textBeforeCaret = text.slice(0, selection.focusOffset);
+        
+        if(textBeforeCaret.endsWith('/')) {
+          const rect = selection.getRangeAt(0).getBoundingClientRect();
+          const editorRect = editor.getBoundingClientRect();
+          slashMenu.style.display = 'flex';
+          slashMenu.style.left = Math.min((rect.left - editorRect.left + 10), editorRect.width - 220) + 'px';
+          slashMenu.style.top = Math.min((rect.bottom - editorRect.top + 10), editorRect.height - 150) + 'px';
+          return;
+        }
+      }
+      slashMenu.style.display = 'none';
+    });
+
+    function insertSlashCommand(htmlString) {
+      haptic([50]); playSound('click');
+      const selection = window.getSelection();
+      if (selection.focusNode && selection.focusNode.nodeType === 3 && selection.focusNode.textContent.endsWith('/')) {
+        selection.focusNode.textContent = selection.focusNode.textContent.slice(0, -1);
+      }
+      document.execCommand('insertHTML', false, htmlString);
+      slashMenu.style.display = 'none';
+      editor.focus();
+    }
+
+    renderNotes(); 
+
+    /* --- Scroll Ring & Reveal Animations --- */
+    const progressRing = $('#progressRing');
+    const scrollFab = $('#scrollFab');
+    const circumference = 23 * 2 * Math.PI; 
+    progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
+    progressRing.style.strokeDashoffset = circumference;
+
+    window.addEventListener('scroll', () => {
+      const st = window.scrollY; 
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollFraction = st / height;
+      progressRing.style.strokeDashoffset = circumference - (scrollFraction * circumference);
+
+      if (st > 200) scrollFab.classList.add('visible');
+      else scrollFab.classList.remove('visible');
+
+      if (st > 20) $('#topNav').classList.add('scrolled');
+      else $('#topNav').classList.remove('scrolled');
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* --- Bottom Sheets --- */
+    function openSheet(id) {
+      playSound('pop'); haptic([50]);
+      $('#overlay').style.opacity = '1';
+      $('#overlay').style.pointerEvents = 'auto';
+      $('#'+id).classList.add('open');
+      document.body.classList.add('locked');
+      
+      if(id === 'searchSheet') {
+        setTimeout(() => $('#searchInput').focus(), 100);
+        renderCmds('');
+      }
+      if(id === 'vibeSheet' || id === 'notesSheet') {
+        $('#notifyPill').classList.remove('show');
+      }
+      if(id === 'notesSheet') renderNotes();
+    }
+    
+    function closeAllSheets() {
+      if($('#notesEditView').style.display === 'block') { saveActiveNote(true); }
+      
+      document.querySelectorAll('.bottom-sheet').forEach(s => s.classList.remove('open'));
+      $('#overlay').style.opacity = '0';
+      $('#overlay').style.pointerEvents = 'none';
+      document.body.classList.remove('locked');
+      $('#searchInput').blur();
+      slashMenu.style.display = 'none';
+      
+      if (activeIslandApp === 'timer' && timerInt) activateIslandTimer();
+      else if (activeIslandApp === 'stopwatch' && swInterval) activateIslandStopwatch();
+    }
+
+    let touchY = 0;
+    document.querySelectorAll('.bottom-sheet').forEach(sheet => {
+      sheet.addEventListener('touchstart', e => touchY = e.touches[0].clientY, {passive: true});
+      sheet.addEventListener('touchend', e => {
+        if(e.target.closest('.scratchpad-editor') || e.target.closest('.notes-list') || e.target.closest('.data-list')) return;
+        if (e.changedTouches[0].clientY - touchY > 80) closeAllSheets();
+      }, {passive: true});
+    });
+
+    /* --- Smart Semantic CMD+K Spotlight Search --- */
+    const inspireQuotes = [
+      "Design is not just what it looks like, it's how it works.",
+      "Simplicity is the ultimate sophistication.",
+      "Talk is cheap. Show me the code.",
+      "First, solve the problem. Then, write the code."
+    ];
+
+    const commands =[
+      { t: 'Toggle Dark Mode', i: 'fa-moon', kw: ['black', 'night', 'dark', 'dim'], a: () => setTheme('dark') },
+      { t: 'Toggle Light Mode', i: 'fa-sun', kw: ['white', 'day', 'light', 'bright'], a: () => setTheme('light') },
+      { t: 'Smart Scratchpad', i: 'fa-pen-nib', kw: ['notes', 'write', 'diary', 'journal'], a: () => { closeAllSheets(); setTimeout(()=>openSheet('notesSheet'),300); } },
+      { t: 'Digital Toolkit', i: 'fa-toolbox', kw: ['tools', 'timer', 'clock', 'password', 'focus'], a: () => { closeAllSheets(); setTimeout(()=>openSheet('vibeSheet'),300); } },
+      { t: 'Toggle Geek Mode', i: 'fa-microchip', kw: ['fps', 'performance', 'memory', 'geek', 'nerd'], a: () => { toggleGeekMode(); closeAllSheets(); } },
+      { t: 'Email Jino', i: 'fa-envelope', kw: ['contact', 'message', 'mail', 'hire'], a: () => window.location.href='mailto:jinosabu1999@gmail.com' },
+      { t: 'Inspire Me', i: 'fa-lightbulb', kw: ['quote', 'motivation', 'idea'], a: () => {
+         const q = inspireQuotes[Math.floor(Math.random()*inspireQuotes.length)];
+         showNotify(q, 'fa-solid fa-quote-left');
+      }}
+    ];
+    
+    function renderCmds(query) {
+      const q = query.toLowerCase().trim();
+      
+      const filtered = commands.filter(c => {
+        if (c.t.toLowerCase().includes(q)) return true;
+        return c.kw.some(keyword => keyword.includes(q) || q.includes(keyword));
+      });
+
+      if(filtered.length === 0) {
+        $('#cmdList').innerHTML = `<p style="text-align:center;color:var(--text-muted);font-size:0.9rem;padding:20px;">No matching commands found.</p>`;
+        return;
+      }
+
+      $('#cmdList').innerHTML = filtered.map((c, i) => `
+        <div class="cmd-item" onclick="playSound('click'); haptic([50]); executeCmd('${c.t}')">
+          <i class="fa-solid ${c.i}"></i> ${c.t}
+        </div>
+      `).join('');
+    }
+    
+    function executeCmd(title) {
+       const cmd = commands.find(c => c.t === title);
+       if(cmd) {
+         cmd.a();
+         if(title !== 'Smart Scratchpad' && title !== 'Digital Toolkit') closeAllSheets();
+       }
+    }
+
+    $('#searchInput').addEventListener('input', e => renderCmds(e.target.value));
+
+    /* --- Theme & Accent --- */
+    function setTheme(mode) {
+      playSound('click'); haptic([50]);
+      document.documentElement.setAttribute('data-theme', mode);
+      localStorage.setItem('theme', mode);
+      $('#btnDark').classList.toggle('active', mode === 'dark');
+      $('#btnLight').classList.toggle('active', mode === 'light');
+      $('#themeColorMeta').setAttribute('content', mode === 'dark' ? '#000000' : '#f5f5f7');
+    }
+    if(localStorage.getItem('theme') === 'light') setTheme('light');
+
+    function setAccent(color) {
+      playSound('click'); haptic([50]);
+      document.documentElement.setAttribute('data-accent', color);
+      localStorage.setItem('accent', color);
+      $$('.color-swatch').forEach(el => el.classList.remove('active'));
+      $(`.color-swatch[data-color="${color}"]`).classList.add('active');
+    }
+    const savedAccent = localStorage.getItem('accent') || 'default';
+    setAccent(savedAccent);
+
+    /* --- Misc Functions --- */
+    function scrollToTop() {
+      playSound('click'); haptic([50]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateTime() {
+      const now = new Date();
+      const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true };
+      $('#localTime').textContent = now.toLocaleTimeString('en-IN', options);
+    }
+    setInterval(updateTime, 1000); updateTime();
+
+    /* --- Inject Projects Data --- */
+    const projects =[
+      { title: 'Multi Tool Kit', desc: 'Swiss army knife for the web. Fast, sleek, packed with utilities.', tags:['Vue', 'PWA', 'Tools'], icon: 'fa-solid fa-toolbox', url: 'https://v0-multi-tool-app.vercel.app' },
+      { title: 'ToolTesseract', desc: 'Productivity dashboard with a futuristic user interface.', tags: ['React', 'UI Design'], icon: 'fa-solid fa-cube', url: 'https://tooltesseract.vercel.app' },
+      { title: 'Modus Audio', desc: 'Browser-based audio cutter and editor built for speed.', tags:['Audio', 'Media'], icon: 'fa-solid fa-music', url: 'https://modus-audio.vercel.app' },
+      { title: 'NexLoft Editor', desc: 'Minimalist code playground for frontend developers.', tags:['Code', 'IDE'], icon: 'fa-solid fa-code', url: 'https://nexloft.vercel.app' }
+    ];
+    projects.forEach(p => {
+      $('#projectContainer').innerHTML += `
+        <div class="project-card">
+          <div class="p-head"><h3 class="p-title">${p.title}</h3><div class="p-icon"><i class="${p.icon}"></i></div></div>
+          <p class="p-desc">${p.desc}</p>
+          <div class="p-tags">${p.tags.map(t => `<span class="p-tag">${t}</span>`).join('')}</div>
+          <a href="${p.url}" target="_blank" class="p-link" onclick="playSound('click'); haptic([50])">View Project</a>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
