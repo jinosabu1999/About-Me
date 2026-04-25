@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-accent="default">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Jino Sabu | Digital Architect</title>
+  
+  <meta name="description" content="Mechanical Engineer turned Frontend Developer & Digital Architect." />
+  <meta name="theme-color" content="#000000" id="themeColorMeta" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- PrismJS for Syntax Highlighting -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <!-- html2canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- YouTube Iframe API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <style>
+    :root {
+      /* Base Colors */
+      --bg: #000000;
+      --surface-rgb: 17, 17, 17;
+      --surface: rgba(var(--surface-rgb), 0.65);
+      --surface-solid: #111111;
+      --surface-hover: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.12);
+      --border-glow: rgba(255, 255, 255, 0.2);
+      
+      --text-main: #ffffff;
+      --text-muted: #888888;
+      
+      --accent: #ffffff;
+      --accent-text: #000000;
+      
+      --radius-sm: 16px;
+      --radius-lg: 28px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --safe-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f5f7;
+      --surface-rgb: 255, 255, 255;
+      --surface: rgba(var(--surface-rgb), 0.7);
+      --surface-solid: #ffffff;
+      --surface-hover: rgba(0, 0, 0, 0.04);
+      --border: rgba(0, 0, 0, 0.08);
+      --border-glow: rgba(0, 0, 0, 0.15);
+      --text-main: #000000;
+      --text-muted: #666666;
+      --accent: #000000;
+      --accent-text: #ffffff;
+    }
+
+    /* Extended Accent Colors */[data-accent="cyan"] { --accent: #06b6d4; --accent-text: #000000; }
+    [data-accent="violet"] { --accent: #8b5cf6; --accent-text: #ffffff; }
+    [data-accent="emerald"] { --accent: #10b981; --accent-text: #000000; }[data-accent="rose"] { --accent: #f43f5e; --accent-text: #ffffff; }
+    [data-accent="amber"] { --accent: #f59e0b; --accent-text: #000000; }
+    [data-accent="blue"] { --accent: #3b82f6; --accent-text: #ffffff; }[data-accent="pink"] { --accent: #ec4899; --accent-text: #ffffff; }
+    [data-accent="orange"] { --accent: #f97316; --accent-text: #000000; }
+    [data-accent="teal"] { --accent: #14b8a6; --accent-text: #000000; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    
+    body { background-color: var(--bg); color: var(--text-main); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: calc(120px + var(--safe-bottom)); transition: background-color 0.4s ease; position: relative; }
+    
+    body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 10% 0%, rgba(var(--surface-rgb), 0.3) 0%, transparent 40%), radial-gradient(circle at 90% 100%, rgba(var(--surface-rgb), 0.3) 0%, transparent 40%); opacity: 0.6; z-index: -1; pointer-events: none; transition: opacity 0.4s ease; }
+    body.locked { overflow: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInTab { from { opacity: 0; transform: translateX(15px); } to { opacity: 1; transform: translateX(0); } }
+    
+    .ripple { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple-anim 0.7s cubic-bezier(0.1, 0.7, 0.1, 1); background: radial-gradient(circle, var(--accent) 0%, transparent 60%); opacity: 0.35; pointer-events: none; }
+    [data-theme="light"] .ripple { opacity: 0.2; }
+    @keyframes ripple-anim { to { transform: scale(3.5); opacity: 0; } }
+
+    .glass-panel { background: linear-gradient(145deg, rgba(var(--surface-rgb), 0.5) 0%, rgba(var(--surface-rgb), 0.2) 100%); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 40px rgba(0,0,0,0.2), inset 0 1px 1px var(--border-glow); }
+    [data-theme="light"] .glass-panel { border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 10px 40px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.6); }
+    .bento-card { border-radius: var(--radius-lg); padding: 24px; transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    /* Dynamic Island Updates */
+    .dynamic-island { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--accent-text); padding: 12px 20px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; z-index: 10000; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1); min-width: 150px; cursor: pointer; user-select: none; }
+    .dynamic-island.show { top: calc(env(safe-area-inset-top, 16px) + 16px); }
+    .dynamic-island.timer-mode { width: 90%; max-width: 350px; justify-content: space-between; padding: 12px 24px; }
+    #notifyNormal { display: flex; align-items: center; gap: 10px; pointer-events: none; }
+    #notifyTimer, #notifyStopwatch, #notifyMusic { display: none; align-items: center; justify-content: space-between; width: 100%; }
+    .di-timer-text { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; color: var(--accent-text); font-variant-numeric: tabular-nums; pointer-events: none; }
+    .di-btn { background: var(--bg); color: var(--accent); border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 0.8rem; display: grid; place-items: center; cursor: pointer; transition: 0.2s; pointer-events: auto; }
+    .di-btn:active { transform: scale(0.85); }
+
+    /* Top Nav */
+    .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; position: sticky; top: 0; background: transparent; z-index: 50; transition: 0.3s; user-select: none; }
+    .top-nav.scrolled { background: rgba(var(--surface-rgb), 0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+    .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .status-pill { background: var(--surface-solid); border: 1px solid var(--border); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; display: flex; align-items: center; gap: 6px; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .status-dot { width: 8px; height: 8px; background: #34c759; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(52,199,89,0.4); } 70% { box-shadow: 0 0 0 6px rgba(52,199,89,0); } 100% { box-shadow: 0 0 0 0 rgba(52,199,89,0); } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    .icon-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--surface-solid); border: 1px solid var(--border); color: var(--text-main); font-size: 0.9rem; display: grid; place-items: center; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .icon-btn:active { transform: scale(0.9); }
+    .icon-btn.recording { color: #ff3b30; border-color: rgba(255,59,48,0.5); animation: pulse 1.5s infinite; }
+
+    .container { padding: 0 16px; display: flex; flex-direction: column; gap: 16px; max-width: 600px; margin: 0 auto; perspective: 1000px; }
+    .section-title { font-size: 1.2rem; font-weight: 700; margin: 16px 0 0 8px; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    
+    .hero-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+    .hero-title { font-size: 1.8rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.5px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .secret-badge { display: inline-flex; align-items: center; background: var(--surface-hover); border: 1px solid var(--accent); color: var(--text-main); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: transform 0.2s; white-space: nowrap; user-select: none; }
+    .secret-badge:active { transform: scale(0.9); }
+    .typewriter { color: var(--text-muted); font-size: 1rem; font-weight: 500; margin-top: 4px; height: 20px; }
+    .bio-text { font-size: 0.95rem; line-height: 1.5; color: var(--text-muted); margin-bottom: 20px; }
+    
+    .primary-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent); color: var(--accent-text); font-weight: 600; font-size: 0.95rem; padding: 14px 24px; border-radius: 100px; width: 100%; border: none; cursor: pointer; transition: 0.2s; user-select: none; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .primary-btn:active { transform: scale(0.97); }
+
+    .hold-row { display: flex; gap: 12px; margin-top: 12px; user-select: none; -webkit-touch-callout: none; }
+    .hold-block { flex: 1; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 16px; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; gap: 8px; cursor: pointer; transition: 0.2s; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .hold-block:active { transform: scale(0.96); }
+    .hold-icon { font-size: 1.5rem; color: var(--accent); margin-bottom: 2px; transition: color 0.3s; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+    .hold-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; display: block; }
+    .touch-ring { position: absolute; width: 80px; height: 80px; border-radius: 50%; background: var(--accent); opacity: 0.15; transform: translate(-50%, -50%) scale(0); pointer-events: none; transition: transform 0.6s linear; }
+    .hold-active .touch-ring { transform: translate(-50%, -50%) scale(4); }
+
+    .scroll-row { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; }
+    .scroll-row::-webkit-scrollbar { display: none; }
+    .social-btn { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 50%; background: var(--surface-solid); border: 1px solid var(--border); display: grid; place-items: center; font-size: 1.4rem; color: var(--text-main); scroll-snap-align: start; transition: 0.2s; user-select: none; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.2), inset 0 1px 1px var(--border-glow); }
+    .social-btn:active { transform: scale(0.9); background: var(--accent); color: var(--accent-text); }
+
+    .tech-stack { padding: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .tech-tag { background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: var(--text-main); padding: 8px 14px; border-radius: 12px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; box-shadow: inset 0 1px 1px var(--border-glow); }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; justify-content: center; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .stat-val { font-size: 1.5rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent); margin-bottom: 4px; }
+    .stat-lbl { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+
+    .blueprint-card { position: relative; overflow: hidden; background: rgba(var(--surface-rgb), 0.5); border: 1px solid var(--accent); padding-bottom: 30px; transition: border-color 0.3s ease; box-shadow: 0 10px 40px rgba(0,0,0,0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    .blueprint-grid { position: absolute; inset: 0; background-image: linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px); background-size: 20px 20px; opacity: 0.15; z-index: 0; pointer-events: none; transition: background-image 0.3s ease; }
+    @keyframes slowSpin { 100% { transform: rotate(360deg); } }
+    .gear-spin { font-size: 8rem; color: var(--accent); opacity: 0.15; position: absolute; right: -20px; bottom: -20px; animation: slowSpin 20s linear infinite; z-index: 0; transition: color 0.3s ease; }
+    .blueprint-content { position: relative; z-index: 1; }
+
+    .project-card { flex: 0 0 85%; scroll-snap-align: center; border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+    .p-head { display: flex; justify-content: space-between; align-items: flex-start; }
+    .p-title { font-size: 1.2rem; font-weight: 700; }
+    .p-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); display: grid; place-items: center; font-size: 1.2rem; color: var(--accent); box-shadow: inset 0 1px 1px var(--border-glow); }
+    .p-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+    .p-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+    .p-tag { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: var(--text-muted); }
+    .p-link { margin-top: 12px; display: block; text-align: center; padding: 12px; border-radius: 12px; background: var(--accent); color: var(--accent-text); font-weight: 600; font-size: 0.9rem; transition: 0.2s; user-select: none; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .p-link:active { transform: scale(0.97); }
+
+    .timeline { padding: 10px 0 10px 20px; border-left: 2px solid var(--border); margin-left: 10px; display: flex; flex-direction: column; gap: 24px; }
+    .t-item { position: relative; }
+    .t-dot { position: absolute; left: -27px; top: 4px; width: 12px; height: 12px; background: var(--surface-solid); border: 2px solid var(--accent); border-radius: 50%; transition: border-color 0.3s; }
+    .t-year { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); margin-bottom: 4px; display: block; font-weight: 700; }
+    .t-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
+    .t-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+    .site-footer { margin-top: 40px; padding: 30px 20px 120px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); }
+    .live-clock { font-family: var(--font-mono); font-size: 0.85rem; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 6px; background: var(--surface-solid); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); box-shadow: inset 0 1px 1px var(--border-glow); }
+
+    .scroll-fab { position: fixed; bottom: calc(100px + var(--safe-bottom)); right: 20px; width: 50px; height: 50px; border-radius: 50%; background: var(--surface); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--border); display: grid; place-items: center; z-index: 90; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.4); opacity: 0; transform: scale(0.8) translateY(20px); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; }
+    .scroll-fab.visible { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+    .scroll-fab svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+    .scroll-fab circle { fill: none; stroke-width: 3; stroke-linecap: round; }
+    .scroll-fab .bg-ring { stroke: var(--border); }
+    .scroll-fab .progress-ring { stroke: var(--accent); stroke-dasharray: 144; stroke-dashoffset: 144; transition: stroke-dashoffset 0.1s, stroke 0.3s; }
+    .scroll-fab i { color: var(--accent); font-size: 1.2rem; z-index: 2; transition: color 0.3s; }
+    .scroll-fab:active { transform: scale(0.9); }
+
+    .dock-wrapper { position: fixed; bottom: calc(24px + var(--safe-bottom)); left: 0; width: 100%; display: flex; justify-content: center; z-index: 100; pointer-events: none; }
+    .dock { pointer-events: auto; background: rgba(var(--surface-rgb), 0.7); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--border); padding: 8px; border-radius: 100px; display: flex; gap: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 1px var(--border-glow); }
+    .dock-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: transparent; color: var(--text-main); font-size: 1.2rem; cursor: pointer; transition: 0.2s; display: grid; place-items: center; position: relative; overflow: hidden; }
+    .dock-btn:active { background: var(--surface-hover); transform: scale(0.9); }
+
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); z-index: 200; opacity: 0; pointer-events: none; transition: 0.3s; }
+    .bottom-sheet { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(var(--surface-rgb), 0.8); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-top: 1px solid var(--border); border-radius: 32px 32px 0 0; padding: 0 24px calc(24px + var(--safe-bottom)); z-index: 250; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); display: flex; flex-direction: column; max-height: 85vh; overflow-y: auto; scrollbar-width: none; box-shadow: 0 -10px 40px rgba(0,0,0,0.5), inset 0 1px 1px var(--border-glow); }
+    .bottom-sheet.open { transform: translateY(0); }
+    .drag-handle { width: 40px; height: 5px; background: var(--accent); opacity: 0.8; border-radius: 10px; margin: 12px auto 20px; transition: background 0.3s; }
+    .sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .sheet-title { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .sheet-close-btn { background: var(--surface-solid); border: 1px solid var(--border); color: var(--text-muted); width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 1.2rem; cursor: pointer; transition: 0.2s; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .sheet-close-btn:active { transform: scale(0.9); background: var(--text-main); color: var(--bg); }
+
+    .search-input { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-sm); color: var(--text-main); font-size: 1rem; outline: none; margin-bottom: 16px; transition: border-color 0.3s; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .search-input:focus { border-color: var(--accent); }
+    
+    .cmd-list { display: flex; flex-direction: column; gap: 8px; }
+    .cmd-item { padding: 16px; background: rgba(0,0,0,0.2); border: 1px solid transparent; border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.2s; }
+    .cmd-item:hover { border-color: var(--border); background: var(--surface-hover); }
+    .cmd-item:active { transform: scale(0.98); }
+    .cmd-item i { width: 20px; color: var(--text-muted); }
+
+    .segment-ctrl { display: flex; overflow-x: auto; scrollbar-width: none; white-space: nowrap; gap: 8px; justify-content: flex-start; padding-bottom: 4px; }
+    .segment-btn { flex: 0 0 auto; text-align: center; padding: 10px 16px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.3s; border: none; background: rgba(0,0,0,0.2); border: 1px solid var(--border); box-shadow: inset 0 1px 1px var(--border-glow); }
+    .segment-btn.active { background: var(--surface-solid); color: var(--text-main); border-color: var(--accent); box-shadow: 0 2px 10px rgba(0,0,0,0.2), inset 0 1px 1px var(--border-glow); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: slideInTab 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    .timer-edit-wrap { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 10px 0 20px; }
+    .timer-input { background: transparent; border: none; border-bottom: 2px dashed var(--border); color: var(--text-main); font-family: var(--font-mono); font-size: 4rem; font-weight: 800; width: 100px; text-align: center; outline: none; transition: border-color 0.3s; border-radius: 0; padding: 0; }
+    .timer-input:focus { border-bottom-color: var(--accent); }
+    .timer-static { font-family: var(--font-mono); font-size: 4rem; font-weight: 800; color: var(--text-muted); }
+    .timer-actions { display: flex; gap: 12px; margin-bottom: 12px; }
+    .btn-secondary { flex: 1; background: var(--surface-solid); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; font-weight: 600; padding: 16px; cursor: pointer; transition: 0.2s; display: inline-flex; justify-content: center; align-items: center; gap: 8px; position: relative; overflow: hidden; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .btn-secondary:active { transform: scale(0.96); }
+
+    input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--accent); cursor: pointer; margin-top: -8px; }
+    input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: var(--border); border-radius: 2px; }
+
+    .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .theme-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; text-align: center; font-weight: 600; transition: 0.2s; cursor: pointer; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .theme-card.active { border-color: var(--accent); background: var(--accent); color: var(--accent-text); }
+    
+    .accent-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 24px; padding: 0 10px; }
+    .color-swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .color-swatch.active { transform: scale(1.15); border-color: var(--text-main); }
+    
+    .sw-display { font-family: var(--font-mono); font-size: 3.5rem; font-weight: 800; text-align: center; color: var(--accent); margin-bottom: 20px; font-variant-numeric: tabular-nums; line-height: 1.1; text-shadow: 0 4px 20px rgba(0,0,0,0.5);}
+    .laps-container { max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 8px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; scrollbar-width: none; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .lap-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid var(--border); animation: fadeIn 0.3s; }
+    .lap-item:last-child { border-bottom: none; }
+
+    /* Note Editor Elements */
+    .note-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--surface-solid); border: 1px solid var(--border); color: var(--text-muted); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; flex: 0 0 auto; white-space: nowrap; position: relative; overflow: hidden; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .note-pill.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+    .note-pill i { font-size: 0.8rem; opacity: 0.6; transition: 0.2s; padding: 4px; border-radius: 50%; }
+    .note-pill i:hover { opacity: 1; background: rgba(0,0,0,0.2); }
+    [data-theme="light"] .note-pill.active i:hover { background: rgba(255,255,255,0.3); }
+
+    .note-title-wrapper { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.2); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 12px; transition: 0.3s; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .note-title-wrapper:focus-within { border-color: var(--accent); }
+    #noteTitleInput { background: transparent; border: none; color: var(--text-main); font-size: 1.1rem; font-weight: 700; outline: none; width: 100%; font-family: var(--font-sans); }
+    #noteTitleInput::placeholder { color: var(--text-muted); font-weight: 500; }
+
+    .scratchpad-editor { width: 100%; min-height: 250px; max-height: 45vh; overflow-y: auto; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 8px 16px 16px; margin-bottom: 12px; box-shadow: inset 0 1px 1px var(--border-glow); display: flex; flex-direction: column; scrollbar-width: none; }
+    
+    .block { display: flex; gap: 8px; margin-bottom: 4px; align-items: flex-start; transition: 0.2s; }
+    .b-handle { opacity: 0; cursor: grab; padding: 4px; color: var(--text-muted); transition: 0.2s; margin-top: 2px; display: grid; place-items: center; user-select: none; }
+    .block:hover .b-handle { opacity: 1; }
+    .b-handle:active { cursor: grabbing; }
+    .b-content { flex: 1; outline: none; min-height: 24px; line-height: 1.6; padding: 4px; color: var(--text-main); font-family: var(--font-sans); font-size: 0.95rem; transition: all 0.2s ease; }
+    .b-content:empty::before { content: attr(data-placeholder); color: var(--text-muted); opacity: 0.6; pointer-events: none; }
+    .block-check { margin-right: 8px; accent-color: var(--accent); transform: scale(1.2); }
+    
+    .note-link { background: rgba(var(--surface-rgb), 0.5); border: 1px solid var(--accent); color: var(--accent); padding: 2px 6px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; user-select: none; white-space: nowrap; }
+    .note-link:hover { background: var(--accent); color: var(--accent-text); }
+
+    /* Prism Custom Code Block Overrides */
+    .b-content.language-javascript { background: rgba(0,0,0,0.3); font-family: var(--font-mono); border-radius: 8px; padding: 12px; color: #a6accd; border: 1px solid var(--border); }
+
+    .slash-menu { position: absolute; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px var(--border-glow); z-index: 1000; width: 220px; display: none; flex-direction: column; padding: 6px; }
+    .slash-item { padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+    .slash-item:hover { background: var(--surface-hover); color: var(--accent); }
+    .slash-item i { color: var(--text-muted); width: 16px; }
+
+    /* Lists */
+    .data-list { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; margin-top: 16px; scrollbar-width: none; }
+    .data-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; font-size: 0.9rem; animation: fadeIn 0.3s; transition: transform 0.2s, border-color 0.2s; box-shadow: inset 0 1px 1px var(--border-glow); }
+    .data-item.pinned { border-left: 3px solid var(--accent); }
+    .data-item.dragging { opacity: 0.5; transform: scale(0.98); border-color: var(--accent); }
+    .data-actions { display: flex; gap: 8px; align-items: center; }
+    .data-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; transition: 0.2s; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 6px; }
+    .data-btn:hover { color: var(--accent); background: var(--surface-hover); transform: scale(1.1); }
+    .data-btn.delete:hover { color: #ff3b30; }
+
+    .clip-tag { font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 6px; font-family: var(--font-mono); text-transform: uppercase; }
+    .clip-tag.link { background: rgba(6, 182, 212, 0.2); color: #06b6d4; }
+    .clip-tag.code { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+    .clip-tag.text { background: rgba(136, 136, 136, 0.2); color: var(--text-muted); }
+
+    /* Image Export Container */
+    #exportCanvasContainer { position: absolute; left: -9999px; top: -9999px; width: 600px; padding: 40px; background: linear-gradient(135deg, var(--bg) 0%, var(--surface-solid) 100%); color: var(--text-main); font-family: var(--font-sans); border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    #exportCanvasContainer h3 { font-size: 1.5rem; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    #exportCanvasContainer .content { font-size: 1.1rem; line-height: 1.6; white-space: pre-wrap; display: flex; flex-direction: column; gap: 10px; }
+    #exportCanvasContainer .watermark { margin-top: 30px; font-size: 0.8rem; color: var(--text-muted); text-align: right; font-family: var(--font-mono); }
+    
+    /* View Transition Animations */
+    ::view-transition-old(root),
+    ::view-transition-new(root) { animation-duration: 0.4s; animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1); }
+  </style>
+</head>
+<body>
+
+  <!-- Hidden LoFi Player Frame -->
+  <div id="lofiPlayer" style="display:none; position:absolute; width:0; height:0; pointer-events:none;"></div>
+
+  <!-- Note Exporter Canvas -->
+  <div id="exportCanvasContainer">
+    <h3 id="exportCanvasTitle">Note</h3>
+    <div id="exportCanvasContent" class="content"></div>
+    <div class="watermark">Created in Jino Sabu's Digital Toolkit</div>
+  </div>
+
+  <div id="notifyPill" class="dynamic-island">
+    <div id="notifyNormal">
+      <i id="notifyIcon" class="fa-solid fa-bell"></i>
+      <span id="notifyText">Notification</span>
+    </div>
+    <div id="notifyTimer">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--bg);animation:pulse 2s infinite"></div>
+        <span class="di-timer-text" id="diTimerText">25:00</span>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="di-btn ripple-btn" id="diPauseBtn" onclick="toggleTimer()"><i class="fa-solid fa-pause"></i></button>
+        <button class="di-btn ripple-btn" onclick="resetTimer()"><i class="fa-solid fa-stop"></i></button>
+      </div>
+    </div>
+    <div id="notifyStopwatch">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-stopwatch" style="color:var(--bg);"></i>
+        <span class="di-timer-text" id="diStopwatchText">00:00.00</span>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="di-btn ripple-btn" id="diSwLapBtn" onclick="lapStopwatch()"><i class="fa-solid fa-flag"></i></button>
+        <button class="di-btn ripple-btn" id="diSwPauseBtn" onclick="toggleStopwatch()"><i class="fa-solid fa-pause"></i></button>
+      </div>
+    </div>
+    <div id="notifyMusic">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-music" style="color:var(--bg); animation: bounce 1s infinite"></i>
+        <span class="di-timer-text" style="font-size: 1rem;">Lo-Fi Stream</span>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="di-btn ripple-btn" id="diMusicPlayBtn" onclick="toggleLofi()"><i class="fa-solid fa-pause"></i></button>
+        <button class="di-btn ripple-btn" onclick="closeIslandApp()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="top-nav" id="topNav">
+    <div class="logo">JS.</div>
+    <div class="nav-actions">
+      <div class="status-pill" id="networkStatusPill">
+        <div class="status-dot"></div> <span id="statusIntentionText">Available</span>
+      </div>
+      <button class="icon-btn ripple-btn" id="voiceToggleBtn" onclick="toggleVoiceControl()" title="Smart Voice Commands">
+        <i class="fa-solid fa-microphone"></i>
+      </button>
+      <button class="icon-btn ripple-btn" id="soundToggleBtn" onclick="toggleSound()" title="Toggle Sound">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+    
+    <div class="bento-card glass-panel reveal">
+      <div class="hero-header">
+        <img src="profile.jpg" alt="Jino Sabu" class="avatar" onerror="this.src='https://ui-avatars.com/api/?name=Jino+Sabu&background=random&color=fff&size=200'">
+        <div>
+          <h1 class="hero-title" id="mainTitle">Hi, I'm Jino.</h1>
+          <div class="typewriter" id="typewriter"></div>
+        </div>
+      </div>
+      <p class="bio-text">
+        Mechanical Engineer turned Frontend Developer & Digital Architect. I build futuristic digital experiences that blend logic with design.<br><br>
+        🔧 Engineering smarter systems.<br>
+        🎨 Designing intuitive interfaces.<br>
+        🚀 Building interactive workflows.
+      </p>
+      
+      <button class="primary-btn ripple-btn" onclick="openSheet('notesSheet')">
+        <i class="fa-solid fa-pen-nib"></i> Smart Scratchpad
+      </button>
+
+      <div class="hold-row">
+        <div class="hold-block" data-copy="https://ko-fi.com/jinosabu1999">
+          <div class="touch-ring"></div>
+          <i class="fa-solid fa-mug-hot hold-icon"></i>
+          <div><span class="hold-label">Hold to copy Ko-fi</span></div>
+        </div>
+        <div class="hold-block" data-copy="jinosabu1999@gmail.com">
+          <div class="touch-ring"></div>
+          <i class="fa-solid fa-envelope hold-icon"></i>
+          <div><span class="hold-label">Hold to copy Email</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-row reveal">
+      <a href="https://github.com/jinosabu1999" target="_blank" class="social-btn ripple-btn" onclick="globalCopyText(this.href); logAction('Opened GitHub', 'fa-github');"><i class="fa-brands fa-github"></i></a>
+      <a href="https://www.x.com/jinosabu1999" target="_blank" class="social-btn ripple-btn" onclick="globalCopyText(this.href); logAction('Opened X', 'fa-x-twitter');"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://www.instagram.com/jinosabu1999" target="_blank" class="social-btn ripple-btn" onclick="globalCopyText(this.href); logAction('Opened Instagram', 'fa-instagram');"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.youtube.com/@JinoSabu1999" target="_blank" class="social-btn ripple-btn" onclick="globalCopyText(this.href); logAction('Opened YouTube', 'fa-youtube');"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.suno.com/@jinosabu1999" target="_blank" class="social-btn ripple-btn" onclick="globalCopyText(this.href); logAction('Opened Suno', 'fa-music');"><i class="fa-solid fa-music"></i></a>
+      <a href="https://www.pinterest.com/jinosabu1999" target="_blank" class="social-btn ripple-btn" onclick="globalCopyText(this.href); logAction('Opened Pinterest', 'fa-pinterest');"><i class="fa-brands fa-pinterest"></i></a>
+      <a href="https://www.telegram.me/jinosabu1999" target="_blank" class="social-btn ripple-btn" onclick="globalCopyText(this.href); logAction('Opened Telegram', 'fa-telegram');"><i class="fa-brands fa-telegram"></i></a>
+    </div>
+
+    <h2 class="section-title reveal">System Stats</h2>
+    <div class="bento-card glass-panel reveal stats-grid">
+      <div class="stat-box">
+        <div class="stat-val" id="statFocus">0m</div>
+        <div class="stat-lbl">Focus Time</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="statNotes">0</div>
+        <div class="stat-lbl">Notes Made</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="statScore">0</div>
+        <div class="stat-lbl">Prod. Score</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="statTasks">0</div>
+        <div class="stat-lbl">Tasks Done</div>
+      </div>
+    </div>
+
+    <h2 class="section-title reveal">Tech Arsenal</h2>
+    <div class="bento-card glass-panel tech-stack reveal">
+      <span class="tech-tag"><i class="fa-brands fa-react"></i> React</span>
+      <span class="tech-tag"><i class="fa-brands fa-js"></i> JavaScript / TS</span>
+      <span class="tech-tag"><i class="fa-brands fa-css3-alt"></i> Tailwind / CSS3</span>
+      <span class="tech-tag"><i class="fa-brands fa-figma"></i> Figma</span>
+      <span class="tech-tag"><i class="fa-solid fa-robot"></i> ChatGPT</span>
+      <span class="tech-tag"><i class="fa-solid fa-brain"></i> Claude</span>
+      <span class="tech-tag"><i class="fa-solid fa-sparkles"></i> Gemini</span>
+      <span class="tech-tag"><i class="fa-brands fa-google"></i> Google AI Studio</span>
+    </div>
+
+    <h2 class="section-title reveal">Core Engine</h2>
+    <div class="bento-card reveal blueprint-card">
+      <div class="blueprint-grid"></div>
+      <i class="fa-solid fa-gear gear-spin"></i>
+      <div class="blueprint-content">
+        <h3 style="font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); margin-bottom: 8px; letter-spacing:-0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">Mechanical Foundation</h3>
+        <p style="font-size: 0.95rem; line-height: 1.5; opacity: 0.9; max-width: 90%;">Trained in thermodynamics and structural mechanics. I build web applications with the same rigid precision, tolerance control, and efficiency required in physical engineering. Architecture over aesthetics.</p>
+      </div>
+    </div>
+
+    <h2 class="section-title reveal">Capabilities</h2>
+    <div class="bento-card glass-panel reveal" style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: flex; gap: 16px; align-items: center;">
+        <div style="font-size: 2rem; color: var(--accent); min-width: 40px; text-align: center;"><i class="fa-solid fa-code"></i></div>
+        <div>
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 4px;">Frontend Architecture</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.4;">Building scalable, maintainable, and high-performance component libraries and web apps.</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 16px; align-items: center;">
+        <div style="font-size: 2rem; color: var(--accent); min-width: 40px; text-align: center;"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div>
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 4px;">UI/UX Innovation</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.4;">Designing intuitive, futuristic experiences with glassmorphism, micro-interactions, and spatial awareness.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title reveal">Experience</h2>
+    <div class="bento-card glass-panel reveal">
+      <div class="timeline">
+        <div class="t-item">
+          <div class="t-dot"></div>
+          <span class="t-year">Present</span>
+          <h3 class="t-title">Digital Architect & Developer</h3>
+          <p class="t-desc">Architecting bespoke web applications and digital toolkits. Specializing in highly interactive frontends and seamless browser-native utilities.</p>
+        </div>
+        <div class="t-item">
+          <div class="t-dot"></div>
+          <span class="t-year">2022 – 2024</span>
+          <h3 class="t-title">Frontend Engineer</h3>
+          <p class="t-desc">Developed and maintained complex SPA ecosystems. Collaborated with product teams to refine UX and optimized core web vitals.</p>
+        </div>
+        <div class="t-item">
+          <div class="t-dot"></div>
+          <span class="t-year">2018 – 2022</span>
+          <h3 class="t-title">Mechanical Systems Engineer</h3>
+          <p class="t-desc">Designed physical systems and structural workflows. This foundational logic translates directly into my approach to software architecture.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title reveal">Selected Works</h2>
+    <div class="scroll-row reveal" id="projectContainer" style="padding-bottom: 16px;"></div>
+  </main>
+
+  <footer class="site-footer reveal">
+    <div class="live-clock" title="Local Time">
+      <i class="fa-regular fa-clock" style="color:var(--text-muted)"></i> 
+      <span id="localTime">Loading time...</span>
+    </div>
+    <p class="footer-text">&copy; 2026 Jino Sabu. Built for the future.</p>
+  </footer>
+
+  <div class="scroll-fab" id="scrollFab" onclick="scrollToTop()">
+    <svg viewBox="0 0 50 50">
+      <circle class="bg-ring" cx="25" cy="25" r="23"></circle>
+      <circle class="progress-ring" id="progressRing" cx="25" cy="25" r="23"></circle>
+    </svg>
+    <i class="fa-solid fa-arrow-up"></i>
+  </div>
+
+  <div class="dock-wrapper">
+    <nav class="dock">
+      <button class="dock-btn ripple-btn" onclick="scrollToTop()"><i class="fa-solid fa-house"></i></button>
+      <button class="dock-btn ripple-btn" onclick="openSheet('searchSheet')"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button class="dock-btn ripple-btn" onclick="openSheet('vibeSheet')"><i class="fa-solid fa-bolt"></i></button>
+      <button class="dock-btn ripple-btn" onclick="openSheet('themeSheet')"><i class="fa-solid fa-palette"></i></button>
+    </nav>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="closeAllSheets()"></div>
+
+  <!-- CMD+K Search -->
+  <div class="bottom-sheet" id="searchSheet">
+    <div class="drag-handle"></div>
+    <div class="sheet-header">
+      <h2 class="sheet-title">Commands</h2>
+      <button class="sheet-close-btn ripple-btn" onclick="closeAllSheets()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <input type="text" id="searchInput" class="search-input" placeholder="Search commands or tasks (Cmd+K)...">
+    <div class="cmd-list" id="cmdList"></div>
+  </div>
+
+  <!-- Smart Scratchpad -->
+  <div class="bottom-sheet" id="notesSheet">
+    <div class="drag-handle"></div>
+    <div class="sheet-header" style="margin-bottom: 8px;">
+      <h2 class="sheet-title">Smart Scratchpad</h2>
+      <button class="sheet-close-btn ripple-btn" onclick="closeAllSheets()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="scroll-row" id="savedNotesPills" style="margin-bottom: 16px; align-items: center; padding: 4px 0;"></div>
+
+    <div id="notesEditView">
+      <div class="note-title-wrapper">
+        <i class="fa-solid fa-heading" style="color: var(--accent); opacity: 0.8;"></i>
+        <input type="text" id="noteTitleInput" value="" placeholder="Enter Note Title...">
+      </div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Type '/' for blocks, '@' to link notes.</p>
+      
+      <div style="position: relative;">
+        <div id="scratchpadEditor" class="scratchpad-editor"></div>
+        
+        <div id="slashMenu" class="slash-menu">
+          <div class="slash-item" onmousedown="applyBlockType('h1')"><i class="fa-solid fa-heading"></i> Heading 1</div>
+          <div class="slash-item" onmousedown="applyBlockType('h2')"><i class="fa-solid fa-heading" style="font-size:0.8rem;"></i> Heading 2</div>
+          <div class="slash-item" onmousedown="applyBlockType('check')"><i class="fa-solid fa-check-square"></i> To-Do List</div>
+          <div class="slash-item" onmousedown="applyBlockType('quote')"><i class="fa-solid fa-quote-left"></i> Quote</div>
+          <div class="slash-item" onmousedown="applyBlockType('code')"><i class="fa-solid fa-code"></i> Code Block</div>
+        </div>
+        <div id="noteLinkMenu" class="slash-menu"></div>
+      </div>
+
+      <div style="display:flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 16px; padding: 0 4px;">
+        <span id="scratchpadStatus">Ready</span>
+        <span id="scratchpadLength">0 chars</span>
+      </div>
+
+      <div class="timer-actions">
+        <button class="primary-btn ripple-btn" onclick="saveActiveNote(false, true)" style="flex: 1;"><i class="fa-solid fa-floppy-disk"></i> Save & New</button>
+        <button class="btn-secondary ripple-btn" onclick="saveToLocalFS()" title="Export Markdown (.md)" style="flex: 0.2;"><i class="fa-solid fa-download"></i></button>
+        <button class="btn-secondary ripple-btn" onclick="exportNoteAsImage()" title="Export as Image" style="flex: 0.2;"><i class="fa-solid fa-image"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Digital Toolkit -->
+  <div class="bottom-sheet" id="vibeSheet">
+    <div class="drag-handle"></div>
+    <div class="sheet-header">
+      <h2 class="sheet-title">Digital Toolkit</h2>
+      <button class="sheet-close-btn ripple-btn" onclick="closeAllSheets()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="scroll-row" style="margin-bottom: 24px;">
+      <div class="segment-ctrl">
+        <button class="segment-btn active ripple-btn" onclick="switchTab(event, 'tabFocus')"><i class="fa-solid fa-bolt"></i> Focus</button>
+        <button class="segment-btn ripple-btn" onclick="switchTab(event, 'tabPlan')"><i class="fa-solid fa-list-check"></i> Plan</button>
+        <button class="segment-btn ripple-btn" onclick="switchTab(event, 'tabStopwatch')"><i class="fa-solid fa-stopwatch"></i> Clock</button>
+        <button class="segment-btn ripple-btn" onclick="switchTab(event, 'tabPass')"><i class="fa-solid fa-key"></i> Key</button>
+        <button class="segment-btn ripple-btn" onclick="switchTab(event, 'tabClip')"><i class="fa-solid fa-clipboard-list"></i> Clip</button>
+        <button class="segment-btn ripple-btn" onclick="switchTab(event, 'tabCounters')"><i class="fa-solid fa-plus-minus"></i> Count</button>
+        <button class="segment-btn ripple-btn" onclick="switchTab(event, 'tabTimeline')"><i class="fa-solid fa-clock-rotate-left"></i> Log</button>
+      </div>
+    </div>
+
+    <!-- Timer -->
+    <div id="tabFocus" class="tab-content active">
+      <div class="timer-edit-wrap" id="timerEditWrap">
+        <input type="number" id="customTimeInput" class="timer-input" value="25" min="1" max="120">
+        <span class="timer-static">:00</span>
+      </div>
+      <div class="sw-display" id="timerRunningWrap" style="display:none; font-size: 4.5rem; letter-spacing: -2px;">25:00</div>
+
+      <div class="timer-actions">
+        <button class="primary-btn ripple-btn" id="timerStart" onclick="toggleTimer()" style="flex: 1;">Start Focus</button>
+        <button class="btn-secondary ripple-btn" style="flex:0.2;" id="btnFocusNoise" title="Toggle Lo-Fi Stream" onclick="toggleLofi()"><i class="fa-solid fa-music"></i></button>
+        <button class="btn-secondary ripple-btn" style="flex:0.2;" onclick="resetTimer()"><i class="fa-solid fa-rotate-left"></i></button>
+      </div>
+    </div>
+
+    <!-- Smart Planner -->
+    <div id="tabPlan" class="tab-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin:0;">Daily Missions (Drag to reorder)</p>
+        <button class="note-pill ripple-btn" onclick="startDay()"><i class="fa-solid fa-sun"></i> Start Day</button>
+      </div>
+      <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+        <input type="text" id="taskInput" class="search-input" style="margin-bottom:0;" placeholder="Add new task..." onkeypress="if(event.key==='Enter') addTask()">
+        <button class="primary-btn ripple-btn" style="width:auto; padding: 0 20px;" onclick="addTask()"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      <div id="taskList" class="data-list" style="max-height: 250px;"></div>
+    </div>
+
+    <!-- Stopwatch -->
+    <div id="tabStopwatch" class="tab-content">
+      <div class="sw-display" id="stopwatchDisplay" style="font-size: 4rem; letter-spacing: -1px;">00:00.00</div>
+      <div class="timer-actions">
+        <button class="primary-btn ripple-btn" id="swStartBtn" onclick="toggleStopwatch()">Start</button>
+        <button class="btn-secondary ripple-btn" style="flex:0.2;" onclick="lapStopwatch()"><i class="fa-solid fa-flag"></i></button>
+        <button class="btn-secondary ripple-btn" style="flex:0.2;" onclick="resetStopwatch()"><i class="fa-solid fa-rotate-left"></i></button>
+      </div>
+      <div id="lapsContainer" class="laps-container" style="display: none;"></div>
+    </div>
+
+    <!-- Passwords -->
+    <div id="tabPass" class="tab-content">
+      <div class="sw-display" id="passDisplay" style="font-size: 2rem; margin-bottom: 20px; word-break: break-all; min-height: 48px;">••••••••••••••••</div>
+      <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 24px; padding: 0 10px;">
+         <input type="range" id="passLen" min="8" max="32" value="16" style="flex:1;">
+         <span id="passLenText" style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; width: 30px; text-align: center;">16</span>
+      </div>
+      <div class="timer-actions">
+        <button class="primary-btn ripple-btn" onclick="generatePassword()" style="flex: 1;">Generate</button>
+        <button class="btn-secondary ripple-btn" style="flex:0.2;" onclick="saveCurrentPassword()" title="Save Password"><i class="fa-solid fa-floppy-disk"></i></button>
+        <button class="btn-secondary ripple-btn" style="flex:0.2;" onclick="copyCurrentPassword()" title="Copy Password"><i class="fa-solid fa-copy"></i></button>
+      </div>
+      <div id="passHistoryList" class="data-list"></div>
+    </div>
+
+    <!-- Smart Clipboard -->
+    <div id="tabClip" class="tab-content">
+      <div style="display:flex; gap:8px; margin-bottom: 12px;">
+        <input type="text" id="clipSearch" class="search-input" style="margin-bottom:0;" placeholder="Search history..." oninput="renderClipboard()">
+      </div>
+      <div id="clipHistoryList" class="data-list"></div>
+    </div>
+
+    <!-- Counters -->
+    <div id="tabCounters" class="tab-content">
+      <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+        <input type="text" id="counterInput" class="search-input" style="margin-bottom:0;" placeholder="New counter (e.g. Water)..." onkeypress="if(event.key==='Enter') addCounter()">
+        <button class="primary-btn ripple-btn" style="width:auto; padding: 0 20px;" onclick="addCounter()"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      <div id="countersList" class="data-list"></div>
+    </div>
+
+    <!-- Session Timeline -->
+    <div id="tabTimeline" class="tab-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin:0;">Session History</p>
+        <button class="note-pill ripple-btn" onclick="clearTimeline()"><i class="fa-solid fa-trash-can"></i> Clear</button>
+      </div>
+      <div id="actionLogList" class="data-list" style="max-height: 400px; gap: 0;"></div>
+    </div>
+  </div>
+
+  <!-- Appearance Sheet -->
+  <div class="bottom-sheet" id="themeSheet">
+    <div class="drag-handle"></div>
+    <div class="sheet-header">
+      <h2 class="sheet-title">Appearance</h2>
+      <button class="sheet-close-btn ripple-btn" onclick="closeAllSheets()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="theme-grid">
+      <div class="theme-card active ripple-btn" id="btnDark" onclick="setTheme('dark')">
+        <i class="fa-solid fa-moon" style="margin-bottom:8px; display:block; font-size:1.5rem;"></i> Dark
+      </div>
+      <div class="theme-card ripple-btn" id="btnLight" onclick="setTheme('light')">
+        <i class="fa-solid fa-sun" style="margin-bottom:8px; display:block; font-size:1.5rem;"></i> Light
+      </div>
+    </div>
+    <h3 class="sheet-title" style="font-size: 1.1rem; margin-top: 10px; margin-bottom: 12px;">Accent Color</h3>
+    <div class="accent-row">
+      <div class="color-swatch active" data-color="default" style="background: var(--text-main);" onclick="setAccent('default')"></div>
+      <div class="color-swatch" data-color="cyan" style="background: #06b6d4;" onclick="setAccent('cyan')"></div>
+      <div class="color-swatch" data-color="blue" style="background: #3b82f6;" onclick="setAccent('blue')"></div>
+      <div class="color-swatch" data-color="violet" style="background: #8b5cf6;" onclick="setAccent('violet')"></div>
+      <div class="color-swatch" data-color="pink" style="background: #ec4899;" onclick="setAccent('pink')"></div>
+      <div class="color-swatch" data-color="rose" style="background: #f43f5e;" onclick="setAccent('rose')"></div>
+      <div class="color-swatch" data-color="orange" style="background: #f97316;" onclick="setAccent('orange')"></div>
+      <div class="color-swatch" data-color="amber" style="background: #f59e0b;" onclick="setAccent('amber')"></div>
+      <div class="color-swatch" data-color="emerald" style="background: #10b981;" onclick="setAccent('emerald')"></div>
+      <div class="color-swatch" data-color="teal" style="background: #14b8a6;" onclick="setAccent('teal')"></div>
+    </div>
+    <button class="primary-btn ripple-btn" style="width:100%; margin-top: 10px;" onclick="closeAllSheets()">Done</button>
+  </div>
+
+  <script>
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+
+    function getEmptyState(msg, icon) {
+      return `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 40px 20px; color:var(--text-muted); text-align:center; gap:12px;">
+        <i class="fa-solid ${icon}" style="font-size:3rem; opacity:0.3; color:var(--accent);"></i>
+        <p style="font-size:0.95rem; font-weight:500;">${msg}</p>
+      </div>`;
+    }
+
+    function updateTime() { 
+      const now = new Date(); 
+      try { $('#localTime').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }); } 
+      catch(e) { $('#localTime').textContent = now.toLocaleTimeString(); }
+    }
+    setInterval(updateTime, 1000); updateTime();
+
+    document.addEventListener('mousedown', function(e) {
+      const btn = e.target.closest('.ripple-btn');
+      if (!btn) return;
+      const circle = document.createElement('span');
+      const diameter = Math.max(btn.clientWidth, btn.clientHeight) * 1.5;
+      const radius = diameter / 2;
+      const rect = btn.getBoundingClientRect();
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${e.clientX - rect.left - radius}px`;
+      circle.style.top = `${e.clientY - rect.top - radius}px`;
+      circle.classList.add('ripple');
+      const existing = btn.querySelector('.ripple');
+      if (existing) existing.remove();
+      btn.appendChild(circle);
+    });
+
+    let myStats = JSON.parse(localStorage.getItem('jsStats')) || { focusMins: 0, notes: 0, score: 0, tasks: 0 };
+    function updateStatsUI() {
+      $('#statFocus').innerText = myStats.focusMins + 'm';
+      $('#statNotes').innerText = myNotes.length;
+      $('#statTasks').innerText = myStats.tasks;
+      $('#statScore').innerText = myStats.score;
+      localStorage.setItem('jsStats', JSON.stringify(myStats));
+    }
+    function addScore(pts) { myStats.score += pts; updateStatsUI(); }
+
+    function checkSecretBadges() {
+      const hr = new Date().getHours();
+      const day = new Date().getDay();
+      const titleEl = $('#mainTitle');
+      if (hr >= 2 && hr < 5) titleEl.innerHTML += `<span class="secret-badge" onclick="showNotify('Late night debugging? Me too.', 'fa-solid fa-moon')">🦉 Night Owl</span>`;
+      else if (day === 0) titleEl.innerHTML += `<span class="secret-badge" onclick="showNotify('Building on a Sunday? Respect.', 'fa-solid fa-fire')">⚔️ Weekend Warrior</span>`;
+    }
+    checkSecretBadges();
+
+    let actionLog = JSON.parse(localStorage.getItem('jsActionLog')) ||[];
+    function logAction(text, icon = 'fa-bolt') {
+      actionLog.unshift({ text, icon, time: Date.now() });
+      if(actionLog.length > 50) actionLog.pop();
+      localStorage.setItem('jsActionLog', JSON.stringify(actionLog));
+      renderTimeline();
+    }
+    function renderTimeline() {
+      const list = $('#actionLogList');
+      if(actionLog.length === 0) { list.innerHTML = getEmptyState('No actions logged yet.', 'fa-clock-rotate-left'); return; }
+      list.innerHTML = actionLog.map(a => {
+        const timeStr = new Date(a.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+        return `
+          <div style="display:flex; gap:12px; padding: 12px 0; border-bottom: 1px solid var(--border);">
+            <div style="width:30px; height:30px; border-radius:50%; background:var(--surface-hover); display:grid; place-items:center; color:var(--accent); flex-shrink:0;">
+              <i class="fa-solid ${a.icon}"></i>
+            </div>
+            <div>
+              <div style="font-size:0.9rem; font-weight:500;">${escapeHtml(a.text)}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px; font-family:var(--font-mono);">${timeStr}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+    function clearTimeline() { actionLog =[]; localStorage.setItem('jsActionLog', JSON.stringify(actionLog)); renderTimeline(); showNotify("Timeline Cleared", "fa-solid fa-trash"); }
+    renderTimeline();
+
+    /* --- Advanced Voice Control (NLP) --- */
+    let recognition;
+    let isListening = false;
+    async function toggleVoiceControl() {
+      if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+        return showNotify("HTTPS required for mic", "fa-solid fa-lock");
+      }
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach(track => track.stop());
+        
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if(!window.SpeechRecognition) return showNotify("Voice not supported here", "fa-solid fa-xmark");
+        
+        if(!recognition) {
+          recognition = new SpeechRecognition();
+          recognition.continuous = false;
+          recognition.interimResults = false;
+          recognition.onstart = () => { isListening = true; $('#voiceToggleBtn').classList.add('recording'); showNotify("Listening...", "fa-solid fa-microphone"); haptic([50, 50]); };
+          recognition.onresult = (e) => { handleVoiceCommand(e.results[0][0].transcript); };
+          recognition.onend = () => { isListening = false; $('#voiceToggleBtn').classList.remove('recording'); };
+          recognition.onerror = (e) => { showNotify(e.error === 'not-allowed' ? "Mic Denied" : "Audio not clear", "fa-solid fa-question"); isListening=false; $('#voiceToggleBtn').classList.remove('recording'); }
+        }
+        
+        if(isListening) recognition.stop();
+        else recognition.start();
+      } catch(err) { showNotify("Mic permission denied", "fa-solid fa-microphone-slash"); }
+    }
+
+    function handleVoiceCommand(cmdRaw) {
+      const cmd = cmdRaw.toLowerCase();
+      logAction(`Voice command: "${cmdRaw}"`, 'fa-microphone');
+      
+      const match = (keywords) => keywords.some(k => cmd.includes(k));
+
+      // NLP: Set Timer for X minutes
+      const timerRegex = cmd.match(/(?:set|start)(?:\s+a)?(?:\s+timer)?(?:\s+for)?\s+(\d+)\s*(min|minute|minutes)/i);
+      if (timerRegex) {
+          const mins = parseInt(timerRegex[1], 10);
+          openSheet('vibeSheet'); switchTab({currentTarget: $$('.segment-btn')[0]}, 'tabFocus');
+          $('#customTimeInput').value = mins;
+          timeLeft = mins * 60;
+          if(!timerInt) toggleTimer();
+          return showNotify(`Timer set for ${mins}m`, 'fa-solid fa-clock');
+      }
+
+      // NLP: Remind me to... / Add task...
+      const taskRegex = cmd.match(/(?:remind me to|add task|create task)\s+(.+)/i);
+      if (taskRegex) {
+          const taskStr = taskRegex[1].trim();
+          openSheet('vibeSheet'); switchTab({currentTarget: $$('.segment-btn')[1]}, 'tabPlan');
+          $('#taskInput').value = taskStr;
+          addTask();
+          return showNotify(`Task added`, 'fa-solid fa-check');
+      }
+
+      if(match(["dark", "night", "black", "lights out"])) { setTheme('dark'); showNotify('Dark Mode Activated', 'fa-moon'); }
+      else if(match(["light", "day", "white", "bright"])) { setTheme('light'); showNotify('Light Mode Activated', 'fa-sun'); }
+      else if(match(["scratchpad", "note", "write", "type", "journal", "diary"])) { 
+          openSheet('notesSheet'); if(match(["new", "create", "make"])) createNewNote(); 
+      }
+      else if(match(["password", "key", "generate"])) { openSheet('vibeSheet'); switchTab({currentTarget: $$('.segment-btn')[3]}, 'tabPass'); generatePassword(); }
+      else if(match(["music", "lofi", "lo-fi", "chill", "play stream"])) { toggleLofi(); }
+      else if(match(["stopwatch", "clock", "count up"])) { openSheet('vibeSheet'); switchTab({currentTarget: $$('.segment-btn')[2]}, 'tabStopwatch'); }
+      else if(match(["clip", "copy history"])) { openSheet('vibeSheet'); switchTab({currentTarget: $$('.segment-btn')[4]}, 'tabClip'); }
+      else if(match(["close", "hide", "exit", "dismiss"])) { closeAllSheets(); }
+      else { showNotify("Try 'set timer for 45 mins' or 'remind me to read'", "fa-solid fa-lightbulb"); }
+    }
+
+    document.querySelectorAll('.hold-block').forEach(el => {
+      let holdTimer;
+      const startHold = (e) => { el.classList.add('hold-active'); holdTimer = setTimeout(() => { globalCopyText(el.getAttribute('data-copy')); haptic([100, 50, 100]); playSound('success'); el.classList.remove('hold-active'); showNotify("Copied Link!", "fa-solid fa-link"); logAction("Copied Link via Hold", "fa-link"); }, 600); };
+      const endHold = () => { clearTimeout(holdTimer); el.classList.remove('hold-active'); };
+      el.addEventListener('mousedown', startHold); el.addEventListener('touchstart', startHold, {passive: true}); el.addEventListener('mouseup', endHold); el.addEventListener('mouseleave', endHold); el.addEventListener('touchend', endHold); el.addEventListener('contextmenu', e => e.preventDefault());
+    });
+
+    let tasks = JSON.parse(localStorage.getItem('jsTasks')) ||[];
+    let draggedTaskIndex = null;
+    function renderTasks() {
+      const list = $('#taskList');
+      if(tasks.length === 0) { list.innerHTML = getEmptyState('No missions yet. Let\'s build momentum.', 'fa-list-check'); return; }
+      list.innerHTML = tasks.map((t, i) => `<div class="data-item" draggable="true" ondragstart="dragTaskStart(event, ${i})" ondragover="dragTaskOver(event)" ondrop="dropTask(event, ${i})" style="cursor: grab; ${t.done ? 'opacity:0.5' : ''}"><div style="display:flex; align-items:center; gap:12px; flex:1;"><input type="checkbox" ${t.done ? 'checked' : ''} onclick="toggleTask(${i})" style="accent-color: var(--accent); transform: scale(1.2); cursor:pointer;"><span style="text-decoration: ${t.done ? 'line-through' : 'none'}; flex:1; word-break:break-all;">${escapeHtml(t.text)}</span></div><button class="data-btn delete" onclick="deleteTask(${i})"><i class="fa-solid fa-trash"></i></button></div>`).join('');
+    }
+    function addTask() {
+      const val = $('#taskInput').value.trim(); if(!val) return; haptic(); playSound('click'); tasks.push({ text: val, done: false }); $('#taskInput').value = ''; saveTasks(); renderTasks(); logAction(`Added task: ${val}`, 'fa-list-check');
+    }
+    function toggleTask(i) { haptic(); playSound('pop'); tasks[i].done = !tasks[i].done; if(tasks[i].done) { myStats.tasks++; addScore(10); } else { myStats.tasks--; addScore(-10); } saveTasks(); renderTasks(); logAction(`Marked task as ${tasks[i].done ? 'done' : 'undone'}`, 'fa-check'); }
+    function deleteTask(i) { haptic([100]); playSound('pop'); tasks.splice(i, 1); saveTasks(); renderTasks(); }
+    function saveTasks() { localStorage.setItem('jsTasks', JSON.stringify(tasks)); }
+    function dragTaskStart(e, i) { draggedTaskIndex = i; e.target.classList.add('dragging'); }
+    function dragTaskOver(e) { e.preventDefault(); }
+    function dropTask(e, dropIdx) { e.preventDefault(); document.querySelectorAll('.data-item.dragging').forEach(el => el.classList.remove('dragging')); if(draggedTaskIndex === null || draggedTaskIndex === dropIdx) return; const item = tasks.splice(draggedTaskIndex, 1)[0]; tasks.splice(dropIdx, 0, item); haptic([50]); saveTasks(); renderTasks(); logAction('Reordered tasks', 'fa-arrows-up-down'); }
+    renderTasks();
+
+    function startDay() { haptic([100, 100]); playSound('success'); tasks = tasks.filter(t => !t.done); saveTasks(); renderTasks(); const intention = prompt("What is your main focus for today?"); if (intention) { $('#statusIntentionText').textContent = intention; logAction(`Started day with focus: ${intention}`, 'fa-sun'); showNotify("Day Started!", "fa-solid fa-fire"); closeAllSheets(); } }
+
+    let myCounters = JSON.parse(localStorage.getItem('jsCounters')) ||[];
+    function renderCounters() {
+      const list = $('#countersList');
+      if(myCounters.length === 0) { list.innerHTML = getEmptyState('No counters yet. Track water, pushups, etc.', 'fa-glass-water'); return; }
+      list.innerHTML = myCounters.map((c, i) => `<div class="data-item"><span style="flex:1; font-weight:600;">${escapeHtml(c.name)}</span><div style="display:flex; align-items:center; gap:12px;"><button class="data-btn" onclick="updateCounter(${i}, -1)"><i class="fa-solid fa-minus"></i></button><span style="font-family:var(--font-mono); font-size:1.2rem; font-weight:800; min-width:30px; text-align:center;">${c.value}</span><button class="data-btn" style="color:var(--accent);" onclick="updateCounter(${i}, 1)"><i class="fa-solid fa-plus"></i></button><button class="data-btn delete" onclick="deleteCounter(${i})" style="margin-left:8px;"><i class="fa-solid fa-trash"></i></button></div></div>`).join('');
+    }
+    function addCounter() { const val = $('#counterInput').value.trim(); if(!val) return; myCounters.push({ name: val, value: 0 }); $('#counterInput').value = ''; localStorage.setItem('jsCounters', JSON.stringify(myCounters)); logAction(`Created counter: ${val}`, 'fa-plus-minus'); renderCounters(); }
+    function updateCounter(i, delta) { myCounters[i].value += delta; haptic([50]); playSound('pop'); localStorage.setItem('jsCounters', JSON.stringify(myCounters)); renderCounters(); if (delta > 0) logAction(`Incremented ${myCounters[i].name}`, 'fa-arrow-up'); }
+    function deleteCounter(i) { myCounters.splice(i, 1); localStorage.setItem('jsCounters', JSON.stringify(myCounters)); renderCounters(); }
+    renderCounters();
+
+    let sessionClipboard = JSON.parse(localStorage.getItem('jsClipboard')) ||[];
+    function detectType(text) { if(/^https?:\/\//.test(text)) return 'link'; if(text.includes('{') || text.includes('function') || text.includes('</')) return 'code'; return 'text'; }
+    function renderClipboard() {
+      const container = $('#clipHistoryList'); const search = $('#clipSearch').value.toLowerCase(); let filtered = sessionClipboard;
+      if(search) filtered = sessionClipboard.filter(item => item.text.toLowerCase().includes(search));
+      filtered.sort((a,b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+      if(filtered.length === 0) { container.innerHTML = getEmptyState('No clips found. Start copying text.', 'fa-clipboard'); return; }
+      container.innerHTML = filtered.map((item) => { const preview = item.text.length > 35 ? item.text.substring(0,35) + '...' : item.text; const icon = item.type === 'link' ? 'fa-link' : item.type === 'code' ? 'fa-code' : 'fa-align-left'; return `<div class="data-item ${item.pinned ? 'pinned' : ''}"><div style="display:flex; flex-direction:column; gap:4px; overflow:hidden;"><div style="display:flex; gap:6px; align-items:center;"><span class="clip-tag ${item.type}"><i class="fa-solid ${icon}"></i> ${item.type}</span>${item.pinned ? '<i class="fa-solid fa-thumbtack" style="color:var(--accent); font-size:0.7rem;"></i>' : ''}</div><span style="font-size:0.9rem; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${escapeHtml(preview)}</span></div><div class="data-actions"><button class="data-btn" onclick="togglePinClip('${item.id}')" title="Pin"><i class="fa-solid fa-thumbtack" style="${item.pinned?'color:var(--accent)':''}"></i></button><button class="data-btn" onclick="globalCopyText('${escapeHtml(item.text)}', true)" title="Copy"><i class="fa-solid fa-copy"></i></button><button class="data-btn delete" onclick="deleteClip('${item.id}')" title="Delete"><i class="fa-solid fa-trash"></i></button></div></div>`}).join('');
+      localStorage.setItem('jsClipboard', JSON.stringify(sessionClipboard));
+    }
+    function togglePinClip(id) { const item = sessionClipboard.find(c => c.id === id); if(item) { item.pinned = !item.pinned; haptic(); renderClipboard(); } }
+    function deleteClip(id) { sessionClipboard = sessionClipboard.filter(c => c.id !== id); haptic([100]); renderClipboard(); }
+
+    function escapeHtml(unsafe) { return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+
+    function globalCopyText(text, skipHistory = false) {
+      if(!skipHistory && text.trim()) {
+         sessionClipboard = sessionClipboard.filter(item => item.text !== text); 
+         sessionClipboard.unshift({ id: Date.now().toString(), text: text, type: detectType(text), pinned: false });
+         const unpinned = sessionClipboard.filter(c => !c.pinned);
+         if(unpinned.length > 10) { const toRemove = unpinned.pop(); sessionClipboard = sessionClipboard.filter(c => c.id !== toRemove.id); }
+         renderClipboard();
+      }
+      if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(() => { showNotify('Copied!', 'fa-solid fa-copy'); playSound('success'); logAction('Copied to clipboard', 'fa-copy'); }).catch(err => fallbackCopy(text)); } else { fallbackCopy(text); }
+    }
+    function fallbackCopy(text) { let textArea = document.createElement("textarea"); textArea.value = text; textArea.style.position = "fixed"; textArea.style.left = "-999999px"; document.body.appendChild(textArea); textArea.focus(); textArea.select(); try { document.execCommand('copy'); showNotify('Copied!', 'fa-solid fa-copy'); playSound('success'); logAction('Copied to clipboard', 'fa-copy'); } catch (err) { showNotify('Failed', 'fa-solid fa-xmark'); } document.body.removeChild(textArea); }
+
+    let soundEnabled = true; let audioCtx;
+    function initAudio() { try { if(!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if(audioCtx.state === 'suspended') audioCtx.resume(); } catch(err) {} }
+    function toggleSound() { soundEnabled = !soundEnabled; $('#soundToggleBtn').innerHTML = soundEnabled ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark"></i>'; haptic(); }
+    function playSound(type) {
+      if(!soundEnabled) return; initAudio();
+      try {
+        const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain(); osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        if(type === 'pop') { osc.type = 'sine'; osc.frequency.setValueAtTime(300, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1); gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1); } 
+        else if (type === 'click') { osc.type = 'triangle'; osc.frequency.setValueAtTime(800, audioCtx.currentTime); gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05); osc.start(); osc.stop(audioCtx.currentTime + 0.05); } 
+        else if (type === 'success') { osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.setValueAtTime(900, audioCtx.currentTime + 0.1); gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3); osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
+      } catch(e) {}
+    }
+    const haptic = (pattern =[50]) => { if(navigator.vibrate) navigator.vibrate(pattern); };
+
+    /* --- YouTube Lo-Fi Streamer --- */
+    let ytPlayer; let isLofiPlaying = false;
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('lofiPlayer', { height: '0', width: '0', videoId: 'jfKfPfyJRdk', playerVars: { 'autoplay': 0, 'controls': 0 }, events: { 'onStateChange': onPlayerStateChange } });
+    }
+    function toggleLofi() {
+      if(!soundEnabled) return showNotify("Enable site sound first", "fa-solid fa-volume-xmark");
+      if(!ytPlayer || !ytPlayer.playVideo) return showNotify("Lo-Fi loading...", "fa-solid fa-spinner");
+      if(isLofiPlaying) { ytPlayer.pauseVideo(); } else { ytPlayer.playVideo(); showNotify("Connecting Stream...", "fa-solid fa-satellite-dish"); }
+    }
+    function onPlayerStateChange(event) {
+      const btn = $('#btnFocusNoise');
+      if (event.data == YT.PlayerState.PLAYING) {
+          isLofiPlaying = true;
+          btn.style.color = "var(--accent)"; btn.style.borderColor = "var(--accent)";
+          activeIslandApp = 'music'; activateIslandMusic();
+      } else if (event.data == YT.PlayerState.PAUSED) {
+          isLofiPlaying = false;
+          btn.style.color = "var(--text-main)"; btn.style.borderColor = "var(--border)";
+          if(activeIslandApp === 'music') activateIslandMusic();
+      }
+    }
+
+    let notifyTimeout; let activeIslandApp = null; 
+    function showNotify(msg, icon = 'fa-solid fa-check') {
+      const pill = $('#notifyPill');
+      $('#notifyNormal').style.display = 'flex'; $('#notifyTimer').style.display = 'none'; $('#notifyStopwatch').style.display = 'none'; $('#notifyMusic').style.display = 'none';
+      pill.classList.remove('timer-mode'); $('#notifyIcon').className = icon; $('#notifyText').textContent = msg; pill.classList.add('show');
+      clearTimeout(notifyTimeout);
+      notifyTimeout = setTimeout(() => {
+        if(!$('#vibeSheet').classList.contains('open')) {
+           if(activeIslandApp === 'timer' && timerInt) activateIslandTimer();
+           else if(activeIslandApp === 'stopwatch' && swInterval) activateIslandStopwatch();
+           else if(activeIslandApp === 'music') activateIslandMusic();
+           else pill.classList.remove('show');
+        } else { pill.classList.remove('show'); }
+      }, 3000);
+    }
+
+    function activateIslandTimer() { const pill = $('#notifyPill'); $('#notifyNormal').style.display = 'none'; $('#notifyStopwatch').style.display = 'none'; $('#notifyMusic').style.display = 'none'; $('#notifyTimer').style.display = 'flex'; pill.classList.add('timer-mode'); pill.classList.add('show'); }
+    function activateIslandStopwatch() { const pill = $('#notifyPill'); $('#notifyNormal').style.display = 'none'; $('#notifyTimer').style.display = 'none'; $('#notifyMusic').style.display = 'none'; $('#notifyStopwatch').style.display = 'flex'; pill.classList.add('timer-mode'); pill.classList.add('show'); }
+    function activateIslandMusic() { const pill = $('#notifyPill'); $('#notifyNormal').style.display = 'none'; $('#notifyTimer').style.display = 'none'; $('#notifyStopwatch').style.display = 'none'; $('#notifyMusic').style.display = 'flex'; pill.classList.add('timer-mode'); pill.classList.add('show'); $('#diMusicPlayBtn').innerHTML = isLofiPlaying ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>'; }
+    function closeIslandApp() { activeIslandApp = null; $('#notifyPill').classList.remove('show'); }
+    
+    $('#notifyPill').addEventListener('click', (e) => {
+      if(e.target.closest('.di-btn')) return; 
+      if(activeIslandApp === 'timer') { openSheet('vibeSheet'); switchTab({currentTarget: $$('.segment-btn')[0]}, 'tabFocus'); } 
+      else if (activeIslandApp === 'stopwatch') { openSheet('vibeSheet'); switchTab({currentTarget: $$('.segment-btn')[2]}, 'tabStopwatch'); }
+      else if (activeIslandApp === 'music') { openSheet('vibeSheet'); switchTab({currentTarget: $$('.segment-btn')[0]}, 'tabFocus'); }
+    });
+
+    let timerInt, timeLeft = 1500; const timeInput = $('#customTimeInput');
+    function formatTime(sec) { const m = Math.floor(sec/60).toString().padStart(2,'0'); const s = (sec%60).toString().padStart(2,'0'); return `${m}:${s}`; }
+    function toggleTimer() {
+      if ("Notification" in window && Notification.permission !== "granted") Notification.requestPermission();
+      haptic([50]); playSound('click');
+      const btn = $('#timerStart'); const diBtn = $('#diPauseBtn'); const wrapEdit = $('#timerEditWrap'); const wrapRun = $('#timerRunningWrap');
+      if(timerInt) {
+        clearInterval(timerInt); timerInt = null; btn.textContent = 'Resume Focus'; diBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+      } else {
+        activeIslandApp = 'timer'; if(timeLeft === 1500 && timeInput.value != 25) timeLeft = parseInt(timeInput.value) * 60;
+        btn.textContent = 'Pause Focus'; diBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; wrapEdit.style.display = 'none'; wrapRun.style.display = 'block'; wrapRun.textContent = formatTime(timeLeft); logAction(`Started Focus Session`, 'fa-bolt');
+        timerInt = setInterval(() => {
+          if(timeLeft > 0) { timeLeft--; const formatted = formatTime(timeLeft); $('#diTimerText').textContent = formatted; wrapRun.textContent = formatted; if(!$('#vibeSheet').classList.contains('open')) document.title = `${formatted} - Focus`; } 
+          else { resetTimer(); haptic([100, 200, 100, 200]); playSound('success'); showNotify('Session Complete!', 'fa-solid fa-fire'); logAction(`Completed focus session`, 'fa-fire'); myStats.focusMins += parseInt(timeInput.value || 25); addScore(50); }
+        }, 1000);
+      }
+    }
+    function resetTimer() { haptic([50]); playSound('click'); clearInterval(timerInt); timerInt = null; timeLeft = parseInt(timeInput.value || 25) * 60; $('#timerEditWrap').style.display = 'flex'; $('#timerRunningWrap').style.display = 'none'; $('#diTimerText').textContent = formatTime(timeLeft); $('#timerStart').textContent = 'Start Focus'; document.title = "Jino Sabu | Digital Architect"; if(activeIslandApp === 'timer') { activeIslandApp = swInterval ? 'stopwatch' : (isLofiPlaying ? 'music' : null); if(activeIslandApp === 'stopwatch') activateIslandStopwatch(); else if(activeIslandApp==='music') activateIslandMusic(); else $('#notifyPill').classList.remove('show'); } }
+    timeInput.addEventListener('change', () => { if(!timerInt) { let val = parseInt(timeInput.value); if(val < 1) val = 1; if(val > 120) val = 120; timeInput.value = val; timeLeft = val * 60; } });
+
+    let swStartTime = 0, swElapsedTime = 0, swInterval = null, lapCount = 0;
+    function formatStopwatch(ms) { const totalSec = Math.floor(ms / 1000); const m = String(Math.floor(totalSec / 60)).padStart(2, '0'); const s = String(totalSec % 60).padStart(2, '0'); const centi = String(Math.floor((ms % 1000) / 10)).padStart(2, '0'); return `${m}:${s}.${centi}`; }
+    function updateStopwatch() { if(!swInterval) return; const diff = swElapsedTime + (performance.now() - swStartTime); const formatted = formatStopwatch(diff); $('#stopwatchDisplay').textContent = formatted; if ($('#notifyPill').classList.contains('show') && activeIslandApp === 'stopwatch') $('#diStopwatchText').textContent = formatted; swInterval = requestAnimationFrame(updateStopwatch); }
+    function toggleStopwatch() { haptic([50]); playSound('click'); const btn = $('#swStartBtn'); const diBtn = $('#diSwPauseBtn'); if (swInterval) { cancelAnimationFrame(swInterval); swInterval = null; swElapsedTime += performance.now() - swStartTime; btn.textContent = 'Resume'; diBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; } else { activeIslandApp = 'stopwatch'; swStartTime = performance.now(); swInterval = requestAnimationFrame(updateStopwatch); btn.textContent = 'Pause'; diBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; } }
+    function lapStopwatch() { if (!swInterval && swElapsedTime === 0) return; haptic([50]); playSound('pop'); lapCount++; const diff = swInterval ? swElapsedTime + (performance.now() - swStartTime) : swElapsedTime; $('#lapsContainer').style.display = 'block'; const lapEl = document.createElement('div'); lapEl.className = 'lap-item'; lapEl.innerHTML = `<span>Lap ${lapCount}</span> <span style="color:var(--text-main)">${formatStopwatch(diff)}</span>`; $('#lapsContainer').prepend(lapEl); }
+    function resetStopwatch() { haptic([50]); playSound('click'); cancelAnimationFrame(swInterval); swInterval = null; swStartTime = 0; swElapsedTime = 0; lapCount = 0; $('#stopwatchDisplay').textContent = '00:00.00'; $('#diStopwatchText').textContent = '00:00.00'; $('#swStartBtn').textContent = 'Start'; $('#lapsContainer').style.display = 'none'; $('#lapsContainer').innerHTML = ''; if(activeIslandApp === 'stopwatch') { activeIslandApp = timerInt ? 'timer' : (isLofiPlaying ? 'music' : null); if(activeIslandApp === 'timer') activateIslandTimer(); else if(activeIslandApp === 'music') activateIslandMusic(); else $('#notifyPill').classList.remove('show'); } }
+
+    $('#passLen').addEventListener('input', e => $('#passLenText').textContent = e.target.value);
+    let savedPasswords = JSON.parse(localStorage.getItem('jsPasswords') || '[]'); savedPasswords.forEach(p => p.visible = false);
+    function renderPasswords() { const container = $('#passHistoryList'); if(savedPasswords.length === 0) { container.innerHTML = getEmptyState('No saved passwords. Generate one.', 'fa-key'); return; } container.innerHTML = savedPasswords.map((p, index) => { const displayTxt = p.visible ? p.pass : '•'.repeat(Math.min(p.pass.length, 16)); const eyeIcon = p.visible ? 'fa-eye-slash' : 'fa-eye'; return `<div class="data-item"><span style="word-break:break-all; padding-right:10px; font-family:var(--font-mono);">${displayTxt}</span><div class="data-actions"><button class="data-btn" onclick="togglePassView(${index})" title="Show/Hide"><i class="fa-solid ${eyeIcon}"></i></button><button class="data-btn" onclick="globalCopyText('${p.pass}')" title="Copy"><i class="fa-solid fa-copy"></i></button><button class="data-btn delete" onclick="deletePass(${index})" title="Delete"><i class="fa-solid fa-trash"></i></button></div></div>` }).join(''); }
+    function generatePassword() { haptic([50]); playSound('click'); const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-="; let pass = ""; const len = $('#passLen').value; for(let i = 0; i < len; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length)); $('#passDisplay').textContent = pass; }
+    function saveCurrentPassword() { const pass = $('#passDisplay').textContent; if(pass && !pass.includes("••••")) { haptic([100, 50, 100]); savedPasswords.unshift({ id: Date.now(), pass: pass, visible: false }); if(savedPasswords.length > 20) savedPasswords.pop(); localStorage.setItem('jsPasswords', JSON.stringify(savedPasswords.map(p => ({ id: p.id, pass: p.pass })))); renderPasswords(); playSound('success'); showNotify('Password Saved', 'fa-solid fa-floppy-disk'); logAction(`Generated & Saved Password`, 'fa-key'); } else { showNotify('Generate a password first', 'fa-solid fa-triangle-exclamation'); } }
+    function togglePassView(index) { haptic([50]); savedPasswords[index].visible = !savedPasswords[index].visible; renderPasswords(); }
+    function deletePass(index) { haptic([200]); playSound('pop'); savedPasswords.splice(index, 1); localStorage.setItem('jsPasswords', JSON.stringify(savedPasswords.map(p => ({ id: p.id, pass: p.pass })))); renderPasswords(); }
+    renderPasswords();
+
+    /* --- View Transitions API Tab Switcher --- */
+    function switchTab(e, tabId) {
+      haptic([50]); playSound('click');
+      const targetBtn = e.currentTarget || e.target;
+      
+      const doSwitch = () => {
+        $$('.segment-btn').forEach(btn => btn.classList.remove('active')); targetBtn.classList.add('active');
+        $$('.tab-content').forEach(content => content.classList.remove('active')); $(`#${tabId}`).classList.add('active');
+      };
+
+      if (document.startViewTransition) {
+        document.startViewTransition(() => doSwitch());
+      } else {
+        doSwitch();
+      }
+    }
+
+    let myNotes = JSON.parse(localStorage.getItem('jsSmartNotes') || '[]'); let currentNoteId = null; 
+    const editorContainer = $('#scratchpadEditor'); const slashMenu = $('#slashMenu'); let activeBlock = null;
+
+    function initBlockEditor(contentHtml = '') {
+      editorContainer.innerHTML = '';
+      if(contentHtml) { editorContainer.innerHTML = contentHtml; } else { editorContainer.appendChild(createEmptyBlock()); }
+    }
+
+    function createEmptyBlock(contentHtml = '') {
+      const block = document.createElement('div'); block.className = 'block'; block.draggable = true;
+      block.innerHTML = `<div class="b-handle" contenteditable="false"><i class="fa-solid fa-grip-vertical"></i></div><div class="b-content" contenteditable="true" data-placeholder="Type '/' for blocks, '@' to link...">${contentHtml}</div>`;
+      return block;
+    }
+
+    editorContainer.addEventListener('keydown', e => {
+      if(e.target.classList.contains('b-content')) {
+        const block = e.target.closest('.block');
+        if(e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault(); const newBlock = createEmptyBlock(); block.after(newBlock); newBlock.querySelector('.b-content').focus();
+        } else if (e.key === 'Backspace' && e.target.innerText.trim() === '') {
+          e.preventDefault(); const prev = block.previousElementSibling;
+          if (prev) { block.remove(); const pContent = prev.querySelector('.b-content'); pContent.focus(); const range = document.createRange(); const sel = window.getSelection(); range.selectNodeContents(pContent); range.collapse(false); sel.removeAllRanges(); sel.addRange(range); }
+        }
+      }
+    });
+
+    editorContainer.addEventListener('keyup', e => {
+      if(e.target.classList.contains('b-content')) {
+        const text = e.target.innerText; activeBlock = e.target.closest('.block');
+        const rect = activeBlock.getBoundingClientRect(); const eRect = editorContainer.getBoundingClientRect();
+        
+        if (text.endsWith('/')) { slashMenu.style.display = 'flex'; slashMenu.style.left = '40px'; slashMenu.style.top = Math.min((rect.bottom - eRect.top + 10), eRect.height - 150) + 'px'; $('#noteLinkMenu').style.display = 'none'; } 
+        else if (text.endsWith('@')) { showNoteLinkMenu(activeBlock); slashMenu.style.display = 'none'; } 
+        else { slashMenu.style.display = 'none'; $('#noteLinkMenu').style.display = 'none'; }
+        
+        $('#scratchpadLength').textContent = `${editorContainer.innerText.length} chars`; $('#scratchpadStatus').textContent = 'Unsaved changes...';
+      }
+    });
+
+    /* Highlight syntax smoothly on focus out to prevent DOM caret jumping issues */
+    editorContainer.addEventListener('focusout', e => {
+        if(e.target.classList.contains('b-content') && e.target.classList.contains('language-javascript')) {
+            Prism.highlightElement(e.target);
+        }
+    });
+
+    let dragSrcEl = null;
+    editorContainer.addEventListener('dragstart', e => { if(e.target.classList.contains('block')) { dragSrcEl = e.target; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/html', dragSrcEl.innerHTML); setTimeout(() => dragSrcEl.style.opacity = '0.4', 0); } });
+    editorContainer.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+    editorContainer.addEventListener('dragend', e => { if(dragSrcEl) dragSrcEl.style.opacity = '1'; });
+    editorContainer.addEventListener('drop', e => { e.preventDefault(); e.stopPropagation(); const dropTarget = e.target.closest('.block'); if (dragSrcEl && dropTarget && dragSrcEl !== dropTarget) { const rect = dropTarget.getBoundingClientRect(); const relY = e.clientY - rect.top; if (relY > rect.height / 2) dropTarget.after(dragSrcEl); else dropTarget.before(dragSrcEl); logAction('Reordered notes block', 'fa-arrows-up-down'); } if(dragSrcEl) dragSrcEl.style.opacity = '1'; });
+
+    function applyBlockType(type) {
+      if(!activeBlock) return;
+      const content = activeBlock.querySelector('.b-content'); content.innerText = content.innerText.slice(0, -1); 
+      
+      if (type === 'h1') { content.style.fontSize = '1.8rem'; content.style.fontWeight = '800'; content.style.color = 'var(--accent)'; }
+      if (type === 'h2') { content.style.fontSize = '1.4rem'; content.style.fontWeight = '700'; }
+      if (type === 'check') { content.innerHTML = `<input type="checkbox" class="block-check"> ` + content.innerHTML; }
+      if (type === 'quote') { content.style.borderLeft = '3px solid var(--accent)'; content.style.paddingLeft = '10px'; content.style.fontStyle = 'italic'; content.style.color = 'var(--text-muted)'; }
+      if (type === 'code') { content.classList.add('language-javascript'); content.setAttribute('data-placeholder', 'Type code...'); }
+      
+      slashMenu.style.display = 'none'; logAction('Used block command: ' + type, 'fa-wand-magic-sparkles');
+    }
+
+    function showNoteLinkMenu(block) { const menu = $('#noteLinkMenu'); const rect = block.getBoundingClientRect(); const eRect = editorContainer.getBoundingClientRect(); menu.style.display = 'flex'; menu.style.left = '40px'; menu.style.top = Math.min((rect.bottom - eRect.top + 10), eRect.height - 150) + 'px'; if (myNotes.length === 0) { menu.innerHTML = `<div class="slash-item" style="color:var(--text-muted)">No notes found</div>`; return; } menu.innerHTML = myNotes.map(n => `<div class="slash-item" onmousedown="insertNoteLink(${n.id}, '${escapeHtml(n.title.replace(/'/g, "\\'"))}')"><i class="fa-solid fa-file-lines"></i> ${escapeHtml(n.title)}</div>`).join(''); }
+    function insertNoteLink(id, title) { if(!activeBlock) return; const content = activeBlock.querySelector('.b-content'); content.innerHTML = content.innerHTML.slice(0, -1) + `<span contenteditable="false" class="note-link" onclick="openNote(${id})">@${title}</span>&nbsp;`; $('#noteLinkMenu').style.display = 'none'; logAction('Linked note: ' + title, 'fa-link'); }
+
+    document.addEventListener('mousedown', (e) => { if(!e.target.closest('.slash-menu') && !e.target.closest('.scratchpad-editor')) { slashMenu.style.display = 'none'; $('#noteLinkMenu').style.display = 'none'; } });
+
+    function renderNotes() { const container = $('#savedNotesPills'); let html = `<button class="note-pill ripple-btn" onclick="createNewNote()"><i class="fa-solid fa-plus"></i> New Note</button>`; html += myNotes.map(n => { const isActive = n.id === currentNoteId; const title = n.title.length > 15 ? n.title.substring(0,15) + '...' : n.title; return `<button class="note-pill ripple-btn ${isActive ? 'active' : ''}" onclick="openNote(${n.id})">${escapeHtml(title)} <i class="fa-solid fa-xmark" onclick="deleteSpecificNote(${n.id}, event)" title="Delete Note"></i></button>` }).join(''); container.innerHTML = html; updateStatsUI(); }
+
+    function createNewNote() { haptic([50]); playSound('click'); currentNoteId = Date.now(); $('#noteTitleInput').value = ''; initBlockEditor(); $('#scratchpadLength').textContent = '0 chars'; $('#scratchpadStatus').textContent = 'Unsaved Note'; renderNotes(); setTimeout(() => { $('#noteTitleInput').focus(); }, 100); }
+    function openNote(id) { haptic([50]); playSound('click'); const note = myNotes.find(n => n.id === id); if(!note) return; currentNoteId = id; $('#noteTitleInput').value = note.title; initBlockEditor(note.content); $('#scratchpadLength').textContent = `${editorContainer.innerText.length} chars`; $('#scratchpadStatus').textContent = `Last saved: ${note.timestamp}`; renderNotes(); }
+
+    function saveActiveNote(silent = false, createNewAfter = false) {
+      if(!currentNoteId) currentNoteId = Date.now(); 
+      let title = $('#noteTitleInput').value.trim(); if(!title) title = "Untitled Note";
+      let content = editorContainer.innerHTML; 
+      if (editorContainer.innerText.trim() === '' && !content.includes('input')) content = ''; 
+      if (content === '' && title === 'Untitled Note') return; 
+      const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); const dateStr = new Date().toLocaleDateString();
+      const existingIdx = myNotes.findIndex(n => n.id === currentNoteId); const noteObj = { id: currentNoteId, title, content, timestamp: `${dateStr} ${timeStr}` };
+      if(existingIdx >= 0) myNotes[existingIdx] = noteObj; else { myNotes.unshift(noteObj); addScore(15); logAction(`Created note: ${title}`, 'fa-pen-nib'); }
+      localStorage.setItem('jsSmartNotes', JSON.stringify(myNotes)); $('#scratchpadStatus').textContent = `Saved at ${timeStr}`;
+      if(!silent) { haptic([100, 50, 100]); playSound('success'); showNotify('Note Saved', 'fa-solid fa-floppy-disk'); } renderNotes(); if(createNewAfter) setTimeout(createNewNote, 200);
+    }
+    function deleteSpecificNote(id, event) { event.stopPropagation(); haptic([200]); playSound('pop'); myNotes = myNotes.filter(n => n.id !== id); localStorage.setItem('jsSmartNotes', JSON.stringify(myNotes)); if(id === currentNoteId) { currentNoteId = null; $('#noteTitleInput').value = ''; initBlockEditor(); $('#scratchpadLength').textContent = '0 chars'; $('#scratchpadStatus').textContent = 'Deleted'; } renderNotes(); showNotify('Note Deleted', 'fa-solid fa-trash'); }
+
+    /* --- Markdown Native Export --- */
+    async function saveToLocalFS() {
+      if (!window.showSaveFilePicker) return showNotify('Browser not supported', 'fa-solid fa-triangle-exclamation');
+      try {
+        let title = $('#noteTitleInput').value.trim() || 'Untitled Note';
+        let markdown = `# ${title}\n\n`;
+
+        const blocks = editorContainer.querySelectorAll('.block');
+        blocks.forEach(block => {
+            const contentNode = block.querySelector('.b-content');
+            if (!contentNode) return;
+            let text = contentNode.innerText.trim();
+
+            if (contentNode.style.fontSize === '1.8rem') { markdown += `# ${text}\n\n`; } 
+            else if (contentNode.style.fontSize === '1.4rem') { markdown += `## ${text}\n\n`; } 
+            else if (contentNode.querySelector('.block-check')) { 
+                const isChecked = contentNode.querySelector('.block-check').checked;
+                markdown += `- [${isChecked ? 'x' : ' '}] ${text}\n`; 
+            } 
+            else if (contentNode.style.fontStyle === 'italic') { markdown += `> ${text}\n\n`; } 
+            else if (contentNode.classList.contains('language-javascript')) { markdown += `\`\`\`javascript\n${text}\n\`\`\`\n\n`; } 
+            else { markdown += `${text}\n\n`; }
+        });
+
+        const handle = await window.showSaveFilePicker({ suggestedName: `${title}.md`, types: [{ description: 'Markdown File', accept: {'text/markdown':['.md']} }] });
+        const writable = await handle.createWritable();
+        await writable.write(markdown); await writable.close();
+        haptic([50]); playSound('success'); showNotify('Exported to MD!', 'fa-solid fa-check'); logAction(`Exported note as .md: ${title}`, 'fa-download');
+      } catch (err) { if(err.name !== 'AbortError') showNotify('Export failed', 'fa-solid fa-xmark'); }
+    }
+
+    /* --- Export Note As Image --- */
+    async function exportNoteAsImage() {
+        haptic([50]); playSound('click');
+        const exportContainer = $('#exportCanvasContainer');
+        const exportTitle = $('#exportCanvasTitle');
+        const exportContent = $('#exportCanvasContent');
+
+        exportTitle.textContent = $('#noteTitleInput').value.trim() || 'Untitled Note';
+        exportContent.innerHTML = '';
+        
+        const blocks = editorContainer.querySelectorAll('.block');
+        blocks.forEach(block => {
+            const clone = block.querySelector('.b-content').cloneNode(true);
+            if(clone.querySelector('.block-check')) {
+                clone.innerHTML = `[ ${clone.querySelector('.block-check').checked ? 'X' : ' '} ] ` + clone.innerText;
+            }
+            exportContent.appendChild(clone);
+        });
+
+        exportContainer.style.left = '0'; exportContainer.style.top = '0'; exportContainer.style.zIndex = '-9999';
+
+        try {
+            const canvas = await html2canvas(exportContainer, { backgroundColor: '#000000', scale: 2 });
+            const link = document.createElement('a');
+            link.download = `${exportTitle.textContent}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showNotify('Exported as Image', 'fa-solid fa-image');
+            logAction(`Exported image of: ${exportTitle.textContent}`, 'fa-image');
+        } catch(e) {
+            showNotify('Image export failed', 'fa-solid fa-xmark');
+        }
+        exportContainer.style.left = '-9999px';
+    }
+
+    if(myNotes.length > 0 && !currentNoteId) openNote(myNotes[0].id); else createNewNote();
+    renderClipboard();
+
+    const progressRing = $('#progressRing'); const scrollFab = $('#scrollFab'); const circumference = 23 * 2 * Math.PI; progressRing.style.strokeDasharray = `${circumference} ${circumference}`; progressRing.style.strokeDashoffset = circumference;
+    window.addEventListener('scroll', () => { const st = window.scrollY; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; const scrollFraction = st / height; progressRing.style.strokeDashoffset = circumference - (scrollFraction * circumference); if (st > 200) scrollFab.classList.add('visible'); else scrollFab.classList.remove('visible'); if (st > 20) $('#topNav').classList.add('scrolled'); else $('#topNav').classList.remove('scrolled'); });
+    const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); observer.unobserve(entry.target); } }); }, { threshold: 0.1 }); document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    function openSheet(id) { playSound('pop'); haptic([50]); $('#overlay').style.opacity = '1'; $('#overlay').style.pointerEvents = 'auto'; $('#'+id).classList.add('open'); document.body.classList.add('locked'); if(id === 'searchSheet') { setTimeout(() => $('#searchInput').focus(), 100); renderCmds(''); } if(id === 'vibeSheet' || id === 'notesSheet') $('#notifyPill').classList.remove('show'); }
+    function closeAllSheets() { if($('#notesSheet').classList.contains('open')) saveActiveNote(true); document.querySelectorAll('.bottom-sheet').forEach(s => s.classList.remove('open')); $('#overlay').style.opacity = '0'; $('#overlay').style.pointerEvents = 'none'; document.body.classList.remove('locked'); $('#searchInput').blur(); slashMenu.style.display = 'none'; if (activeIslandApp === 'timer' && timerInt) activateIslandTimer(); else if (activeIslandApp === 'stopwatch' && swInterval) activateIslandStopwatch(); else if (activeIslandApp === 'music' && isLofiPlaying) activateIslandMusic(); }
+    let touchY = 0;
+    document.querySelectorAll('.bottom-sheet').forEach(sheet => { sheet.addEventListener('touchstart', e => touchY = e.touches[0].clientY, {passive: true}); sheet.addEventListener('touchend', e => { if(e.target.closest('.scratchpad-editor') || e.target.closest('.scroll-row') || e.target.closest('.data-list') || e.target.closest('input') || e.target.closest('.timer-actions')) return; if (e.changedTouches[0].clientY - touchY > 80) closeAllSheets(); }, {passive: true}); });
+
+    const commands =[
+      { t: 'Toggle Dark Mode', i: 'fa-moon', kw:['black', 'night', 'dark', 'dim'], a: () => setTheme('dark') },
+      { t: 'Toggle Light Mode', i: 'fa-sun', kw: ['white', 'day', 'light', 'bright'], a: () => setTheme('light') },
+      { t: 'Smart Scratchpad', i: 'fa-pen-nib', kw: ['notes', 'write', 'diary', 'journal'], a: () => { closeAllSheets(); setTimeout(()=>openSheet('notesSheet'),300); } },
+      { t: 'Digital Toolkit', i: 'fa-toolbox', kw:['tools', 'timer', 'clock', 'password', 'focus'], a: () => { closeAllSheets(); setTimeout(()=>openSheet('vibeSheet'),300); } },
+      { t: 'Email Jino', i: 'fa-envelope', kw:['contact', 'message', 'mail', 'hire'], a: () => window.location.href='mailto:jinosabu1999@gmail.com' },
+      { t: 'Inspire Me', i: 'fa-lightbulb', kw: ['quote', 'motivation', 'idea'], a: () => { const q = ["Talk is cheap. Show me the code.", "Simplicity is the ultimate sophistication."][Math.floor(Math.random()*2)]; showNotify(q, 'fa-solid fa-quote-left'); }}
+    ];
+    function renderCmds(query) { const q = query.toLowerCase().trim(); const filtered = commands.filter(c => { if (c.t.toLowerCase().includes(q)) return true; if (c.kw.some(keyword => keyword.includes(q) || q.includes(keyword))) return true; const fuzzy = q.split('').reduce((a,b) => a + '.*' + b, ''); return (new RegExp(fuzzy, 'i')).test(c.t.toLowerCase()); }); if(filtered.length === 0) { $('#cmdList').innerHTML = getEmptyState('No matching commands.', 'fa-magnifying-glass'); return; } $('#cmdList').innerHTML = filtered.map((c, i) => `<div class="cmd-item" onclick="playSound('click'); haptic([50]); executeCmd('${c.t}')"><i class="fa-solid ${c.i}"></i> ${c.t}</div>`).join(''); }
+    function executeCmd(title) { const cmd = commands.find(c => c.t === title); if(cmd) { cmd.a(); if(title !== 'Smart Scratchpad' && title !== 'Digital Toolkit') closeAllSheets(); } }
+    let searchTimeout; $('#searchInput').addEventListener('input', e => { clearTimeout(searchTimeout); searchTimeout = setTimeout(() => renderCmds(e.target.value), 200); });
+
+    document.addEventListener('keydown', e => { const isInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable; if((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSheet('searchSheet'); } if(!isInput && !e.metaKey && !e.ctrlKey) { if(e.key.toLowerCase() === 't') { e.preventDefault(); openSheet('vibeSheet'); switchTab({currentTarget: $$('.segment-btn')[1]}, 'tabPlan'); setTimeout(()=>$('#taskInput').focus(), 300); } if(e.key.toLowerCase() === 'n') { e.preventDefault(); openSheet('notesSheet'); createNewNote(); } if(e.key.toLowerCase() === 'c') { e.preventDefault(); openSheet('vibeSheet'); switchTab({currentTarget: $$('.segment-btn')[5]}, 'tabCounters'); setTimeout(()=>$('#counterInput').focus(), 300); } } });
+
+    function setTheme(mode) { playSound('click'); haptic([50]); document.documentElement.setAttribute('data-theme', mode); localStorage.setItem('theme', mode); $('#btnDark').classList.toggle('active', mode === 'dark'); $('#btnLight').classList.toggle('active', mode === 'light'); $('#themeColorMeta').setAttribute('content', mode === 'dark' ? '#000000' : '#f5f5f7'); }
+    if(localStorage.getItem('theme') === 'light') setTheme('light');
+    function setAccent(color) { playSound('click'); haptic([50]); document.documentElement.setAttribute('data-accent', color); localStorage.setItem('accent', color); $$('.color-swatch').forEach(el => el.classList.remove('active')); $(`.color-swatch[data-color="${color}"]`).classList.add('active'); }
+    const savedAccent = localStorage.getItem('accent') || 'default'; setAccent(savedAccent);
+
+    function scrollToTop() { playSound('click'); haptic([50]); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    updateStatsUI();
+
+    const projects =[
+      { title: 'Multi Tool Kit', desc: 'Swiss army knife for the web. Fast, sleek, packed with utilities.', tags:['Vue', 'PWA', 'Tools'], icon: 'fa-solid fa-toolbox', url: 'https://v0-multi-tool-app.vercel.app' },
+      { title: 'ToolTesseract', desc: 'Productivity dashboard with a futuristic user interface.', tags: ['React', 'UI Design'], icon: 'fa-solid fa-cube', url: 'https://tooltesseract.vercel.app' },
+      { title: 'Modus Audio', desc: 'Browser-based audio cutter and editor built for speed.', tags:['Audio', 'Media'], icon: 'fa-solid fa-music', url: 'https://modus-audio.vercel.app' },
+      { title: 'NexLoft Editor', desc: 'Minimalist code playground for frontend developers.', tags:['Code', 'IDE'], icon: 'fa-solid fa-code', url: 'https://nexloft.vercel.app' }
+    ];
+    projects.forEach(p => {
+      $('#projectContainer').innerHTML += `<div class="project-card glass-panel"><div class="p-head"><h3 class="p-title">${p.title}</h3><div class="p-icon"><i class="${p.icon}"></i></div></div><p class="p-desc">${p.desc}</p><div class="p-tags">${p.tags.map(t => `<span class="p-tag">${t}</span>`).join('')}</div><a href="${p.url}" target="_blank" class="p-link ripple-btn" onclick="playSound('click'); haptic([50])">View Project</a></div>`;
+    });
+  </script>
+</body>
+</html>
