@@ -3,7 +3,7 @@
 </p><h1 align="center">⚡ Jino Sabu ⚡</h1><!-- TYPING HEADER --><p align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&size=26&duration=3200&color=7DD3FC&center=true&vCenter=true&width=750&lines=Digital+Identity+Architect;Mechanical+Engineer+%2B+Frontend+Dev;AI+Explorer+%7C+Future+Builder;Welcome+to+My+Cyber+Space" />
 </p><!-- VISITOR COUNTER --><p align="center">
-  <img src="https://komarev.com/ghpvc/?username=jinosabu1999&label=VISITORS&color=7DD3FC&style=for-the-badge" />
+  <img src="https://komarev.com/ghpvc/?username=jinosabu1999&label=VISITORS&color=red&style=for-the-badge" />
 </p><!-- NAV BUTTONS --><p align="center">
   <a href="https://jinosabu1999.github.io/About-Me">
     <img src="https://img.shields.io/badge/🌐_Live_Portfolio-7DD3FC?style=for-the-badge&logo=vercel&logoColor=0F172A" />
