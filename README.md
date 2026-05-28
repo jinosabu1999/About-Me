@@ -1,7 +1,7 @@
 <!-- SOFT NEON BANNER --><p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rect&color=0:0f2027,100:2c5364&height=200&section=header&text=Jino%20Sabu&fontSize=50&fontColor=E0FFFF&animation=fadeIn&fontAlignY=50"/>
+  <img src="https://capsule-render.vercel.app/api?type=rect&color=orange:0f2027,100:2c5364&height=150&section=header&text=Jino%20Sabu&fontSize=50&fontColor=E0FFFF&animation=fadeIn&fontAlignY=50"/>
 </p><h1 align="center">⚡ Jino Sabu ⚡</h1><!-- TYPING HEADER --><p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&size=26&duration=3200&color=7DD3FC&center=true&vCenter=true&width=750&lines=Digital+Identity+Architect;Mechanical+Engineer+%2B+Frontend+Dev;AI+Explorer+%7C+Future+Builder;Welcome+to+My+Cyber+Space" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&size=26&duration=3600&color=red&center=true&vCenter=true&width=750&lines=Digital+Identity+Architect;Mechanical+Engineer+%2B+Frontend+Dev;AI+Explorer+%7C+Future+Builder;Welcome+to+My+Cyber+Space" />
 </p><!-- VISITOR COUNTER --><p align="center">
   <img src="https://komarev.com/ghpvc/?username=jinosabu1999&label=VISITORS&color=red&style=for-the-badge" />
 </p><!-- NAV BUTTONS --><p align="center">
@@ -73,7 +73,6 @@ Build a system that represents your mind»
 
 🔮 NEXT UPGRADES
 
-🧠 AI assistant integration
 📊 Public analytics dashboard
 🎮 Gamified experience (Mission: Me 2.0)
 🌍 Dynamic project engine
