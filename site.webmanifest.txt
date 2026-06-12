@@ -1,0 +1,34 @@
+{
+  "name": "Jino Sabu | Digital Architect",
+  "short_name": "Jino Sabu",
+  "description": "Mechanical Engineer turned Frontend Developer & Digital Architect. Portfolio + free in-browser productivity toolkit.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#030308",
+  "theme_color": "#00e5ff",
+  "categories": ["productivity", "utilities", "personalization"],
+  "icons": [
+    { "src": "android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "maskable-icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Smart Scratchpad",
+      "short_name": "Notes",
+      "description": "Open the note editor",
+      "url": "./?app=notes",
+      "icons": [{ "src": "android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Digital Toolkit",
+      "short_name": "Toolkit",
+      "description": "Timers, tasks, QR tools and more",
+      "url": "./?app=toolkit",
+      "icons": [{ "src": "android-chrome-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}
