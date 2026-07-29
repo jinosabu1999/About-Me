@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <g transform="translate(256, 256)">
+    <!-- Outer isometric cube with thick black outline -->
+    <path d="M 0 -130 L 110 -65 L 110 65 L 0 130 L -110 65 L -110 -65 Z" fill="none" stroke="#000000" stroke-width="40" stroke-linejoin="round" />
+    <path d="M -110 -65 L 0 0 L 110 -65" fill="none" stroke="#000000" stroke-width="40" stroke-linejoin="round" />
+    <path d="M 0 0 L 0 130" fill="none" stroke="#000000" stroke-width="40" stroke-linecap="round" />
+    
+    <!-- The distinct geometric core of the new design, filled solidly -->
+    <path d="M 0 -50 L 35 -30 L 35 15 L 0 35 L -35 15 L -35 -30 Z" fill="#000000" />
+  </g>
+</svg>

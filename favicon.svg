@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E1B4B"/>
+      <stop offset="50%" stop-color="#312E81"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="topFace" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="leftFace" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="rightFace" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#EC4899"/>
+      <stop offset="100%" stop-color="#E11D48"/>
+    </linearGradient>
+  </defs>
+  
+  <rect width="512" height="512" fill="url(#bg)" rx="112" ry="112"/>
+  
+  <g transform="translate(256, 266)">
+    <!-- Top Face -->
+    <path d="M 0 -130 L 110 -65 L 0 0 L -110 -65 Z" fill="url(#topFace)"/>
+    <!-- Left Face -->
+    <path d="M -110 -65 L 0 0 L 0 130 L -110 65 Z" fill="url(#leftFace)"/>
+    <!-- Right Face -->
+    <path d="M 0 0 L 110 -65 L 110 65 L 0 130 Z" fill="url(#rightFace)"/>
+    
+    <!-- Inner Cutout -->
+    <path d="M 0 -80 L 55 -45 L 0 -10 L -55 -45 Z" fill="#0F172A" opacity="0.5"/>
+    <path d="M -55 -45 L 0 -10 L 0 55 L -55 20 Z" fill="#0F172A" opacity="0.6"/>
+    <path d="M 0 -10 L 55 -45 L 55 20 L 0 55 Z" fill="#0F172A" opacity="0.8"/>
+
+    <!-- Glowing Core -->
+    <path d="M 0 -40 L 25 -25 L 0 -10 L -25 -25 Z" fill="#22D3EE"/>
+    <path d="M -25 -25 L 0 -10 L 0 25 L -25 10 Z" fill="#C084FC"/>
+    <path d="M 0 -10 L 25 -25 L 25 10 L 0 25 Z" fill="#F472B6"/>
+  </g>
+</svg>
