@@ -1,0 +1,43 @@
+{
+  "name": "Jino Sabu | Digital Architect",
+  "short_name": "Jino Sabu",
+  "description": "Futuristic portfolio packed with a free in-browser toolkit: notes, timers, QR tools, scanner & more.",
+  "start_url": "/?source=pwa",
+  "display": "standalone",
+  "background_color": "#030305",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Smart Scratchpad",
+      "short_name": "Notes",
+      "description": "Open the Smart Scratchpad",
+      "url": "/?app=notes",
+      "icons": [{ "src": "android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Digital Toolkit",
+      "short_name": "Toolkit",
+      "description": "Open tools & utilities",
+      "url": "/?app=toolkit",
+      "icons": [{ "src": "android-chrome-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}
