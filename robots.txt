@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jinosabu1999.github.io/About-Me/sitemap.xml
