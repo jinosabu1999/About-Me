@@ -331,7 +331,7 @@ If you found this project helpful or inspiring, consider giving it a ⭐️ star
 
 <p align="center">
   <a href="https://ko-fi.com/jinosabu1999"><img src="https://img.shields.io/badge/Ko--fi-Support_on_Kofi-29abe0?style=for-the-badge&logo=kofi&logoColor=white" alt="Support on Ko-fi"></a>
-  <a href="https://paypal.me/jinosabu"><img src="https://img.shields.io/badge/PayPal-Donate-0079c1?style=for-the-badge&logo=paypal&logoColor=white" alt="Support on PayPal"></a>
+  <a href="https://paypal.me/jinosabu1999"><img src="https://img.shields.io/badge/PayPal-Donate-0079c1?style=for-the-badge&logo=paypal&logoColor=white" alt="Support on PayPal"></a>
   <a href="https://github.com/jinosabu1999"><img src="https://img.shields.io/badge/GitHub-Follow_@jinosabu1999-181717?style=for-the-badge&logo=github&logoColor=white" alt="Follow on GitHub"></a>
   <a href="https://twitter.com/jinosabu1999"><img src="https://img.shields.io/badge/Twitter-@jinosabu1999-1da1f2?style=for-the-badge&logo=x&logoColor=white" alt="Follow on X"></a>
 </p>
