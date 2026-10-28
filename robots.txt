@@ -1,0 +1,7 @@
+# Allow everything; this is a public portfolio.
+User-agent: *
+Allow: /
+
+# Tool deep-links (?app=notes, ?app=focus, …) are the same page, so they
+# don't need separate crawl entries.
+Sitemap: https://jinosabu1999.github.io/About-Me/sitemap.xml
