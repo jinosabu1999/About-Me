@@ -1,0 +1,122 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SYNC FEEDS — keeps feeds/repos.json and feeds/store.json fresh.
+#
+# Why: the page used to call the GitHub API directly from the browser, which is
+# limited to 60 requests/hour per IP (one busy hour and the dashboard breaks),
+# and the Gumroad product endpoints don't send CORS headers on every route.
+# This workflow fetches both server-side and commits a JSON snapshot instead.
+# The site then reads those files: instant, cache-friendly, no limits.
+# ─────────────────────────────────────────────────────────────────────────────
+name: Sync feeds
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'      # every 6 hours
+  workflow_dispatch:            # plus a manual "Run workflow" button
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch GitHub repositories
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USER: jinosabu1999
+        run: |
+          set -e
+          mkdir -p feeds
+          python3 - <<'PY'
+          import json, os, urllib.request, datetime
+          user = os.environ.get("GH_USER", "jinosabu1999")
+          token = os.environ.get("GH_TOKEN", "")
+          repos, page = [], 1
+          while True:
+              url = f"https://api.github.com/users/{user}/repos?per_page=100&page={page}&sort=updated&direction=desc"
+              req = urllib.request.Request(url, headers={
+                  "Accept": "application/vnd.github+json",
+                  "User-Agent": "feed-sync",
+                  **({"Authorization": f"Bearer {token}"} if token else {}),
+              })
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  batch = json.load(r)
+              repos.extend(batch)
+              if len(batch) < 100:
+                  break
+              page += 1
+          keep = ("name", "html_url", "description", "language", "stargazers_count",
+                  "forks_count", "topics", "homepage", "fork", "archived",
+                  "updated_at", "created_at", "pushed_at")
+          slim = [{k: r.get(k) for k in keep} for r in repos if not r.get("private")]
+          payload = {
+              "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              "user": user,
+              "count": len(slim),
+              "repos": slim,
+          }
+          with open("feeds/repos.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
+          print(f"repos.json: {len(slim)} repositories")
+          PY
+
+      - name: Fetch Gumroad catalog
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request, datetime, re
+          # Permalinks are read from index.html so you never maintain two lists.
+          html = open("index.html", encoding="utf-8").read()
+          base = "https://jinosabu1999.gumroad.com/l/"
+          slugs = re.findall(r"url:\s*GUMROAD_BASE\s*\+\s*'/l/([^']+)'", html)
+          if not slugs:
+              slugs = re.findall(r"gumroad\.com/l/([A-Za-z0-9_\-]+)", html)
+          seen, items = set(), []
+          for slug in slugs:
+              if slug in seen:
+                  continue
+              seen.add(slug)
+              try:
+                  req = urllib.request.Request(base + slug + ".json", headers={"User-Agent": "feed-sync"})
+                  with urllib.request.urlopen(req, timeout=20) as r:
+                      p = json.load(r)
+              except Exception as e:
+                  print(f"skip {slug}: {e}")
+                  continue
+              items.append({
+                  "permalink": p.get("permalink") or slug,
+                  "name": p.get("name"),
+                  "price_cents": p.get("price_cents"),
+                  "currency_code": p.get("currency_code"),
+                  "price_formatted": p.get("price_formatted"),
+                  "short_url": p.get("short_url"),
+                  "created_at": p.get("created_at"),
+                  "updated_at": p.get("updated_at"),
+                  "ratings": p.get("ratings") or {},
+                  "thumbnail_url": (p.get("thumbnail_url") or (p.get("previews") or [{}])[0].get("url") if p.get("previews") else p.get("thumbnail_url")),
+                  "sales_count": p.get("sales_count"),
+              })
+          os.makedirs("feeds", exist_ok=True)
+          payload = {
+              "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              "count": len(items),
+              "products": items,
+          }
+          with open("feeds/store.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
+          print(f"store.json: {len(items)} products")
+          PY
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "feed-sync-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add feeds/repos.json feeds/store.json
+          if git diff --staged --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore: refresh feeds ($(date -u +%Y-%m-%dT%H:%MZ))"
+            git push
+          fi
