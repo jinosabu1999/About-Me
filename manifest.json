@@ -1,5 +1,5 @@
 {
-  "id": "./",
+  "id": "/About-Me/",
   "name": "Jino Sabu — Digital Architect & Productivity Hub",
   "short_name": "Jino Sabu",
   "description": "Futuristic developer portfolio and 100% offline-first productivity workspace with Smart Scratchpad, Focus Timer, Missions Kanban, Smart Clipboard, Counters, QR Studio, and Passwords.",
@@ -12,8 +12,8 @@
     "minimal-ui"
   ],
   "orientation": "any",
-  "background_color": "#08080f",
-  "theme_color": "#08080f",
+  "background_color": "#030305",
+  "theme_color": "#030305",
   "categories": [
     "productivity",
     "utilities",
@@ -105,7 +105,9 @@
       "icons": [
         {
           "src": "icons/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     },
@@ -117,7 +119,9 @@
       "icons": [
         {
           "src": "icons/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     },
@@ -129,7 +133,9 @@
       "icons": [
         {
           "src": "icons/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     },
@@ -141,7 +147,9 @@
       "icons": [
         {
           "src": "icons/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     },
@@ -153,7 +161,9 @@
       "icons": [
         {
           "src": "icons/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     },
@@ -165,7 +175,9 @@
       "icons": [
         {
           "src": "icons/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     },
@@ -177,7 +189,9 @@
       "icons": [
         {
           "src": "icons/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     },
@@ -189,7 +203,9 @@
       "icons": [
         {
           "src": "icons/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     },
@@ -201,11 +217,18 @@
       "icons": [
         {
           "src": "icons/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     }
   ],
   "related_applications": [],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "lang": "en",
+  "dir": "ltr",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
 }
