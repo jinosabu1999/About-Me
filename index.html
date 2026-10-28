@@ -11941,7 +11941,125 @@
     @media (max-width: 360px) {
       .xp-rail .xp-card { flex: 0 0 90%; }
     }
-</style>
+
+    /* ═══════════════════════════════════════════════════════════
+       v7.0 · HOME HERO — EDITORIAL SPLIT
+       Type carries the hero: display name, mono role, hairline stat
+       rail, one dominant CTA. Portrait shrinks to a small chip.
+       ═══════════════════════════════════════════════════════════ */
+    .home-hero { gap: 0; padding: 24px 22px 20px; }
+    /* Column wrappers vanish on phones so the original stack is untouched */
+    .home-hero .hh-left,
+    .home-hero .hh-right { display: contents; }
+
+    .home-hero .hh-top {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 22px;
+    }
+    .home-hero .hh-eyebrow {
+      align-self: center; border: 0; background: none; box-shadow: none;
+      padding: 0; border-radius: 0; order: 0;
+      font-family: var(--font-mono); font-size: 0.52rem; font-weight: 500;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted);
+    }
+    .home-hero .avatar-wrapper { width: 52px; height: 52px; flex: 0 0 auto; }
+    .home-hero .avatar-wrapper .avatar { border-width: 1px; box-shadow: none; }
+
+    .home-hero .hero-title {
+      margin: 0; font-size: clamp(2.1rem, 9.9vw, 2.55rem);
+      line-height: 0.94; letter-spacing: -0.042em; font-weight: 640;
+    }
+    .home-hero .hero-title .hh-period { color: var(--text-muted); }
+
+    .home-hero .hh-role {
+      display: flex; align-items: center; gap: 8px; margin-top: 13px;
+      font-family: var(--font-mono); font-size: 0.5rem; font-weight: 500;
+      letter-spacing: 0.13em; text-transform: uppercase; line-height: 1.3;
+      color: var(--text-secondary);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .home-hero .hh-role::before {
+      content: ""; flex: 0 0 auto; width: 20px; height: 1px;
+      background: currentColor; opacity: 0.3;
+    }
+
+    .home-hero .bio-text {
+      margin: 16px 0 0; max-width: 36ch;
+      font-size: 0.86rem; line-height: 1.62; color: var(--text-secondary);
+    }
+    .home-hero .bio-text strong { color: var(--text-main); font-weight: 560; }
+
+    .home-hero .hh-meta { margin-top: 14px; gap: 9px; font-size: 0.66rem; }
+
+    /* Stats: three cells on one hairline rail, no card chrome */
+    .home-hero .hh-stats {
+      margin: 20px 0 0; padding: 0; overflow: visible;
+      border: 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      border-radius: 0; background: none; box-shadow: none;
+    }
+    .home-hero .hh-stat {
+      padding: 13px 0 13px 4px; gap: 3px;
+      text-align: left; border-right: 0;
+    }
+    .home-hero .hh-stat + .hh-stat { border-left: 1px solid var(--border); padding-left: 14px; }
+    .home-hero .hh-stat-num {
+      font-family: var(--font-sans); font-size: 1.18rem; font-weight: 600;
+      letter-spacing: -0.025em; line-height: 1;
+    }
+    .home-hero .hh-stat-label {
+      margin-top: 3px; font-family: var(--font-mono); font-size: 0.5rem;
+      font-weight: 500; letter-spacing: 0.14em;
+    }
+
+    /* Primary action: full-bleed with a weighted arrow cap */
+    .home-hero .primary-btn {
+      margin-top: 18px; height: 50px; padding: 0 8px 0 18px;
+      border-radius: 16px; justify-content: space-between;
+      font-size: 0.88rem; font-weight: 600; letter-spacing: -0.01em;
+    }
+    .home-hero .hh-cta-arrow {
+      flex: 0 0 auto; width: 34px; height: 34px; border-radius: 11px;
+      display: grid; place-items: center; font-size: 0.76rem;
+      background: var(--accent-text); color: var(--accent);
+    }
+
+    .home-hero .hero-secondary-row { margin-top: 9px; gap: 9px; }
+    .home-hero .hero-share-btn {
+      flex: 1 1 0; min-width: 0; height: 44px; padding: 0 12px;
+      border-radius: 14px; border-width: 1px; font-size: 0.76rem;
+      background: rgba(var(--surface-rgb), 0.5);
+    }
+
+    /* Wide screens: the site sits in a ~680px column, so scale the type up
+       rather than splitting into two columns */
+    @media (min-width: 700px) {
+      .home-hero { padding: 34px 36px 30px; }
+      .home-hero .hero-title { font-size: 3.55rem; line-height: 0.9; }
+      .home-hero .hh-role { margin-top: 16px; font-size: 0.56rem; letter-spacing: 0.18em; }
+      .home-hero .bio-text { margin-top: 20px; max-width: 48ch; font-size: 0.95rem; }
+      .home-hero .hh-meta { margin-top: 16px; }
+      .home-hero .hh-stats { margin-top: 26px; }
+      .home-hero .hh-stat { padding: 15px 0 15px 4px; }
+      .home-hero .hh-stat-num { font-size: 1.38rem; }
+      .home-hero .primary-btn { height: 54px; font-size: 0.94rem; margin-top: 22px; max-width: 420px; }
+      .home-hero .hero-secondary-row { max-width: 420px; }
+      .home-hero .hero-share-btn { height: 46px; font-size: 0.82rem; }
+      .home-hero .hh-eyebrow { font-size: 0.56rem; }
+    }
+    @media (max-width: 379px) {
+      .home-hero { padding: 22px 18px 16px; }
+      .home-hero .hero-title { font-size: clamp(1.95rem, 10.4vw, 2.3rem); }
+      .home-hero .hh-stat { padding-left: 3px; }
+      .home-hero .hh-stat + .hh-stat { padding-left: 11px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .home-hero *, .home-hero *::before, .home-hero *::after {
+        transition-duration: 0.01ms !important; animation-duration: 0.01ms !important;
+      }
+    }
+    html[data-perf="low"] .home-hero .hh-aurora { display: none; }
+
+  </style>
 
 </head>
 <body>
@@ -12000,51 +12118,55 @@
       <span class="hh-grid" aria-hidden="true"></span>
 
       <div class="hh-top">
+        <span class="hh-eyebrow">Portfolio · 2026</span>
         <div class="avatar-wrapper">
-          <div class="avatar-status-ring" aria-hidden="true"></div>
           <img src="profile.jpg" alt="Jino Sabu" class="avatar" width="88" height="88" loading="eager" decoding="async" fetchpriority="high" onerror="this.src='https://ui-avatars.com/api/?name=Jino+Sabu&background=random&color=fff&size=200'">
         </div>
-        <div class="hh-id">
-          <h1 class="hero-title" id="mainTitle">Jino Sabu</h1>
-          <div class="hero-subtitle" id="typewriter">Mechanical Engineer &amp; Digital Architect</div>
-          <div class="hh-meta">
-            <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Kerala, India</span>
-            <span class="hh-meta-sep hh-meta-clock" aria-hidden="true">·</span>
-            <span class="hh-meta-clock"><i class="fa-regular fa-clock" aria-hidden="true"></i> <span id="hhLocalTime">--:--</span></span>
+      </div>
+
+      <div class="hh-left">
+        <h1 class="hero-title" id="mainTitle">Jino<br>Sabu<span class="hh-period" aria-hidden="true">.</span></h1>
+        <div class="hh-role" id="typewriter">Mechanical Engineer &amp; Digital Architect</div>
+
+        <div class="hh-meta">
+          <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Kerala, India</span>
+          <span class="hh-meta-sep hh-meta-clock" aria-hidden="true">·</span>
+          <span class="hh-meta-clock"><i class="fa-regular fa-clock" aria-hidden="true"></i> <span id="hhLocalTime">--:--</span></span>
+        </div>
+      </div>
+
+      <div class="hh-right">
+        <p class="bio-text">I build futuristic digital experiences that blend <strong>engineering logic with aesthetic design</strong> — fast, private, offline-first apps that run right in the browser.</p>
+
+        <div class="hh-stats" role="list" aria-label="At a glance">
+          <div class="hh-stat" role="listitem">
+            <span class="hh-stat-num" id="hhStatApps">3</span>
+            <span class="hh-stat-label">Live apps</span>
           </div>
-        </div>
+          <div class="hh-stat" role="listitem">
+            <span class="hh-stat-num">100%</span>
+            <span class="hh-stat-label">On-device</span>
+          </div>
+          <div class="hh-stat" role="listitem">
+            <span class="hh-stat-num">0</span>
+            <span class="hh-stat-label">Uploads</span>
+          </div>
       </div>
 
-      <p class="bio-text">I build futuristic digital experiences that blend engineering logic with aesthetic design — fast, private, offline-first apps that run right in the browser.</p>
-
-      <div class="hh-stats" role="list" aria-label="At a glance">
-        <div class="hh-stat" role="listitem">
-          <span class="hh-stat-num" id="hhStatApps">3</span>
-          <span class="hh-stat-label">Live apps</span>
-        </div>
-        <div class="hh-stat" role="listitem">
-          <span class="hh-stat-num">100%</span>
-          <span class="hh-stat-label">On-device</span>
-        </div>
-        <div class="hh-stat" role="listitem">
-          <span class="hh-stat-num">0</span>
-          <span class="hh-stat-label">Uploads</span>
-        </div>
-      </div>
-
-      <button class="primary-btn ripple-btn" onclick="openSheet('notesSheet')">
-        <i class="fa-solid fa-pen-nib"></i> Smart Scratchpad
-      </button>
-
-      <div class="hero-secondary-row">
-        <button class="btn-secondary ripple-btn hero-share-btn" onclick="sharePortfolio()" aria-label="Share this portfolio">
-          <i class="fa-solid fa-share-nodes"></i> Share
+        <button class="primary-btn ripple-btn" onclick="openSheet('notesSheet')">
+          <span>Smart Scratchpad</span>
+          <span class="hh-cta-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
         </button>
-        <button class="btn-secondary ripple-btn hero-share-btn" id="pwaInstallPill" style="display:none;" onclick="promptPWAInstall()" aria-label="Install as an app">
-          <i class="fa-solid fa-download"></i> Install App
-        </button>
-      </div>
 
+        <div class="hero-secondary-row">
+          <button class="btn-secondary ripple-btn hero-share-btn" onclick="sharePortfolio()" aria-label="Share this portfolio">
+            <i class="fa-solid fa-share-nodes"></i> Share
+          </button>
+          <button class="btn-secondary ripple-btn hero-share-btn" id="pwaInstallPill" style="display:none;" onclick="promptPWAInstall()" aria-label="Install as an app">
+            <i class="fa-solid fa-download"></i> Install App
+          </button>
+          </div>
+      </div>
     </div>
 
     <!-- Section jump strip (site-wide quick nav) -->
@@ -12411,8 +12533,9 @@
   // Changelog bootstrap: renders latest updates immediately, even before the main app script finishes loading.
   // ▼ EDIT HERE: bump SITE_VERSION + add an entry at the TOP when you ship an update.
   //   Visitors see the new version automatically (live sync also pulls it from GitHub).
-  window.SITE_VERSION = 'v6.9';
+  window.SITE_VERSION = 'v7.0';
   window.SITE_CHANGELOG_FALLBACK = [
+    { version: 'v7.0', date: '29th Oct 2026', text: 'Home hero rebuilt as an editorial split: the name leads at display size, the role reads as a mono eyebrow, the three stat boxes collapse into a single hairline rail, and the primary action gains a weighted arrow cap with matched ghost buttons beside it. The portrait is now a compact 44px chip in the top corner, the availability dot is gone for good, and the whole block is tightened to sit in one screen on a phone. Light mode, reduced motion and Performance mode are all respected - no new dependencies.' },
     { version: 'v6.9', date: '28th Oct 2026', text: 'Perf pass: fonts and icons are now self-hosted and subset (Inter, JetBrains Mono and only the 184 Font Awesome glyphs in use - about 78 KB total, zero third-party requests). Notes, counters, clipboard, focus and vault panels no longer render at boot; they build the first time you open a sheet. GitHub and Gumroad data now come from scheduled JSON snapshots in feeds/, so rate limits and CORS can no longer break the dashboard. sw.js got a versioned cache and a fresh strategy, and the availability pill is gone.' },
     { version: 'v6.8', date: '28th Oct 2026', text: 'Support goal rebuilt as a Studio Fund card: Rs 5,000 target with real milestone steps, live progress bar, lock-free perks and one-tap Contribute / Patreon actions - no invented numbers (set SUPPORT_GOAL.raised, or point SUPPORT_GOAL.syncUrl at a JSON file to update it without a redeploy). Experience is now a horizontal snap rail with expandable descriptions instead of a tall column.' },
     { version: 'v6.7', date: '28th Oct 2026', text: 'Removed the custom long-press/right-click menu so the native browser menu works again. Home now shows a live studio snapshot (real GitHub repo + star counts and live product count) instead of a money goal. The store shows real catalog facts (product count, price range, last update) plus an auto-detected newest drop. Experience rebuilt as cards, and the fake milestone roadmap is gone.' },
