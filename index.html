@@ -5806,71 +5806,8 @@
 
 
     /* Open Source Dashboard Enhancements */
-    .oss-featured-panel {
-      position: relative;
-      z-index: 2;
-      margin: 0 22px 18px;
-      padding: 14px;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: linear-gradient(145deg, rgba(var(--surface-rgb),0.42), rgba(var(--surface-rgb),0.14));
-      box-shadow: var(--shadow-sm), inset 0 1px 1px var(--border-glow);
-      overflow: hidden;
-    }
-    .oss-panel-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-      color: var(--text-muted);
-      font-size: 0.72rem;
-      font-weight: 950;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .oss-panel-head i { color: var(--accent); }
-    .oss-panel-head small { font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent); text-transform: none; letter-spacing: 0; }
-    .oss-featured-rail {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      scroll-snap-type: inline mandatory;
-      padding-bottom: 2px;
-    }
-    .oss-featured-rail::-webkit-scrollbar { display: none; }
-    .oss-featured-card {
-      flex: 0 0 210px;
-      scroll-snap-align: start;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: rgba(0,0,0,0.08);
-      padding: 13px;
-      display: grid;
-      gap: 8px;
-      min-height: 148px;
-      box-shadow: inset 0 1px 1px var(--border-glow);
-    }
-    .oss-featured-name { font-size: 0.95rem; font-weight: 900; line-height: 1.14; overflow-wrap: anywhere; }
-    .oss-featured-text { color: var(--text-muted); font-size: 0.76rem; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    /* Shared by the repository card action row */
     .oss-featured-actions { display:flex; gap:7px; margin-top:auto; }
-    .oss-mini-link {
-      flex: 1;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-      padding:8px 9px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background: rgba(0,0,0,0.08);
-      color: var(--text-secondary);
-      font-size:0.72rem;
-      font-weight:850;
-    }
-    .oss-mini-link.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
     .oss-control-actions {
       width: 100%;
       justify-content: flex-start;
@@ -5957,8 +5894,6 @@
       white-space: nowrap;
     }
     @media (max-width: 760px) {
-      .oss-featured-panel { margin-inline: 18px; }
-      .oss-featured-card { flex-basis: 78%; }
       .oss-control-actions { justify-content: flex-start; }
       .oss-control-actions .opensource-icon-btn { flex: 0 0 auto; }
       .oss-discovery-row { align-items: stretch; }
@@ -6103,9 +6038,7 @@
     .note-export-menu,
     .detail-hero,
     .product-fact-card,
-    .scanner-permission-card,
-    .oss-featured-panel,
-    .oss-featured-card {
+    .scanner-permission-card {
       border-color: var(--accent-border-mid) !important;
       box-shadow: var(--shadow-sm), 0 0 0 1px rgba(255,255,255,0.015), inset 0 1px 1px var(--border-glow) !important;
     }
@@ -12059,6 +11992,211 @@
     }
     html[data-perf="low"] .home-hero .hh-aurora { display: none; }
 
+    /* ═══════════════════════════════════════════════════════════
+       SEND-TO ACTION GRAPH + COUNTER AUTO RESET
+       ═══════════════════════════════════════════════════════════ */
+    .jx-send-host { margin-top: 8px; }
+    .jx-send-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+      animation: fadeIn 0.22s ease-out;
+    }
+    .jx-send-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      min-height: 32px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.05);
+      color: var(--text-secondary);
+      font-size: 0.7rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    }
+    .jx-send-btn i { font-size: 0.72rem; color: var(--accent); opacity: 0.85; }
+    .jx-send-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-soft, rgba(0,229,255,0.1));
+      transform: translateY(-1px);
+    }
+    .jx-send-btn:active { transform: scale(0.96); }
+    .clip-send-row { margin: 0 12px 12px; }
+    .scanner-smart-result-card .jx-send-row { margin-top: 10px; }
+
+    .counter-reset-badge-row { margin-top: 3px; }
+    .counter-reset-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.63rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      background: rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+    .counter-reset-badge i { font-size: 0.6rem; color: var(--accent); opacity: 0.8; }
+    .counter-reset-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 8px 0;
+      padding: 7px 8px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+    }
+    .counter-reset-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.66rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+    .counter-reset-label i { color: var(--accent); font-size: 0.66rem; }
+    .counter-reset-select {
+      flex: 1 1 auto;
+      min-width: 96px;
+      min-height: 28px;
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--bg-secondary, rgba(255,255,255,0.06));
+      color: var(--text-main);
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .counter-reset-select:disabled { opacity: 0.45; cursor: not-allowed; }
+    .counter-reset-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    /* ── Secret masking in the vault + clipboard ── */
+    .vault-secret-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      font-weight: 850;
+      letter-spacing: 0.02em;
+      color: #f43f5e;
+      background: rgba(244,63,94,0.12);
+      border: 1px solid rgba(244,63,94,0.28);
+      white-space: nowrap;
+    }
+    .vault-secret-badge i { font-size: 0.6rem; }
+    .clip-secret-mask {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 9px 10px;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      background: rgba(244,63,94,0.08);
+      border: 1px solid rgba(244,63,94,0.26);
+    }
+    .clip-secret-mask > i { color: #f43f5e; font-size: 0.85rem; }
+    .clip-secret-dots {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      color: var(--text-main);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1 1 120px;
+      min-width: 0;
+    }
+    .clip-secret-tag {
+      font-size: 0.6rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #f43f5e;
+      white-space: nowrap;
+    }
+    .clip-secret-reveal,
+    .clip-secret-hide {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(244,63,94,0.3);
+      background: rgba(244,63,94,0.12);
+      color: #f43f5e;
+      font-size: 0.66rem;
+      font-weight: 850;
+      cursor: pointer;
+    }
+    .clip-secret-reveal:hover, .clip-secret-hide:hover { background: rgba(244,63,94,0.2); }
+    .clip-secret-banner {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 8px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(244,63,94,0.1);
+      border: 1px solid rgba(244,63,94,0.24);
+      color: #f43f5e;
+      font-size: 0.64rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .clip-secret-banner i { font-size: 0.64rem; }
+    .clip-secret-hide { margin-left: auto; }
+
+    /* ── Wi-Fi join sheet ── */
+    .wifi-join-preview {
+      padding: 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.05);
+      margin-bottom: 14px;
+    }
+    .wifi-join-rows { display: grid; gap: 9px; }
+    .wifi-join-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 9px 11px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+    .wifi-join-label {
+      font-size: 0.6rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+    .wifi-join-value {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-main);
+      overflow-wrap: anywhere;
+    }
+
   </style>
 
 </head>
@@ -12286,14 +12424,6 @@
           </div>
         </div>
 
-        <section class="oss-featured-panel" aria-label="Featured repositories">
-          <div class="oss-panel-head">
-            <span><i class="fa-solid fa-thumbtack" aria-hidden="true"></i> Featured repositories</span>
-            <small>Manually curated</small>
-          </div>
-          <div class="oss-featured-rail" id="openSourceFeaturedRail" role="list" aria-live="polite"></div>
-        </section>
-
         <div class="opensource-metrics" id="openSourceMetrics" aria-label="Open source repository metrics">
           <div class="oss-metric-pill"><span class="oss-metric-icon"><i class="fa-solid fa-code-branch"></i></span><span class="oss-metric-copy"><span class="oss-metric-value" id="ossTotalRepos">—</span><span class="oss-metric-label">Public Repositories</span></span></div>
           <div class="oss-metric-pill"><span class="oss-metric-icon"><i class="fa-solid fa-star"></i></span><span class="oss-metric-copy"><span class="oss-metric-value" id="ossTotalStars">—</span><span class="oss-metric-label">Stars Earned</span></span></div>
@@ -12482,7 +12612,7 @@
     <div class="bento-card glass-panel reveal">
       <div class="changelog-list" id="changelogList">
         <div class="jcl-toolbar">
-          <span class="jcl-version-chip" id="jclVersionChip" title="Current site version"><i class="fa-solid fa-code-branch" aria-hidden="true"></i> <span id="jclVersionLabel">v6.0</span></span>
+          <span class="jcl-version-chip" id="jclVersionChip" title="Current site version"><i class="fa-solid fa-code-branch" aria-hidden="true"></i> <span id="jclVersionLabel">v7.2</span></span>
           <span class="jcl-sync jx-sync-chip" id="jclSyncChip" role="status" aria-live="polite"><span class="jx-sync-dot" aria-hidden="true"></span><span class="jx-sync-label">Sync ready</span></span>
           <button class="jx-sync-btn ripple-btn" id="jclRefreshBtn" type="button" aria-label="Refresh changelog from GitHub" title="Refresh changelog from GitHub"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button>
         </div>
@@ -12533,8 +12663,10 @@
   // Changelog bootstrap: renders latest updates immediately, even before the main app script finishes loading.
   // ▼ EDIT HERE: bump SITE_VERSION + add an entry at the TOP when you ship an update.
   //   Visitors see the new version automatically (live sync also pulls it from GitHub).
-  window.SITE_VERSION = 'v7.0';
+  window.SITE_VERSION = 'v7.2';
   window.SITE_CHANGELOG_FALLBACK = [
+    { version: 'v7.2', date: '3rd Nov 2026', text: 'Scanner and Passwords pass. Detected secrets - OpenAI, GitHub, AWS, Google, Slack and Stripe keys, JWTs, private keys, bearer tokens, database URLs - now render masked in the password vault and in the clipboard, each with its own reveal toggle, a type badge and an automatic re-mask, and the secret itself never reaches the DOM. The scanner reads whole batches now: images plus multi-page PDFs, with pdf.js lazy-loaded and every page rasterised and read. Each result offers the action that fits it - open, copy or shorten a URL, compose a mailto, dial a tel, drop a geo on the map, turn a calendar event into a Mission with its due time, or hand a UPI link to your payment app. A printable Wi-Fi join sheet turns a scanned network into an SSID, password and QR card you can leave for guests. The curated featured-repositories strip and the QR Studio quiet-zone and error-correction sliders are gone; the generator now always uses a 4-module quiet zone and level-H error correction so logo-watermarked codes stay scannable.' },
+    { version: 'v7.1', date: '3rd Nov 2026', text: 'Toolkit focus pass. The Focus timer and the Stopwatch now run off an absolute wall-clock timestamp instead of a decrementing counter, so they stay accurate through a backgrounded tab, a screen sleep or a reload, and a running timer comes back exactly where it left off. Counters can roll over on their own - daily, weekly or monthly, with the hour you want the reset to land - so a weekly tally starts fresh without a manual reset. Every snippet, scan, QR, timer session and counter can now be sent straight to another tool: Clipboard, Scratchpad, Missions, Counters, Focus, QR Studio or the Focus Log, from one shared action row. No new tools and no new dependencies.' },
     { version: 'v7.0', date: '29th Oct 2026', text: 'Home hero rebuilt as an editorial split: the name leads at display size, the role reads as a mono eyebrow, the three stat boxes collapse into a single hairline rail, and the primary action gains a weighted arrow cap with matched ghost buttons beside it. The portrait is now a compact 44px chip in the top corner, the availability dot is gone for good, and the whole block is tightened to sit in one screen on a phone. Light mode, reduced motion and Performance mode are all respected - no new dependencies.' },
     { version: 'v6.9', date: '28th Oct 2026', text: 'Perf pass: fonts and icons are now self-hosted and subset (Inter, JetBrains Mono and only the 184 Font Awesome glyphs in use - about 78 KB total, zero third-party requests). Notes, counters, clipboard, focus and vault panels no longer render at boot; they build the first time you open a sheet. GitHub and Gumroad data now come from scheduled JSON snapshots in feeds/, so rate limits and CORS can no longer break the dashboard. sw.js got a versioned cache and a fresh strategy, and the availability pill is gone.' },
     { version: 'v6.8', date: '28th Oct 2026', text: 'Support goal rebuilt as a Studio Fund card: Rs 5,000 target with real milestone steps, live progress bar, lock-free perks and one-tap Contribute / Patreon actions - no invented numbers (set SUPPORT_GOAL.raised, or point SUPPORT_GOAL.syncUrl at a JSON file to update it without a redeploy). Experience is now a horizontal snap rail with expandable descriptions instead of a tall column.' },
@@ -13194,7 +13326,7 @@
           <div class="password-screen-text" id="passDisplay" title="Click to copy">••••••••••••••••</div>
           <div class="password-screen-actions">
             <button class="password-screen-btn" type="button" onclick="generatePassword()" title="Regenerate password"><i class="fa-solid fa-rotate"></i></button>
-            <button class="password-screen-btn" type="button" onclick="togglePassMask()" title="Show/Hide password"><i class="fa-solid fa-eye" id="passMaskIcon"></i></button>
+            <button class="password-screen-btn" type="button" onclick="togglePassMask()" title="Show/Hide password"><i class="fa-solid fa-eye-slash" id="passMaskIcon"></i></button>
             <button class="password-screen-btn" type="button" onclick="copyCurrentPassword()" title="Copy password"><i class="fa-solid fa-copy"></i></button>
           </div>
         </div>
@@ -13258,8 +13390,13 @@
 
         <!-- Saved Passwords History -->
         <div style="margin-top:6px;">
-          <div style="font-size:0.75rem; font-weight:850; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px;">
-            <i class="fa-solid fa-vault"></i> Saved Password Vault
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
+            <span style="font-size:0.75rem; font-weight:850; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;">
+              <i class="fa-solid fa-vault"></i> Saved Password Vault
+            </span>
+            <button class="mission-mini-btn" type="button" onclick="maskAllPasswords()" title="Mask every key" style="width:auto; padding:3px 9px; font-size:0.66rem;">
+              <i class="fa-solid fa-eye-slash"></i> Mask all
+            </button>
           </div>
           <div id="passHistoryList" class="data-list" style="max-height:180px;"></div>
         </div>
@@ -13505,6 +13642,33 @@
               </div>
             </div>
 
+            <!-- Auto reset cycle -->
+            <div class="counter-input-row" style="margin-top:10px;">
+              <div class="counter-input-group">
+                <label class="counter-input-label">Auto Reset <span style="font-size:0.7rem; color:var(--text-muted);">(Optional)</span></label>
+                <select id="counterResetCycleInput" class="counter-field" aria-label="Counter auto reset cycle">
+                  <option value="none">No auto reset</option>
+                  <option value="daily">Every day</option>
+                  <option value="weekly">Every week</option>
+                  <option value="monthly">Every month</option>
+                </select>
+              </div>
+              <div class="counter-input-group">
+                <label class="counter-input-label">Reset At</label>
+                <select id="counterResetHourInput" class="counter-field" aria-label="Counter reset time">
+                  <option value="0">00:00</option>
+                  <option value="4">04:00</option>
+                  <option value="6">06:00</option>
+                  <option value="8">08:00</option>
+                  <option value="12">12:00</option>
+                  <option value="16">16:00</option>
+                  <option value="18">18:00</option>
+                  <option value="20">20:00</option>
+                  <option value="22">22:00</option>
+                </select>
+              </div>
+            </div>
+
             <div class="counter-creator-actions">
               <button class="primary-btn ripple-btn" type="button" onclick="addCounter()"><i class="fa-solid fa-plus"></i> Add Counter</button>
               <button class="btn-secondary ripple-btn" type="button" onclick="toggleNewCounterImportant()" id="counterImportantBtn" aria-pressed="false" style="max-width:140px;">
@@ -13581,17 +13745,30 @@
         </div>
 
         <canvas id="scannerCanvas" style="display:none;"></canvas>
-        <input type="file" id="galleryScanInput" accept="image/*" style="display:none;" onchange="scanFromGallery(event)">
+        <input type="file" id="galleryScanInput" accept="image/*,.pdf,application/pdf" multiple style="display:none;" onchange="scanFromGallery(event)">
 
         <!-- Controls Bar -->
         <div class="scanner-controls-grid">
           <button class="primary-btn ripple-btn" id="scannerStartBtn" type="button" onclick="toggleScanner()"><i class="fa-solid fa-camera"></i> Start Scanner</button>
-          <button class="btn-secondary ripple-btn" type="button" onclick="$('#galleryScanInput').click()"><i class="fa-solid fa-image"></i> Gallery</button>
+          <button class="btn-secondary ripple-btn" type="button" onclick="$('#galleryScanInput').click()"><i class="fa-solid fa-image"></i> Images / PDF</button>
           <button class="btn-secondary ripple-btn" type="button" onclick="runScannerOCR()"><i class="fa-solid fa-font"></i> OCR Text</button>
         </div>
 
         <!-- Scanner Status -->
-        <p class="scanner-status" id="scannerStatus" style="font-size:0.8rem; text-align:center; margin:-2px 0 0;">Ready to scan. Tap Start Scanner, upload image, or tap to sample colors.</p>
+        <p class="scanner-status" id="scannerStatus" style="font-size:0.8rem; text-align:center; margin:-2px 0 0;">Ready to scan. Tap Start Scanner, upload images or a PDF, or tap to sample colors.</p>
+
+        <!-- Batch scan results (multi-file / multi-page) -->
+        <div id="scannerBatchPanel" style="display:none; margin-top:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
+            <span style="font-size:0.76rem; font-weight:850; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;"><i class="fa-solid fa-layer-group"></i> Batch Results</span>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button class="mission-mini-btn" type="button" onclick="copyAllBatchResults()" title="Copy every result" style="width:auto; padding:3px 9px; font-size:0.66rem;"><i class="fa-solid fa-copy"></i> Copy all</button>
+              <button class="mission-mini-btn" type="button" onclick="saveAllBatchToClipboard()" title="Save every result to the clipboard vault" style="width:auto; padding:3px 9px; font-size:0.66rem;"><i class="fa-solid fa-clipboard-list"></i> Save all</button>
+              <button class="mission-mini-btn delete" type="button" onclick="clearBatchResults()" title="Clear results" style="width:auto; padding:3px 9px; font-size:0.66rem;"><i class="fa-solid fa-xmark"></i> Clear</button>
+            </div>
+          </div>
+          <div id="scannerBatchList" class="data-list" style="max-height:220px;"></div>
+        </div>
 
         <!-- Interactive Wi-Fi Scan Action Sheet Modal -->
         <div class="wifi-action-modal" id="wifiScanActionSheet" style="display:none;">
@@ -13622,9 +13799,12 @@
             </div>
           </div>
 
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;">
             <span class="mission-badge" id="wifiSecurityTag" style="font-size:0.68rem;"><i class="fa-solid fa-shield-halved"></i> WPA/WPA2</span>
-            <button class="btn-secondary ripple-btn" type="button" onclick="saveWifiToNotes()" style="padding:6px 12px; font-size:0.78rem;"><i class="fa-solid fa-note-sticky"></i> Save to Notes</button>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button class="btn-secondary ripple-btn" type="button" onclick="openWifiJoinSheet()" style="padding:6px 12px; font-size:0.78rem;"><i class="fa-solid fa-print"></i> Join Sheet</button>
+              <button class="btn-secondary ripple-btn" type="button" onclick="saveWifiToNotes()" style="padding:6px 12px; font-size:0.78rem;"><i class="fa-solid fa-note-sticky"></i> Save to Notes</button>
+            </div>
           </div>
         </div>
 
@@ -13690,6 +13870,8 @@
               <button class="qr-action-btn ripple-btn" type="button" onclick="shareQRCode()"><i class="fa-solid fa-share-nodes"></i> Share</button>
             </div>
 
+            <div id="qrSendRow" class="jx-send-host"></div>
+
             </div>
           </div>
           <!-- Form Panel -->
@@ -13729,7 +13911,7 @@
               </div>
             </div>
 
-            <!-- Module Style, Quiet Zone & Error Correction -->
+            <!-- Module Style -->
             <div style="margin-top:6px; padding:10px 12px; background:rgba(0,0,0,0.04); border-radius:12px; border:1px solid var(--border);">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                 <span style="font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">MODULE STYLE:</span>
@@ -13740,24 +13922,7 @@
                 <button type="button" class="qr-logo-chip" data-style="rounded" onclick="setQRModuleStyle('rounded', 'Soft Rounded')"><i class="fa-solid fa-vector-square"></i> Rounded</button>
                 <button type="button" class="qr-logo-chip" data-style="dots" onclick="setQRModuleStyle('dots', 'Dot Matrix')"><i class="fa-solid fa-braille"></i> Dots</button>
               </div>
-
-              <div style="display:flex; justify-content:space-between; align-items:center; margin:12px 0 6px;">
-                <span style="font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">QUIET ZONE:</span>
-                <span id="qrQuietVal" style="font-size:0.72rem; font-weight:750; color:var(--text-main);">3 modules</span>
-              </div>
-              <input type="range" min="0" max="8" step="1" value="3" id="qrQuietRange" style="width:100%;" aria-label="Quiet zone border size in modules" oninput="setQRQuietZone(this.value)">
-
-              <div style="display:flex; justify-content:space-between; align-items:center; margin:12px 0 6px;">
-                <span style="font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">ERROR CORRECTION:</span>
-                <span id="qrEcName" style="font-size:0.72rem; font-weight:750; color:var(--text-main);">H · High (30%)</span>
-              </div>
-              <div class="qr-logo-options" id="qrEcOptions">
-                <button type="button" class="qr-logo-chip" data-ec="L" onclick="setQRECLevel('L')" title="Recovers 7% damage">L · 7%</button>
-                <button type="button" class="qr-logo-chip" data-ec="M" onclick="setQRECLevel('M')" title="Recovers 15% damage">M · 15%</button>
-                <button type="button" class="qr-logo-chip" data-ec="Q" onclick="setQRECLevel('Q')" title="Recovers 25% damage">Q · 25%</button>
-                <button type="button" class="qr-logo-chip active" data-ec="H" onclick="setQRECLevel('H')" title="Recovers 30% damage">H · 30%</button>
-              </div>
-              <p class="qr-helper-text" style="margin-top:8px;">Higher EC survives scuffs & glare but densifies the code. The center logo watermark automatically keeps H selected. Styles & settings are remembered.</p>
+              <p class="qr-helper-text" style="margin-top:8px;">Styles are remembered. Every code is generated with high error correction and the standard 4-module quiet zone, so it stays scannable even with the center logo watermark.</p>
             </div>
           </div>
 
@@ -14068,6 +14233,29 @@
       <button class="sheet-close-btn ripple-btn" onclick="closeAllSheets()" aria-label="Close and return home"><i class="fa-solid fa-xmark"></i><span class="sheet-close-label">Close</span></button>
     </div>
     <div id="projectSheetContent"></div>
+  </div>
+
+  <!-- Wi-Fi Join Sheet — printable guest network card -->
+  <div class="bottom-sheet" id="wifiJoinSheet" aria-label="Wi-Fi join sheet">
+    <div class="drag-handle"></div>
+    <div class="sheet-header">
+      <h2 class="sheet-title">Wi-Fi Join Sheet</h2>
+      <button class="sheet-close-btn ripple-btn" onclick="closeWifiJoinSheet()" aria-label="Close the join sheet"><i class="fa-solid fa-xmark"></i><span class="sheet-close-label">Close</span></button>
+    </div>
+    <p class="jx-card-hint">Print this sheet and leave it where guests can scan it — no app needed.</p>
+    <div class="wifi-join-preview">
+      <img id="wifiJoinQr" alt="Wi-Fi join QR code" style="width:100%;max-width:250px;margin:0 auto 14px;display:block;border-radius:16px;background:#ffffff;padding:10px;image-rendering:pixelated;">
+      <div class="wifi-join-rows">
+        <div class="wifi-join-row"><span class="wifi-join-label">Network (SSID)</span><span class="wifi-join-value" id="wifiJoinSsid">—</span></div>
+        <div class="wifi-join-row"><span class="wifi-join-label">Password</span><span class="wifi-join-value" id="wifiJoinPass">—</span></div>
+        <div class="wifi-join-row"><span class="wifi-join-label">Security</span><span class="wifi-join-value" id="wifiJoinType">—</span></div>
+      </div>
+    </div>
+    <div class="jx-card-actions">
+      <button class="primary-btn ripple-btn" type="button" onclick="printWifiJoinSheet()"><i class="fa-solid fa-print"></i> Print</button>
+      <button class="btn-secondary ripple-btn" type="button" onclick="downloadWifiJoinQr()"><i class="fa-solid fa-download"></i> Save QR</button>
+      <button class="btn-secondary ripple-btn" type="button" onclick="copyWifiJoinPayload()"><i class="fa-solid fa-copy"></i> Copy payload</button>
+    </div>
   </div>
 
   <script>
@@ -14422,6 +14610,191 @@
       if (sheet) sheet.scrollTo({ top: 0, behavior: 'smooth' });
     }
     renderToolsLauncher();
+
+    /* ═══════════════════════════════════════════════════════════
+       SEND-TO ACTION GRAPH — move a payload between toolkit tools.
+       Every tool that produces content exposes the same set of
+       destinations, so a scan, a snippet, a QR payload, a stopwatch
+       session or a counter can become a mission, a note, a counter
+       tap, a QR code, a clipboard entry or a focus session.
+    ═══════════════════════════════════════════════════════════ */
+    const JX_SEND_TARGETS = {
+      clipboard: { label: 'Clipboard', icon: 'fa-clipboard-list' },
+      notes:     { label: 'Scratchpad', icon: 'fa-note-sticky' },
+      mission:   { label: 'Mission',   icon: 'fa-list-check' },
+      counter:   { label: 'Counter',   icon: 'fa-plus-minus' },
+      focus:     { label: 'Focus',     icon: 'fa-bolt' },
+      qr:        { label: 'QR Studio', icon: 'fa-qrcode' },
+      focuslog:  { label: 'Focus Log', icon: 'fa-clock-rotate-left' }
+    };
+
+    const JX_SEND_DEFAULT_TARGETS = ['clipboard', 'notes', 'mission', 'counter', 'focus', 'qr'];
+
+    // Encode a string for safe use inside an inline onclick attribute
+    // (encodeURIComponent leaves apostrophes alone, so those are escaped too).
+    function jxEncText(text) {
+      try { return encodeURIComponent(String(text == null ? '' : text)).replace(/'/g, '%27'); } catch (e) { return ''; }
+    }
+
+    // Encode a payload so it can be embedded safely inside an inline
+    // onclick attribute (encodeURIComponent leaves apostrophes alone,
+    // so those are escaped too).
+    function jxEncodePayload(payload) {
+      try {
+        return encodeURIComponent(JSON.stringify(payload || {})).replace(/'/g, '%27');
+      } catch (e) { return ''; }
+    }
+
+    function jxSendBtn(target, payload, extraClass) {
+      const t = JX_SEND_TARGETS[target];
+      if (!t) return '';
+      return '<button type="button" class="jx-send-btn ' + (extraClass || '') + '" ' +
+        'onclick="jxSendTo(\'' + target + '\', decodeURIComponent(\'' + jxEncodePayload(payload) + '\'))" ' +
+        'title="Send to ' + t.label + '">' +
+        '<i class="fa-solid ' + t.icon + '" aria-hidden="true"></i><span>' + t.label + '</span></button>';
+    }
+
+    function jxSendRow(payload, targets, extraClass) {
+      const list = (targets && targets.length) ? targets : JX_SEND_DEFAULT_TARGETS;
+      return '<div class="jx-send-row ' + (extraClass || '') + '" role="group" aria-label="Send to another tool">' +
+        list.map(t => jxSendBtn(t, payload)).join('') +
+      '</div>';
+    }
+
+    function jxSendTo(target, payload) {
+      let p = payload || {};
+      if (typeof p === 'string') { try { p = JSON.parse(p); } catch (e) { p = { text: p }; } }
+      try {
+        sendTo(target, p);
+      } catch (e) {
+        console.warn('Send failed:', e);
+        showNotify('Could not send that item', 'fa-solid fa-triangle-exclamation');
+      }
+    }
+
+    function sendTo(target, payload) {
+      payload = payload || {};
+      const text = String(payload.text != null ? payload.text : '').trim();
+      const label = String(payload.label || '').trim();
+      switch (target) {
+        case 'clipboard': return sendToClipboard(text, label, payload);
+        case 'notes':     return sendToNotes(text, label, payload);
+        case 'mission':   return sendToMission(text, label, payload);
+        case 'counter':   return sendToCounter(text, label, payload);
+        case 'focus':     return sendToFocus(text, label, payload);
+        case 'qr':        return sendToQR(text, label, payload);
+        case 'focuslog':  return sendToFocusLog(text, label, payload);
+        default:
+          showNotify('Unknown destination', 'fa-solid fa-circle-question');
+          return false;
+      }
+    }
+
+    function sendToClipboard(text, label, payload) {
+      if (!text) return showNotify('Nothing to send', 'fa-solid fa-triangle-exclamation');
+      const added = addClipToHistory(text, { source: payload.source || 'sent', label: label || '', expiry: payload.expiry });
+      haptic([50]);
+      playSynthesizedSound('success-chord');
+      showNotify(added ? 'Saved to Smart Clipboard' : 'Updated the matching clipboard snippet', 'fa-solid fa-clipboard-list');
+      return true;
+    }
+
+    function sendToNotes(text, label, payload) {
+      if (!text && !label) return showNotify('Nothing to send', 'fa-solid fa-triangle-exclamation');
+      if (typeof openSheet === 'function') openSheet('notesSheet');
+      if (typeof createNewNote === 'function') createNewNote();
+      const titleInput = $('#noteTitleInput');
+      if (titleInput && label) titleInput.value = label;
+      const editor = $('#scratchpadEditor');
+      if (editor) {
+        editor.innerHTML = '<div class="block"><div class="b-handle" contenteditable="false"><i class="fa-solid fa-grip-vertical"></i></div>' +
+          '<div class="b-content" contenteditable="true">' + escapeHtml(text) + '</div></div>';
+      }
+      // Persist straight away so the hand-off is not lost if the sheet closes.
+      try { if (typeof saveActiveNote === 'function') saveActiveNote(true); } catch (e) {}
+      haptic([50]);
+      playSynthesizedSound('success-chord');
+      showNotify('Sent to a Scratchpad note', 'fa-solid fa-note-sticky');
+      return true;
+    }
+
+    function sendToMission(text, label, payload) {
+      const body = text || label;
+      if (!body) return showNotify('Nothing to send', 'fa-solid fa-triangle-exclamation');
+      if (typeof openSheet === 'function') openSheet('vibeSheet');
+      if (typeof switchTab === 'function') switchTab(null, 'tabPlan');
+      const lane = payload.lane || (typeof currentAddLane !== 'undefined' && currentAddLane ? currentAddLane : 'now');
+      const category = payload.category || (typeof currentAddCategory !== 'undefined' && currentAddCategory ? currentAddCategory : 'General');
+      const task = normalizeTask({ text: body, category: category, lane: lane, due: payload.due || '' }, tasks.length);
+      tasks.push(task);
+      if (typeof saveTasks === 'function') saveTasks();
+      if (typeof renderTasks === 'function') renderTasks();
+      haptic([50]);
+      playSynthesizedSound('success-chord');
+      showNotify('Mission created: ' + body, 'fa-solid fa-list-check');
+      setTimeout(() => {
+        const el = document.querySelector('[data-task-id="' + task.id + '"]');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.classList.add('jx-flash');
+          setTimeout(() => el.classList.remove('jx-flash'), 1800);
+        }
+      }, 380);
+      return true;
+    }
+
+    function sendToCounter(text, label, payload) {
+      if (typeof openSheet === 'function') openSheet('vibeSheet');
+      if (typeof switchTab === 'function') switchTab(null, 'tabCounters');
+      if (payload.counterId) {
+        if (typeof updateCounter === 'function') updateCounter(payload.counterId, Number(payload.delta || 1));
+        haptic([50]);
+        playSynthesizedSound('success-chord');
+        showNotify('Counter updated', 'fa-solid fa-plus-minus');
+        return true;
+      }
+      // No counter picked yet — pre-fill the creator so the user confirms.
+      const input = $('#counterInput');
+      if (input) {
+        input.value = label || text.slice(0, 48);
+        setTimeout(() => input.focus(), 150);
+      }
+      showNotify('Name the counter to finish the hand-off', 'fa-solid fa-calculator');
+      return true;
+    }
+
+    function sendToFocus(text, label, payload) {
+      if (typeof openSheet === 'function') openSheet('vibeSheet');
+      if (typeof switchTab === 'function') switchTab(null, 'tabFocus');
+      const intention = label || text.slice(0, 120) || 'Focus Session';
+      const nameInput = $('#focusSessionName');
+      if (nameInput) nameInput.value = intention;
+      window.currentIntention = intention;
+      if (typeof updateFocusIntention === 'function') updateFocusIntention();
+      haptic([50]);
+      playSynthesizedSound('success-chord');
+      showNotify(payload.start ? 'Focus session starting' : 'Sent to the Focus Timer', 'fa-solid fa-bolt');
+      if (payload.start && typeof toggleTimer === 'function' && !timerInt) {
+        setTimeout(() => toggleTimer(), 320);
+      }
+      return true;
+    }
+
+    function sendToQR(text, label, payload) {
+      if (!text) return showNotify('Nothing to encode', 'fa-solid fa-triangle-exclamation');
+      if (typeof openQRStudioWith === 'function') return openQRStudioWith(text, { notify: 'Sent to QR Studio' });
+      return false;
+    }
+
+    function sendToFocusLog(text, label, payload) {
+      const mins = Math.max(1, Math.round(Number(payload.minutes || 0)));
+      if (!mins) return showNotify('No duration to log', 'fa-solid fa-triangle-exclamation');
+      if (typeof recordFocusSession === 'function') recordFocusSession(mins, label || text.slice(0, 60) || 'Focus Block');
+      haptic([50]);
+      playSynthesizedSound('success-chord');
+      showNotify('Logged ' + mins + 'm into Focus Telemetry', 'fa-solid fa-clock-rotate-left');
+      return true;
+    }
 
     $('#currentYear').textContent = new Date().getFullYear();
 
@@ -15391,6 +15764,9 @@
         color: c.color || 'accent',
         important: !!c.important,
         history: Array.isArray(c.history) ? c.history.slice(0, 60) : [],
+        resetCycle: ['none', 'daily', 'weekly', 'monthly'].includes(c.resetCycle) ? c.resetCycle : 'none',
+        resetHour: Number.isFinite(Number(c.resetHour)) ? Math.max(0, Math.min(23, Number(c.resetHour))) : 0,
+        lastResetPeriod: c.lastResetPeriod || '',
         createdAt: c.createdAt || now,
         updatedAt: c.updatedAt || now
       };
@@ -15398,6 +15774,102 @@
 
     myCounters = Array.isArray(myCounters) ? myCounters.map(normalizeCounter) : [];
     safeStoreSet('jsCounters', myCounters);
+
+    /* ── AUTO RESET CYCLES ──────────────────────────────────────
+       A counter can roll itself over on a daily, weekly or monthly
+       boundary, so goals like "Water (8)" actually start fresh
+       every day instead of climbing forever. The period key is
+       derived from the wall clock, so the rollover happens the
+       moment the boundary passes — even if the app was closed.  */
+    const COUNTER_RESET_CYCLES = [
+      { id: 'none', label: 'No auto reset' },
+      { id: 'daily', label: 'Every day' },
+      { id: 'weekly', label: 'Every week' },
+      { id: 'monthly', label: 'Every month' }
+    ];
+
+    function counterPeriodKey(c, now) {
+      const cycle = (c && c.resetCycle) ? c.resetCycle : 'none';
+      if (cycle === 'none') return '';
+      const hour = (c && Number.isFinite(Number(c.resetHour))) ? Number(c.resetHour) : 0;
+      const ref = now || new Date();
+      // Shift the clock back by the reset hour so "resets at 06:00" means
+      // the period only rolls over once 06:00 has passed.
+      const d = new Date(ref.getTime() - hour * 3600000);
+      const y = d.getFullYear(), mo = d.getMonth(), da = d.getDate();
+      if (cycle === 'daily') return 'd' + y + '-' + mo + '-' + da;
+      if (cycle === 'monthly') return 'm' + y + '-' + mo;
+      if (cycle === 'weekly') {
+        const start = new Date(y, mo, da);
+        const dow = (start.getDay() + 6) % 7;   // Monday = 0
+        start.setDate(start.getDate() - dow);
+        return 'w' + start.getFullYear() + '-' + start.getMonth() + '-' + start.getDate();
+      }
+      return '';
+    }
+
+    function counterResetLabel(c) {
+      const cycle = (c && c.resetCycle) ? c.resetCycle : 'none';
+      if (cycle === 'none') return '';
+      const hour = Number.isFinite(Number(c.resetHour)) ? Number(c.resetHour) : 0;
+      const hh = String(hour).padStart(2, '0') + ':00';
+      if (cycle === 'daily') return 'resets daily ' + hh;
+      if (cycle === 'weekly') return 'resets weekly ' + hh;
+      if (cycle === 'monthly') return 'resets monthly ' + hh;
+      return '';
+    }
+
+    function applyCounterAutoResets(now) {
+      if (!Array.isArray(myCounters) || !myCounters.length) return false;
+      const ref = now || new Date();
+      let changed = false;
+      myCounters.forEach(c => {
+        const cycle = c.resetCycle || 'none';
+        if (cycle === 'none') return;
+        const key = counterPeriodKey(c, ref);
+        if (!key) return;
+        if (!c.lastResetPeriod) {
+          // First time we meet this counter — adopt the current period without
+          // wiping a value the user may already have entered.
+          c.lastResetPeriod = key;
+          changed = true;
+          return;
+        }
+        if (c.lastResetPeriod !== key) {
+          const prev = Number(c.value || 0);
+          c.value = 0;
+          c.lastResetPeriod = key;
+          c.updatedAt = ref.toISOString();
+          if (!Array.isArray(c.history)) c.history = [];
+          c.history.unshift({ delta: -prev, value: 0, at: c.updatedAt, reset: true });
+          if (c.history.length > 60) c.history.length = 60;
+          changed = true;
+        }
+      });
+      if (changed) safeStoreSet('jsCounters', myCounters);
+      return changed;
+    }
+
+    function setCounterResetCycle(id, cycle) {
+      const c = myCounters.find(x => String(x.id) === String(id));
+      if (!c) return;
+      c.resetCycle = ['none', 'daily', 'weekly', 'monthly'].includes(cycle) ? cycle : 'none';
+      if (!Number.isFinite(Number(c.resetHour))) c.resetHour = 0;
+      // Adopt the current period so the first rollover lands on the next boundary.
+      c.lastResetPeriod = counterPeriodKey(c, new Date());
+      safeStoreSet('jsCounters', myCounters);
+      renderCounters();
+      showNotify(c.resetCycle === 'none' ? 'Auto reset removed' : 'Auto reset set — ' + counterResetLabel(c), 'fa-solid fa-rotate-left');
+    }
+
+    function setCounterResetHour(id, hour) {
+      const c = myCounters.find(x => String(x.id) === String(id));
+      if (!c) return;
+      c.resetHour = Math.max(0, Math.min(23, parseInt(hour, 10) || 0));
+      c.lastResetPeriod = counterPeriodKey(c, new Date());
+      safeStoreSet('jsCounters', myCounters);
+      renderCounters();
+    }
 
     function getCounterGroups() {
       return [...new Set(myCounters.map(c => c.group || 'General'))].sort((a, b) => a.localeCompare(b));
@@ -15464,6 +15936,10 @@
       const group = (groupInput && groupInput.value.trim()) ? groupInput.value.trim() : 'General';
       const goal = (goalInput && Number(goalInput.value) > 0) ? Math.floor(Number(goalInput.value)) : 0;
       const step = (stepInput && Number(stepInput.value) > 0) ? Math.floor(Number(stepInput.value)) : 1;
+      const cycleInput = $('#counterResetCycleInput');
+      const cycle = (cycleInput && ['none', 'daily', 'weekly', 'monthly'].includes(cycleInput.value)) ? cycleInput.value : 'none';
+      const hourInput = $('#counterResetHourInput');
+      const resetHour = (hourInput && Number.isFinite(Number(hourInput.value))) ? Number(hourInput.value) : 0;
 
       const newCounter = normalizeCounter({
         name,
@@ -15473,9 +15949,14 @@
         color: selectedCounterColor,
         value: 0,
         important: newCounterImportant,
+        resetCycle: cycle,
+        resetHour: resetHour,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       }, myCounters.length);
+
+      // Adopt the current period so the first rollover happens on the next boundary.
+      newCounter.lastResetPeriod = counterPeriodKey(newCounter, new Date());
 
       myCounters.unshift(newCounter);
       safeStoreSet('jsCounters', myCounters);
@@ -15484,6 +15965,8 @@
       if (groupInput) groupInput.value = '';
       if (goalInput) goalInput.value = '';
       if (stepInput) stepInput.value = '1';
+      if (cycleInput) cycleInput.value = 'none';
+      if (hourInput) hourInput.value = '0';
       newCounterImportant = false;
       const starBtn = $('#counterImportantBtn');
       if (starBtn) {
@@ -15727,6 +16210,8 @@
     }
 
     function renderCounters() {
+      // Catch up on any boundary that passed since the last render.
+      applyCounterAutoResets();
       updateCounterTelemetry();
       renderCounterGroupFilters();
       const list = $('#countersList');
@@ -15798,6 +16283,17 @@
 
       const pendingNote = String(pendingCounterNotes[c.id] || '').trim();
 
+      // Auto-reset badge + inline controls
+      const resetCycle = c.resetCycle || 'none';
+      const resetHour = Number.isFinite(Number(c.resetHour)) ? Number(c.resetHour) : 0;
+      const resetBadge = (resetCycle !== 'none')
+        ? '<span class="counter-reset-badge" title="Auto reset — ' + escapeHtml(counterResetLabel(c)) + '"><i class="fa-solid fa-rotate-left"></i> ' + escapeHtml(counterResetLabel(c)) + '</span>'
+        : '';
+      const resetCycleOptions = COUNTER_RESET_CYCLES.map(o =>
+        '<option value="' + o.id + '"' + (o.id === resetCycle ? ' selected' : '') + '>' + o.label + '</option>').join('');
+      const resetHourOptions = [0, 4, 6, 8, 12, 16, 18, 20, 22].map(h =>
+        '<option value="' + h + '"' + (h === resetHour ? ' selected' : '') + '>' + String(h).padStart(2, '0') + ':00</option>').join('');
+
       return '<div class="counter-card-v2 ' + (isCompleted ? 'goal-completed ' : '') + (c.important ? 'important-star ' : '') + '" style="--c-accent:' + theme.main + '; --c-accent-glow:' + theme.glow + '; --c-accent-border:' + theme.border + '; --cnt-offset:' + offset + ';">' +
         '<!-- Card Header -->' +
         '<div class="counter-card-top">' +
@@ -15810,6 +16306,7 @@
               '<i class="fa-solid fa-tag" style="font-size:0.65rem;"></i> ' + escapeHtml(c.group || 'General') +
               (step > 1 ? ' · Step +' + step : '') +
             '</div>' +
+            (resetBadge ? '<div class="counter-reset-badge-row">' + resetBadge + '</div>' : '') +
           '</div>' +
           '<div class="counter-card-badges">' +
             '<button class="counter-badge-icon ' + (c.important ? 'active-star' : '') + '" type="button" onclick="toggleCounterImportant(' + c.id + ')" title="Star counter">' +
@@ -15859,6 +16356,9 @@
             '</button>' +
           '</div>' +
           '<div class="counter-action-mini-btns">' +
+            '<button class="counter-mini-btn" type="button" title="Create a mission from this counter" ' +
+              'onclick="jxSendTo(\'mission\', decodeURIComponent(\'' + jxEncodePayload({ text: c.name, label: c.name, category: c.group }) + '\'))">' +
+              '<i class="fa-solid fa-list-check"></i></button>' +
             '<button class="counter-mini-btn" type="button" onclick="resetCounterValue(' + c.id + ')" title="Reset to 0"><i class="fa-solid fa-rotate-left"></i></button>' +
             '<button class="counter-mini-btn delete" type="button" onclick="deleteCounter(' + c.id + ')" title="Delete counter"><i class="fa-solid fa-trash"></i></button>' +
           '</div>' +
@@ -15868,6 +16368,11 @@
         (isExpanded
           ? '<div class="counter-history-drawer">' +
               '<div style="font-weight:800; text-transform:uppercase; font-size:0.65rem; color:var(--text-muted);"><i class="fa-solid fa-clock-rotate-left"></i> Recent Activity</div>' +
+              '<div class="counter-reset-row">' +
+                '<span class="counter-reset-label"><i class="fa-solid fa-rotate-left"></i> Auto reset</span>' +
+                '<select class="counter-reset-select" onchange="setCounterResetCycle(' + c.id + ', this.value)" aria-label="Auto reset cycle">' + resetCycleOptions + '</select>' +
+                '<select class="counter-reset-select" onchange="setCounterResetHour(' + c.id + ', this.value)" aria-label="Reset time"' + (resetCycle === 'none' ? ' disabled' : '') + '>' + resetHourOptions + '</select>' +
+              '</div>' +
               '<div class="counter-note-row">' +
                 '<input type="text" class="counter-note-input" data-counter-id="' + c.id + '" maxlength="140" ' +
                   'placeholder="Note for next +/− tap (why? what happened?)" ' +
@@ -15893,10 +16398,46 @@
     // ══════════════════════════════════════════════════════════════
     // SMART CLIPBOARD STUDIO 2.0 ENGINE
     // ══════════════════════════════════════════════════════════════
+    /* ═══════════════════════════════════════════════════════════
+       SECRET DETECTOR — recognises credential-shaped strings so the
+       vault and the clipboard can mask them instead of showing them
+       in the clear.
+    ═══════════════════════════════════════════════════════════ */
+    const SECRET_PATTERNS = [
+      { kind: 'OpenAI key',   icon: 'fa-robot',            re: /\bsk-[A-Za-z0-9_-]{16,}\b/ },
+      { kind: 'GitHub token', icon: 'fa-brands fa-github', re: /\bgh[pousr]_[A-Za-z0-9]{16,}\b/ },
+      { kind: 'AWS key',      icon: 'fa-cloud',            re: /\bAKIA[0-9A-Z]{16}\b/ },
+      { kind: 'Google key',   icon: 'fa-brands fa-google', re: /\bAIza[0-9A-Za-z_-]{35}\b/ },
+      { kind: 'Slack token',  icon: 'fa-brands fa-slack',  re: /\bxox[baprs]-[A-Za-z0-9-]{10,}\b/ },
+      { kind: 'Stripe key',   icon: 'fa-brands fa-stripe-s', re: /\b[rs]k_(?:live|test)_[A-Za-z0-9]{16,}\b/ },
+      { kind: 'JWT',          icon: 'fa-fingerprint',      re: /\beyJ[A-Za-z0-9_-]{6,}\.[A-Za-z0-9_-]{6,}\.[A-Za-z0-9_-]{6,}\b/ },
+      { kind: 'Private key',  icon: 'fa-key',              re: /-----BEGIN (?:RSA |EC |OPENSSH |PGP )?PRIVATE KEY-----/ },
+      { kind: 'Bearer token', icon: 'fa-shield-halved',    re: /\bBearer\s+[A-Za-z0-9._~+/-]{20,}=*/ },
+      { kind: 'Database URL', icon: 'fa-database',         re: /\b(?:postgres|postgresql|mysql|mongodb(?:\+srv)?|redis):\/\/[^\s]+/ },
+      { kind: 'WiFi key',     icon: 'fa-wifi',             re: /^WIFI:/i }
+    ];
+
+    function detectSecretKind(text) {
+      const raw = String(text == null ? '' : text);
+      if (!raw.trim()) return null;
+      for (const p of SECRET_PATTERNS) {
+        try { if (p.re.test(raw)) return { kind: p.kind, icon: p.icon }; } catch (e) {}
+      }
+      return null;
+    }
+
+    // Exact-length mask — never leaks or hides the true length.
+    function maskSecretText(text) {
+      const len = String(text == null ? '' : text).length;
+      return '\u2022'.repeat(Math.max(len, 1));
+    }
+
     let sessionClipboard = safeStoreGet('jsClipboard', []);
     let activeClipFilter = 'all';
     let clipSelectionMode = false;
     let expandedClipTexts = {};
+    let expandedClipSends = {};
+    let revealedClipSecrets = {};
 
     const CLIP_EXPIRY_MS = {
       hour: 60 * 60 * 1000,
@@ -15914,6 +16455,8 @@
       email: 'fa-envelope',
       phone: 'fa-phone',
       payment: 'fa-credit-card',
+      calendar: 'fa-calendar-day',
+      geo: 'fa-location-dot',
       text: 'fa-align-left'
     };
 
@@ -15939,6 +16482,8 @@
       const raw = String(text || '').trim();
       if (!raw) return { type: 'text', label: 'Plain Text', icon: 'fa-align-left' };
       if (/^wifi:/i.test(raw)) return { type: 'wifi', label: 'WiFi Network', icon: 'fa-wifi' };
+      if (/BEGIN:VEVENT/i.test(raw) || /BEGIN:VCALENDAR/i.test(raw)) return { type: 'calendar', label: 'Calendar Event', icon: 'fa-calendar-day' };
+      if (/^geo:/i.test(raw)) return { type: 'geo', label: 'Location', icon: 'fa-location-dot' };
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw) || /^mailto:/i.test(raw)) return { type: 'email', label: 'Email', icon: 'fa-envelope' };
       if (/^(\+?\d[\d\s().-]{6,}\d)$/.test(raw) || /^tel:/i.test(raw)) return { type: 'phone', label: 'Phone', icon: 'fa-phone' };
       if (/^upi:\/\//i.test(raw) || /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/.test(raw)) return { type: 'payment', label: 'Payment UPI', icon: 'fa-credit-card' };
@@ -16150,17 +16695,21 @@
       showNotify('Appended snippet to Scratchpad note', 'fa-solid fa-note-sticky');
     }
 
-    function sendClipToQR(id) {
-      const item = sessionClipboard.find(c => c.id === id);
-      if (!item) return;
-      const text = String(item.text || '').trim();
-      if (!text) return showNotify('Nothing to encode', 'fa-solid fa-triangle-exclamation');
+    // Route any payload into the QR Studio: WiFi / mailto / sms / tel /
+    // vCard / UPI / vCalendar / URL are parsed into the right fields,
+    // anything else becomes a plain text QR.
+    function openQRStudioWith(text, opts) {
+      opts = opts || {};
+      text = String(text || '').trim();
+      if (!text) return false;
 
       const setVal = (sel, v) => { const el = $(sel); if (el && v !== undefined && v !== null) el.value = v; };
       let routed = false;
 
       // Open QR Studio FIRST — switchTab re-renders the studio fields,
       // so field values must be filled in afterwards.
+      const sheet = document.getElementById('vibeSheet');
+      if (sheet && !sheet.classList.contains('open') && typeof openSheet === 'function') openSheet('vibeSheet');
       if (typeof switchTab === 'function') switchTab(null, 'tabQR');
 
       // WIFI: → WiFi studio fields
@@ -16256,7 +16805,14 @@
       generateQRStudio();
       haptic([50]);
       playSynthesizedSound('success-chord');
-      showNotify(routed ? 'Clip parsed into QR Studio' : 'Clip loaded as text QR', 'fa-solid fa-qrcode');
+      showNotify(opts.notify || (routed ? 'Loaded into QR Studio' : 'Loaded as a text QR'), 'fa-solid fa-qrcode');
+      return routed;
+    }
+
+    function sendClipToQR(id) {
+      const item = sessionClipboard.find(c => c.id === id);
+      if (!item) return;
+      return openQRStudioWith(item.text, { notify: 'Clip parsed into QR Studio' });
     }
 
     function togglePinClip(id) {
@@ -16313,6 +16869,18 @@
     function toggleClipExpand(id) {
       expandedClipTexts[id] = !expandedClipTexts[id];
       renderClipboard();
+    }
+
+    function toggleClipSend(id) {
+      expandedClipSends[id] = !expandedClipSends[id];
+      renderClipboard();
+    }
+
+    // A detected secret is shown masked until the reader asks to see it.
+    function toggleClipSecret(id) {
+      revealedClipSecrets[id] = !revealedClipSecrets[id];
+      renderClipboard();
+      haptic([25]);
     }
 
     function toggleClipSelected(id) {
@@ -16483,6 +17051,8 @@
       const sourceIcon = CLIP_SOURCE_ICONS[item.source] || 'fa-circle-dot';
       const expired = isClipExpired(item);
       const isLong = item.text.length > 180 || item.text.split('\n').length > 3;
+      const secret = detectSecretKind(item.text);
+      const secretHidden = !!secret && !revealedClipSecrets[item.id];
 
       // Smart contextual action button
       let contextualBtn = '';
@@ -16517,7 +17087,18 @@
 
         '<!-- Content Display Box -->' +
         '<div class="clip-content-box">' +
-          '<div class="clip-text-preview ' + (isExpanded ? 'expanded' : '') + '">' + escapeHtml(item.text) + '</div>' +
+          (secretHidden
+            ? '<div class="clip-secret-mask"><i class="fa-solid ' + secret.icon + '"></i>' +
+                '<span class="clip-secret-dots">' + escapeHtml(maskSecretText(item.text).slice(0, 48)) + '</span>' +
+                '<span class="clip-secret-tag">' + escapeHtml(secret.kind) + '</span>' +
+                '<button type="button" class="clip-secret-reveal" onclick="toggleClipSecret(\'' + item.id + '\')" title="Reveal secret">' +
+                  '<i class="fa-solid fa-eye"></i> Reveal</button>' +
+              '</div>'
+            : (secret
+              ? '<div class="clip-secret-banner"><i class="fa-solid ' + secret.icon + '"></i> ' + escapeHtml(secret.kind) +
+                '<button type="button" class="clip-secret-hide" onclick="toggleClipSecret(\'' + item.id + '\')" title="Hide again"><i class="fa-solid fa-eye-slash"></i> Hide</button></div>'
+              : '')) +
+          '<div class="clip-text-preview ' + (isExpanded ? 'expanded' : '') + '">' + (secretHidden ? '' : escapeHtml(item.text)) + '</div>' +
           (isLong ? '<button class="clip-expand-toggle" type="button" onclick="toggleClipExpand(\'' + item.id + '\')"><i class="fa-solid ' + (isExpanded ? 'fa-chevron-up' : 'fa-chevron-down') + '"></i> ' + (isExpanded ? 'Show less' : 'Show full snippet') + '</button>' : '') +
           '<div class="clip-card-stats">' +
             '<span>' + item.text.length + ' chars · ' + (item.text.trim() ? item.text.trim().split(/\s+/).length : 0) + ' words</span>' +
@@ -16534,11 +17115,15 @@
             '<button class="clip-action-btn" type="button" onclick="sendClipToQR(\'' + item.id + '\')" title="Create QR Code"><i class="fa-solid fa-qrcode"></i> QR</button>' +
           '</div>' +
           '<div class="clip-secondary-actions">' +
+            '<button class="clip-icon-action-btn" type="button" onclick="toggleClipSend(\'' + item.id + '\')" title="Send to another tool"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>' +
             '<button class="clip-icon-action-btn" type="button" onclick="shareClip(\'' + item.id + '\')" title="Share"><i class="fa-solid fa-share-nodes"></i></button>' +
             '<button class="clip-icon-action-btn" type="button" onclick="editClipSnippet(\'' + item.id + '\')" title="Edit"><i class="fa-solid fa-pen"></i></button>' +
             '<button class="clip-icon-action-btn delete" type="button" onclick="deleteClip(\'' + item.id + '\')" title="Delete"><i class="fa-solid fa-trash"></i></button>' +
           '</div>' +
         '</div>' +
+        (expandedClipSends[item.id]
+          ? jxSendRow({ text: item.text, label: item.label || '', source: 'clip' }, ['mission', 'counter', 'focus', 'qr', 'notes'], 'clip-send-row')
+          : '') +
       '</div>';
     }
 
@@ -16702,6 +17287,26 @@
     let totalPhaseDuration = 25 * 60;
     timeLeft = 25 * 60;
 
+    /* ── WALL-CLOCK TIMER ANCHOR ───────────────────────────────
+       The countdown is derived from an absolute end timestamp
+       (Date.now() based) instead of decrementing a counter, so
+       background-tab throttling, phone sleep, a reload or a
+       crash can never make the remaining time drift. The live
+       state is also persisted, so a refresh resumes the session
+       instead of silently losing it.                          */
+    let focusEndsAt = 0;                 // ms epoch the current phase ends (0 = stopped)
+    let focusRestoreDone = false;        // guard so restore runs at most once
+    const FOCUS_STATE_KEY = 'jsFocusTimer';
+
+    function focusIsRunning() { return !!timerInt; }
+
+    // Seconds left in the current phase, always read from the wall clock
+    // while the timer is running.
+    function focusRemainingSec() {
+      if (!focusEndsAt) return Math.max(0, Math.floor(Number(timeLeft) || 0));
+      return Math.max(0, Math.ceil((focusEndsAt - Date.now()) / 1000));
+    }
+
     function formatTime(sec) {
       sec = Math.max(0, Math.floor(Number(sec) || 0));
       const m = Math.floor(sec / 60).toString().padStart(2, '0');
@@ -16742,8 +17347,10 @@
         clearInterval(timerInt);
         timerInt = null;
       }
+      focusEndsAt = 0;
 
       updateFocusUI();
+      focusPersistState();
     }
 
     function setFocusTag(tag) {
@@ -16770,6 +17377,12 @@
     }
 
     function updateFocusUI() {
+      // While running, the displayed value is read from the wall clock so it
+      // can never drift away from real elapsed time.
+      if (focusEndsAt) {
+        const live = focusRemainingSec();
+        if (live !== timeLeft) timeLeft = live;
+      }
       const display = $('#timerRunningWrap');
       const diText = $('#diTimerText');
       const formatted = formatTime(timeLeft);
@@ -16941,29 +17554,40 @@
       playSynthesizedSound('click');
 
       if (timerInt) {
-        // Pause timer
+        // Pause — freeze whatever the wall clock says is left.
         clearInterval(timerInt);
         timerInt = null;
+        timeLeft = focusRemainingSec();
+        focusEndsAt = 0;
+        jxTabPause('focus', timeLeft, focusPhase === 'focus' ? '🍅' : '☕', window.currentIntention || '');
       } else {
-        // Start timer
+        // Start — anchor to an absolute end timestamp.
         activeIslandApp = 'timer';
         activateIslandTimer();
         unlockAchievement('focusMode');
 
-        timerInt = setInterval(() => {
-          if (timeLeft > 0) {
-            timeLeft--;
-            updateFocusUI();
-            const tag = window.currentIntention ? ' · ' + window.currentIntention : '';
-            jxTabTick('focus', timeLeft, totalPhaseDuration > 0 ? (timeLeft / totalPhaseDuration) : null, focusPhase === 'focus' ? '🍅' : '☕', tag);
-          } else {
-            completeFocusPhase();
-          }
-        }, 1000);
+        if (!timeLeft || timeLeft <= 0) timeLeft = totalPhaseDuration;
+        focusEndsAt = Date.now() + timeLeft * 1000;
+        timerInt = setInterval(focusTick, 1000);
       }
 
       updateFocusUI();
       updateAvailabilityStatus(new Date());
+      focusPersistState();
+    }
+
+    // One heartbeat of the countdown. Nothing is decremented here — the
+    // remaining time is always recomputed from focusEndsAt.
+    function focusTick() {
+      const remaining = focusRemainingSec();
+      timeLeft = remaining;
+      if (remaining <= 0) {
+        completeFocusPhase();
+        return;
+      }
+      updateFocusUI();
+      const tag = window.currentIntention ? ' · ' + window.currentIntention : '';
+      jxTabTick('focus', remaining, totalPhaseDuration > 0 ? (remaining / totalPhaseDuration) : null, focusPhase === 'focus' ? '🍅' : '☕', tag);
     }
 
     function adjustFocusTime(deltaSeconds) {
@@ -16979,14 +17603,18 @@
           customInput.value = Math.round(totalPhaseDuration / 60);
         }
       } else {
-        // When timer is running, adjust remaining time and scale total duration
-        const newTimeLeft = Math.max(10, timeLeft + deltaSeconds);
-        const diff = newTimeLeft - timeLeft;
+        // When timer is running, shift the wall-clock anchor so the adjustment
+        // lands exactly on the new end time.
+        const current = focusRemainingSec();
+        const newTimeLeft = Math.max(10, current + deltaSeconds);
+        const diff = newTimeLeft - current;
         timeLeft = newTimeLeft;
-        totalPhaseDuration = Math.max(timeLeft, totalPhaseDuration + diff);
+        totalPhaseDuration = Math.max(newTimeLeft, totalPhaseDuration + diff);
+        focusEndsAt = Date.now() + newTimeLeft * 1000;
       }
 
       updateFocusUI();
+      focusPersistState();
     }
 
     function toggleTimerDirectEdit() {
@@ -17020,7 +17648,10 @@
       else totalPhaseDuration = FOCUS_PRESETS.custom.longBreak * 60;
 
       timeLeft = totalPhaseDuration;
+      // A running timer follows the new duration from this moment.
+      focusEndsAt = timerInt ? (Date.now() + timeLeft * 1000) : 0;
       updateFocusUI();
+      focusPersistState();
     }
 
     function skipToNextPhase() {
@@ -17030,14 +17661,19 @@
         clearInterval(timerInt);
         timerInt = null;
       }
+      focusEndsAt = 0;
       advancePhase(false);
     }
 
-    function completeFocusPhase() {
+    function completeFocusPhase(silent) {
+      const quiet = !!silent;
       clearInterval(timerInt);
       timerInt = null;
-      haptic([100, 200, 100, 200]);
-      playSynthesizedSound('success-chord');
+      focusEndsAt = 0;
+      if (!quiet) {
+        haptic([100, 200, 100, 200]);
+        playSynthesizedSound('success-chord');
+      }
 
       if (focusPhase === 'focus') {
         const spentMins = Math.round(totalPhaseDuration / 60);
@@ -17061,7 +17697,7 @@
         showNotify('Break Finished! Ready to focus?', 'fa-solid fa-bolt');
       }
 
-      advancePhase(focusAutoAdvance);
+      advancePhase(quiet ? false : focusAutoAdvance);
     }
 
     function advancePhase(autoStart) {
@@ -17087,7 +17723,9 @@
       }
 
       timeLeft = totalPhaseDuration;
+      focusEndsAt = 0;
       updateFocusUI();
+      focusPersistState();
 
       if (autoStart) {
         setTimeout(() => toggleTimer(), 1000);
@@ -17107,6 +17745,7 @@
       const fMins = (focusMode === 'custom' && $('#customTimeInput')) ? parseInt($('#customTimeInput').value, 10) || 25 : FOCUS_PRESETS[focusMode].focus;
       totalPhaseDuration = fMins * 60;
       timeLeft = totalPhaseDuration;
+      focusEndsAt = 0;
 
       jxTabClear();
       if (activeIslandApp === 'timer') {
@@ -17117,7 +17756,96 @@
 
       updateFocusUI();
       updateAvailabilityStatus(new Date());
+      focusPersistState();
     }
+
+    /* ── FOCUS SESSION PERSISTENCE ─────────────────────────────
+       The live countdown is written to local storage so a refresh,
+       a crash or a closed tab never loses the session. The stored
+       value is an absolute timestamp, which is what makes the
+       restore accurate instead of "the timer kept running while
+       you were away".                                          */
+    function focusPersistState() {
+      try {
+        safeStoreSet(FOCUS_STATE_KEY, {
+          mode: focusMode,
+          phase: focusPhase,
+          round: focusRound,
+          totalRounds: focusTotalRounds,
+          duration: totalPhaseDuration,
+          remaining: focusIsRunning() ? focusRemainingSec() : Math.max(0, Math.floor(Number(timeLeft) || 0)),
+          endsAt: focusEndsAt || 0,
+          running: focusIsRunning(),
+          intention: window.currentIntention || '',
+          linkedTaskId: window.linkedFocusTaskId || null,
+          savedAt: Date.now()
+        });
+      } catch (e) { /* persistence is best-effort */ }
+    }
+
+    function focusRestoreState() {
+      if (focusRestoreDone) return false;
+      let s = null;
+      try { s = safeStoreGet(FOCUS_STATE_KEY, null); } catch (e) {}
+      if (!s || typeof s !== 'object') return false;
+      focusRestoreDone = true;
+
+      // ── Restore the session shape ──
+      focusMode = FOCUS_PRESETS[s.mode] ? s.mode : 'pomodoro';
+      focusPhase = ['focus', 'shortBreak', 'longBreak'].includes(s.phase) ? s.phase : 'focus';
+      focusRound = Math.max(1, Number(s.round || 1));
+      focusTotalRounds = Math.max(1, Number(s.totalRounds || (FOCUS_PRESETS[focusMode].rounds || 4)));
+      totalPhaseDuration = Math.max(60, Number(s.duration || (FOCUS_PRESETS[focusMode].focus * 60)));
+      timeLeft = Math.max(0, Number(s.remaining != null ? s.remaining : totalPhaseDuration));
+      window.currentIntention = s.intention || '';
+      window.linkedFocusTaskId = s.linkedTaskId || null;
+
+      // ── Paint the restored controls ──
+      document.querySelectorAll('.focus-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === focusMode));
+      const drawer = $('#focusCustomDrawer');
+      if (drawer) drawer.style.display = (focusMode === 'custom') ? 'block' : 'none';
+      const nameInput = $('#focusSessionName');
+      if (nameInput && s.intention) nameInput.value = s.intention;
+      const badge = document.getElementById('focusLinkedBadge');
+      const badgeText = document.getElementById('focusLinkedText');
+      if (badge && badgeText && s.linkedTaskId && typeof tasks !== 'undefined' && Array.isArray(tasks)) {
+        const t = tasks.find(x => x.id === s.linkedTaskId);
+        if (t) { badgeText.textContent = 'Linked Mission: ' + t.text; badge.style.display = 'flex'; }
+      }
+
+      // ── Resume the clock ──
+      if (s.running && s.endsAt) {
+        focusEndsAt = s.endsAt;
+        const remaining = focusRemainingSec();
+        if (remaining <= 0) {
+          // The phase elapsed while the app was closed. Settle that one phase
+          // silently, then present a fresh (paused) phase instead of silently
+          // replaying every phase that passed.
+          focusEndsAt = 0;
+          completeFocusPhase(true);
+        } else {
+          activeIslandApp = 'timer';
+          activateIslandTimer();
+          timerInt = setInterval(focusTick, 1000);
+          focusTick();
+          showNotify('Focus session resumed — ' + formatTime(remaining) + ' left', 'fa-solid fa-play');
+        }
+      }
+
+      updateFocusUI();
+      return true;
+    }
+
+    // Re-sync every clock when the tab returns to the foreground. Background
+    // tabs get their timers throttled, so this is where any drift is caught.
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState !== 'visible') return;
+      try { if (timerInt) focusTick(); } catch (e) {}
+      try { if (typeof swInterval !== 'undefined' && swInterval) updateStopwatch(); } catch (e) {}
+      try {
+        if (typeof applyCounterAutoResets === 'function' && applyCounterAutoResets() && typeof renderCounters === 'function') renderCounters();
+      } catch (e) {}
+    });
 
     // ── Focus Telemetry & Analytics Engine ──
     let focusChartInstance = null;
@@ -17274,6 +18002,7 @@
 
     // ── STOPWATCH STUDIO 2.0 ──
     let swLaps = [];
+    let stopwatchRestoreDone = false;   // guard so restore runs at most once
     let stopwatchSessions = safeStoreGet('jsStopwatchSessions', []);
 
     function formatStopwatch(ms) {
@@ -17284,8 +18013,11 @@
       return String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0') + '.' + String(centi).padStart(2, '0');
     }
 
+    // Elapsed time is always derived from the wall clock (Date.now), never from
+    // a rAF counter, so the reading stays correct through background tabs,
+    // device sleep and page reloads.
     function getStopwatchElapsed() {
-      return swInterval ? (swElapsedTime + performance.now() - swStartTime) : swElapsedTime;
+      return swInterval ? (swElapsedTime + Date.now() - swStartTime) : swElapsedTime;
     }
 
     function getStopwatchName() {
@@ -17297,14 +18029,62 @@
       safeStoreSet('jsStopwatchDraft', {
         name: getStopwatchName(),
         elapsed: swElapsedTime,
+        startedAt: swStartTime || 0,
+        running: !!swInterval,
         laps: swLaps
       });
     }
 
+    // Restore a stopwatch that was running when the page was last closed.
+    function stopwatchRestoreState() {
+      if (stopwatchRestoreDone) return false;
+      let d = null;
+      try { d = safeStoreGet('jsStopwatchDraft', null); } catch (e) {}
+      if (!d || typeof d !== 'object') return false;
+      stopwatchRestoreDone = true;
+
+      if (Array.isArray(d.laps) && d.laps.length) {
+        swLaps = d.laps;
+        lapCount = d.laps.length;
+        renderLaps();
+      }
+      swElapsedTime = Math.max(0, Number(d.elapsed || 0));
+      swStartTime = 0;
+
+      const btn = $('#swStartBtn');
+      const diBtn = $('#diSwPauseBtn');
+
+      if (d.running && d.startedAt) {
+        // Keep the original start timestamp so the time the app was closed
+        // still counts — a stopwatch is wall-clock, not a session timer.
+        swStartTime = Number(d.startedAt);
+        swInterval = requestAnimationFrame(updateStopwatch);
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+        if (diBtn) diBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        activeIslandApp = 'stopwatch';
+        if (typeof activateIslandStopwatch === 'function') activateIslandStopwatch();
+        showNotify('Stopwatch resumed at ' + formatStopwatch(getStopwatchElapsed()), 'fa-solid fa-stopwatch');
+      } else {
+        swStartTime = 0;
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-play"></i> ' + (swElapsedTime > 0 ? 'Resume' : 'Start');
+        if (diBtn) diBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+      }
+
+      const nameInput = $('#swSessionName');
+      if (nameInput && d.name) nameInput.value = d.name;
+      const display = $('#stopwatchDisplay');
+      if (display) display.textContent = formatStopwatch(getStopwatchElapsed());
+      const lapLive = $('#swLapLiveText');
+      if (lapLive) {
+        const lastLapTime = swLaps.length > 0 ? swLaps[swLaps.length - 1].msTotal : 0;
+        lapLive.textContent = 'Lap ' + (swLaps.length + 1) + ' • ' + formatStopwatch(Math.max(0, getStopwatchElapsed() - lastLapTime));
+      }
+      return true;
+    }
+
     function updateStopwatch() {
       if (!swInterval) return;
-      const now = performance.now();
-      const current = swElapsedTime + now - swStartTime;
+      const current = getStopwatchElapsed();
       const formatted = formatStopwatch(current);
       const display = $('#stopwatchDisplay');
       if (display) display.textContent = formatted;
@@ -17329,17 +18109,19 @@
       if (swInterval) {
         cancelAnimationFrame(swInterval);
         swInterval = null;
-        swElapsedTime += performance.now() - swStartTime;
+        swElapsedTime += Date.now() - swStartTime;
+        swStartTime = 0;
         if (btn) btn.innerHTML = '<i class="fa-solid fa-play"></i> Resume';
         if (diBtn) diBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
       } else {
         activeIslandApp = 'stopwatch';
-        swStartTime = performance.now();
+        swStartTime = Date.now();
         swInterval = requestAnimationFrame(updateStopwatch);
         if (btn) btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
         if (diBtn) diBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
         activateIslandStopwatch();
       }
+      persistStopwatchDraft();
     }
 
     function lapStopwatch() {
@@ -17405,6 +18187,7 @@
       swStartTime = 0;
       swLaps = [];
       lapCount = 0;
+      persistStopwatchDraft();
       const display = $('#stopwatchDisplay');
       if (display) display.textContent = '00:00.00';
       const lapLive = $('#swLapLiveText');
@@ -17449,6 +18232,12 @@
             '<span style="font-size:0.72rem; color:var(--text-muted); font-family:var(--font-mono);">' + s.duration + ' (' + (s.laps ? s.laps.length : 0) + ' laps) • ' + (s.savedAt || 'Saved') + '</span>' +
           '</div>' +
           '<div style="display:flex; gap:6px;">' +
+            '<button class="mission-mini-btn" type="button" title="Log this sprint in Focus Telemetry" ' +
+              'onclick="jxSendTo(\'focuslog\', decodeURIComponent(\'' + jxEncodePayload({ minutes: Math.max(1, Math.round((s.ms || 0) / 60000)), label: s.name, text: s.name }) + '\'))">' +
+              '<i class="fa-solid fa-clock-rotate-left"></i></button>' +
+            '<button class="mission-mini-btn" type="button" title="Create a mission from this session" ' +
+              'onclick="jxSendTo(\'mission\', decodeURIComponent(\'' + jxEncodePayload({ text: s.name, label: s.name, category: 'Work' }) + '\'))">' +
+              '<i class="fa-solid fa-list-check"></i></button>' +
             '<button class="mission-mini-btn delete" type="button" onclick="deleteStopwatchSession(' + idx + ')" title="Delete session"><i class="fa-solid fa-trash"></i></button>' +
           '</div>' +
         '</div>';
@@ -17480,7 +18269,9 @@
     // ── PASSWORD GENERATOR STUDIO 2.0 ──
     let savedPasswords = safeStoreGet('jsPasswords', []);
     let currentRawPassword = '';
-    let isPassMasked = false;
+    let isPassMasked = true;              // secrets start hidden
+    let passRevealTimer = null;           // re-mask the vault after a while
+    let passDisplayTimer = null;          // re-mask the generator after a while
 
     function getPasswordCharset() {
       let chars = '';
@@ -17585,7 +18376,7 @@
         return;
       }
       if (isPassMasked) {
-        el.textContent = '•'.repeat(currentRawPassword.length);
+        el.textContent = maskSecretText(currentRawPassword);
       } else {
         el.textContent = currentRawPassword;
       }
@@ -17595,6 +18386,17 @@
       isPassMasked = !isPassMasked;
       const icon = $('#passMaskIcon');
       if (icon) icon.className = isPassMasked ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+      if (passDisplayTimer) { clearTimeout(passDisplayTimer); passDisplayTimer = null; }
+      if (!isPassMasked) {
+        // Auto-hide the revealed key again so it never sits on screen.
+        passDisplayTimer = setTimeout(() => {
+          isPassMasked = true;
+          passDisplayTimer = null;
+          const ic = $('#passMaskIcon');
+          if (ic) ic.className = 'fa-solid fa-eye-slash';
+          renderPasswordDisplay();
+        }, 30000);
+      }
       renderPasswordDisplay();
       haptic([30]);
     }
@@ -17611,10 +18413,12 @@
     function saveCurrentPassword() {
       if (!currentRawPassword) generatePassword();
       haptic([60, 40]);
+      const detected = detectSecretKind(currentRawPassword);
       savedPasswords.unshift({
         id: Date.now(),
         pass: currentRawPassword,
         visible: false,
+        kind: detected ? detected.kind : 'password',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       });
       safeStoreSet('jsPasswords', savedPasswords.slice(0, 25));
@@ -17631,27 +18435,57 @@
         return;
       }
       list.innerHTML = savedPasswords.map((p, idx) => {
-        const display = p.visible ? p.pass : '•'.repeat(Math.min(16, p.pass.length));
-        return '<div class="data-item" style="padding:8px 12px; justify-content:space-between; align-items:center;">' +
-          '<div style="display:flex; align-items:center; gap:8px; min-width:0; flex:1;">' +
+        const pass = String(p.pass || '');
+        const display = p.visible ? pass : maskSecretText(pass);
+        const detected = p.kind ? { kind: p.kind, icon: 'fa-shield-halved' } : detectSecretKind(pass);
+        const kindBadge = (detected && detected.kind !== 'password')
+          ? '<span class="vault-secret-badge" title="Detected secret type"><i class="fa-solid ' + detected.icon + '"></i> ' + escapeHtml(detected.kind) + '</span>'
+          : '';
+        return '<div class="data-item" style="padding:8px 12px; justify-content:space-between; align-items:center; gap:8px;">' +
+          '<div style="display:flex; align-items:center; gap:8px; min-width:0; flex:1; flex-wrap:wrap;">' +
             '<i class="fa-solid fa-key" style="color:var(--accent); font-size:0.8rem;"></i>' +
             '<span style="font-size:0.82rem; font-family:var(--font-mono); color:var(--text-main); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + escapeHtml(display) + '</span>' +
+            kindBadge +
           '</div>' +
           '<div style="display:flex; gap:6px; flex:none;">' +
-            '<button class="mission-mini-btn" type="button" onclick="togglePassView(' + idx + ')" title="Toggle view"><i class="fa-solid ' + (p.visible ? 'fa-eye-slash' : 'fa-eye') + '"></i></button>' +
-            '<button class="mission-mini-btn" type="button" onclick="globalCopyText(\'' + escapeHtml(p.pass) + '\', true)" title="Copy key"><i class="fa-solid fa-copy"></i></button>' +
+            '<button class="mission-mini-btn" type="button" onclick="togglePassView(' + idx + ')" title="' + (p.visible ? 'Hide key' : 'Reveal key') + '" aria-pressed="' + (p.visible ? 'true' : 'false') + '"><i class="fa-solid ' + (p.visible ? 'fa-eye-slash' : 'fa-eye') + '"></i></button>' +
+            '<button class="mission-mini-btn" type="button" onclick="copyPassAt(' + idx + ')" title="Copy key"><i class="fa-solid fa-copy"></i></button>' +
             '<button class="mission-mini-btn delete" type="button" onclick="deletePass(' + idx + ')" title="Delete key"><i class="fa-solid fa-trash"></i></button>' +
           '</div>' +
         '</div>';
       }).join('');
     }
 
+    // Reveal a key for a short while, then mask the vault again.
     function togglePassView(idx) {
-      if (savedPasswords[idx]) {
-        savedPasswords[idx].visible = !savedPasswords[idx].visible;
-        renderPasswords();
-        haptic([30]);
+      if (!savedPasswords[idx]) return;
+      savedPasswords[idx].visible = !savedPasswords[idx].visible;
+      if (passRevealTimer) { clearTimeout(passRevealTimer); passRevealTimer = null; }
+      if (savedPasswords[idx].visible) {
+        passRevealTimer = setTimeout(() => {
+          savedPasswords.forEach(p => { p.visible = false; });
+          passRevealTimer = null;
+          if (typeof renderPasswords === 'function') renderPasswords();
+          showNotify('Vault re-masked', 'fa-solid fa-eye-slash');
+        }, 20000);
       }
+      renderPasswords();
+      haptic([30]);
+    }
+
+    // Copy straight from the vault array — the secret never lands in the DOM.
+    function copyPassAt(idx) {
+      const p = savedPasswords[idx];
+      if (!p) return;
+      globalCopyText(p.pass, true);
+    }
+
+    function maskAllPasswords() {
+      savedPasswords.forEach(p => { p.visible = false; });
+      if (passRevealTimer) { clearTimeout(passRevealTimer); passRevealTimer = null; }
+      renderPasswords();
+      haptic([40]);
+      showNotify('All keys masked', 'fa-solid fa-eye-slash');
     }
 
     function deletePass(idx) {
@@ -20327,22 +21161,22 @@
       haptic([30]); playSynthesizedSound('click');
     }
 
-    /* ── QR Module Style / Quiet Zone / Error Correction Engine ── */
+    /* ── QR Module Style Engine ────────────────────────────────────
+       Error correction is fixed at H and the quiet zone at the
+       standard 4 modules, so every code stays scannable even with
+       the center logo watermark — no user-facing controls needed. */
     var qrModuleStyle = 'square';  // 'square' | 'rounded' | 'dots'
-    var qrQuietZone = 3;           // 0–8 modules of white border
-    var qrECLevel = 'H';           // 'L' | 'M' | 'Q' | 'H'
     const QR_STYLE_NAMES = { square: 'Classic Square', rounded: 'Soft Rounded', dots: 'Dot Matrix' };
-    const QR_EC_NAMES = { L: 'L · Low (7%)', M: 'M · Medium (15%)', Q: 'Q · Quartile (25%)', H: 'H · High (30%)' };
+    const QR_QUIET_ZONE = 4;       // standard white border, in modules
+    const QR_ERROR_CORRECTION = 'H';
 
     try {
       const savedQRStyle = JSON.parse(localStorage.getItem('jsQRStylePrefs') || '{}');
       if (['square', 'rounded', 'dots'].includes(savedQRStyle.style)) qrModuleStyle = savedQRStyle.style;
-      if (Number.isFinite(savedQRStyle.quiet)) qrQuietZone = Math.max(0, Math.min(8, Math.round(Number(savedQRStyle.quiet))));
-      if (['L', 'M', 'Q', 'H'].includes(savedQRStyle.ec)) qrECLevel = savedQRStyle.ec;
     } catch (e) {}
 
     function saveQRStylePrefs() {
-      try { localStorage.setItem('jsQRStylePrefs', JSON.stringify({ style: qrModuleStyle, quiet: qrQuietZone, ec: qrECLevel })); } catch (e) {}
+      try { localStorage.setItem('jsQRStylePrefs', JSON.stringify({ style: qrModuleStyle })); } catch (e) {}
     }
 
     function setQRModuleStyle(style, name) {
@@ -20357,43 +21191,10 @@
       generateQRStudio();
     }
 
-    function setQRQuietZone(v) {
-      qrQuietZone = Math.max(0, Math.min(8, parseInt(v, 10) || 0));
-      const label = $('#qrQuietVal');
-      if (label) label.textContent = qrQuietZone + (qrQuietZone === 1 ? ' module' : ' modules');
-      saveQRStylePrefs();
-      debounceGenerateQR();
-    }
-
-    function setQRECLevel(ec) {
-      if (!['L', 'M', 'Q', 'H'].includes(ec)) return;
-      // Center logo watermark is only safe with H redundancy
-      if ((typeof activeQRLogo !== 'undefined' && activeQRLogo !== 'none') && ec !== 'H') {
-        showNotify('Center logo needs H error correction', 'fa-solid fa-shield-halved');
-        haptic([60]);
-        return;
-      }
-      qrECLevel = ec;
-      document.querySelectorAll('#qrEcOptions .qr-logo-chip').forEach(c => c.classList.toggle('active', c.dataset.ec === ec));
-      const label = $('#qrEcName');
-      if (label) label.textContent = QR_EC_NAMES[ec];
-      saveQRStylePrefs();
-      haptic([30]);
-      playSynthesizedSound('tap');
-      generateQRStudio();
-    }
-
     function syncQRStyleControls() {
-      const range = $('#qrQuietRange');
-      if (range) range.value = qrQuietZone;
-      const qLabel = $('#qrQuietVal');
-      if (qLabel) qLabel.textContent = qrQuietZone + (qrQuietZone === 1 ? ' module' : ' modules');
       document.querySelectorAll('#qrStyleOptions .qr-logo-chip').forEach(c => c.classList.toggle('active', c.dataset.style === qrModuleStyle));
       const sLabel = $('#qrStyleName');
       if (sLabel) sLabel.textContent = QR_STYLE_NAMES[qrModuleStyle];
-      document.querySelectorAll('#qrEcOptions .qr-logo-chip').forEach(c => c.classList.toggle('active', c.dataset.ec === qrECLevel));
-      const eLabel = $('#qrEcName');
-      if (eLabel) eLabel.textContent = QR_EC_NAMES[qrECLevel];
     }
     syncQRStyleControls();
 
@@ -20498,10 +21299,7 @@
         if (!ssid) {
           return { payload: 'WIFI:T:WPA;S:MyWiFi;P:;;', label: 'WiFi: (Enter SSID)', icon: 'fa-wifi' };
         }
-        let payload = 'WIFI:T:' + enc + ';S:' + ssid.replace(/([\\;,:"])/g, '\\$1') + ';';
-        if (enc !== 'nopass' && pass) payload += 'P:' + pass.replace(/([\\;,:"])/g, '\\$1') + ';';
-        payload += ';';
-        return { payload: payload, label: 'WiFi: ' + ssid, icon: 'fa-wifi' };
+        return { payload: buildWifiPayloadParts(ssid, pass, enc), label: 'WiFi: ' + ssid, icon: 'fa-wifi' };
       }
       if (activeQRStudioType === 'vcard') {
         const name = ($('#qrf_vcard_name') && $('#qrf_vcard_name').value.trim()) || '';
@@ -20615,6 +21413,14 @@ async function ensureQRCodeLib() {
         const bIcon = $('#qrBadgeIcon');
         if (bText) bText.textContent = built.label;
         if (bIcon) bIcon.className = 'fa-solid ' + (built.icon || 'fa-qrcode');
+        // Send-to row — the encoded payload can become a clip, a note or a mission.
+        const sendHost = document.getElementById('qrSendRow');
+        if (sendHost) {
+          sendHost.innerHTML = jxSendRow(
+            { text: built.payload, label: built.label || 'QR payload', source: 'qr' },
+            ['clipboard', 'notes', 'mission']
+          );
+        }
       } catch (err) {
         console.warn('QR generation fallback:', err);
       }
@@ -20890,6 +21696,394 @@ async function ensureQRCodeLib() {
       }
     }
 
+    /* ═══════════════════════════════════════════════════════════
+       SCANNER RESULT ACTIONS — one set of buttons per payload type.
+       URL → open / copy / shorten · mailto: → compose · tel: → dial
+       geo: → maps · VEVENT → mission + .ics · upi:// → pay
+    ═══════════════════════════════════════════════════════════ */
+    function scannerTypeActions(text) {
+      const raw = String(text || '').trim();
+      if (!raw) return '';
+      const enc = jxEncText(raw);
+      const out = [];
+      const copyBtn = '<button class="mission-act-btn ripple-btn" type="button" onclick="globalCopyText(decodeURIComponent(\'' + enc + '\'), true)"><i class="fa-solid fa-copy"></i> Copy</button>';
+
+      if (/^https?:\/\//i.test(raw)) {
+        out.push('<a href="' + escapeHtml(raw) + '" target="_blank" rel="noopener noreferrer" class="mission-act-btn primary ripple-btn" style="text-decoration:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open URL</a>');
+        out.push('<button class="mission-act-btn ripple-btn" type="button" onclick="globalCopyText(decodeURIComponent(\'' + enc + '\'), true)"><i class="fa-solid fa-copy"></i> Copy URL</button>');
+        out.push('<button class="mission-act-btn ripple-btn" type="button" onclick="shortenScannedUrl(decodeURIComponent(\'' + enc + '\'))"><i class="fa-solid fa-link"></i> Shorten</button>');
+      } else if (/^mailto:/i.test(raw)) {
+        out.push('<a href="' + escapeHtml(raw) + '" class="mission-act-btn primary ripple-btn" style="text-decoration:none;"><i class="fa-solid fa-envelope"></i> Compose</a>');
+        out.push(copyBtn);
+      } else if (/^tel:/i.test(raw)) {
+        out.push('<a href="' + escapeHtml(raw) + '" class="mission-act-btn primary ripple-btn" style="text-decoration:none;"><i class="fa-solid fa-phone"></i> Dial</a>');
+        out.push(copyBtn);
+      } else if (/^geo:/i.test(raw)) {
+        const q = raw.replace(/^geo:/i, '');
+        out.push('<a href="' + escapeHtml(raw) + '" class="mission-act-btn primary ripple-btn" style="text-decoration:none;"><i class="fa-solid fa-location-dot"></i> Open in Maps</a>');
+        out.push('<a href="https://www.google.com/maps/search/?api=1&amp;query=' + encodeURIComponent(q) + '" target="_blank" rel="noopener noreferrer" class="mission-act-btn ripple-btn" style="text-decoration:none;"><i class="fa-solid fa-map"></i> Google Maps</a>');
+        out.push(copyBtn);
+      } else if (/BEGIN:VEVENT/i.test(raw)) {
+        out.push('<button class="mission-act-btn primary ripple-btn" type="button" onclick="addScannedEventToMission(decodeURIComponent(\'' + enc + '\'))"><i class="fa-solid fa-list-check"></i> Add to Mission</button>');
+        out.push('<button class="mission-act-btn ripple-btn" type="button" onclick="downloadScannedEvent(decodeURIComponent(\'' + enc + '\'))"><i class="fa-solid fa-calendar-plus"></i> Save .ics</button>');
+        out.push(copyBtn);
+      } else if (/^upi:\/\//i.test(raw)) {
+        out.push('<a href="' + escapeHtml(raw) + '" class="mission-act-btn primary ripple-btn" style="text-decoration:none;"><i class="fa-solid fa-indian-rupee-sign"></i> Pay Now</a>');
+        out.push(copyBtn);
+      } else if (/^WIFI:/i.test(raw)) {
+        out.push('<button class="mission-act-btn primary ripple-btn" type="button" onclick="globalCopyText(decodeURIComponent(\'' + enc + '\'), true)"><i class="fa-solid fa-copy"></i> Copy WiFi Key</button>');
+        out.push('<button class="mission-act-btn ripple-btn" type="button" onclick="openWifiJoinSheetFromText(decodeURIComponent(\'' + enc + '\'))"><i class="fa-solid fa-print"></i> Join Sheet</button>');
+      } else {
+        out.push('<button class="mission-act-btn primary ripple-btn" type="button" onclick="globalCopyText(decodeURIComponent(\'' + enc + '\'), true)"><i class="fa-solid fa-copy"></i> Copy</button>');
+      }
+      return out.join('');
+    }
+
+    // Shorten a scanned link. This is the only action in the toolkit that
+    // talks to the network, so it fails quietly when offline.
+    async function shortenScannedUrl(url) {
+      const target = String(url || '').trim();
+      if (!/^https?:\/\//i.test(target)) return showNotify('Only web links can be shortened', 'fa-solid fa-triangle-exclamation');
+      showNotify('Shortening link…', 'fa-solid fa-link');
+      const attempts = [
+        // clck.ru answers with CORS headers, so it works from a static page.
+        async () => {
+          const res = await fetch('https://clck.ru/--?url=' + encodeURIComponent(target));
+          if (!res.ok) throw new Error('clck failed');
+          return String(await res.text() || '').trim();
+        },
+        async () => {
+          const res = await fetch('https://is.gd/create.php?format=simple&url=' + encodeURIComponent(target));
+          if (!res.ok) throw new Error('is.gd failed');
+          return String(await res.text() || '').trim();
+        },
+        async () => {
+          const res = await fetch('https://cleanuri.com/api/v1/shorten', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: target })
+          });
+          if (!res.ok) throw new Error('cleanuri failed');
+          const json = await res.json();
+          return String(json.short_url || '').trim();
+        }
+      ];
+      for (const attempt of attempts) {
+        try {
+          const short = await attempt();
+          if (/^https?:\/\//i.test(short)) {
+            globalCopyText(short, true);
+            showNotify('Short link copied: ' + short, 'fa-solid fa-link');
+            return true;
+          }
+        } catch (e) { /* try the next service */ }
+      }
+      showNotify('Could not shorten right now — the full link was kept', 'fa-solid fa-triangle-exclamation');
+      return false;
+    }
+
+    /* ── Calendar events (VCALENDAR / VEVENT) ───────────────── */
+    function parseScannedEvent(text) {
+      const raw = String(text || '');
+      if (!/BEGIN:VEVENT/i.test(raw)) return null;
+      const field = (k) => {
+        const m = new RegExp('(?:^|\\r?\\n)' + k + '(?:;[^:\\r\\n]*)?:([^\\r\\n]*)', 'i').exec(raw);
+        return m ? m[1].trim() : '';
+      };
+      const rawStart = field('DTSTART');
+      let start = null;
+      const m = /^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2}))?/.exec(rawStart);
+      if (m) {
+        start = new Date(+m[1], +m[2] - 1, +m[3], m[4] ? +m[4] : 0, m[5] ? +m[5] : 0, m[6] ? +m[6] : 0);
+      }
+      return {
+        summary: field('SUMMARY') || 'Scanned event',
+        location: field('LOCATION'),
+        description: field('DESCRIPTION'),
+        start: start,
+        startRaw: rawStart
+      };
+    }
+
+    function addScannedEventToMission(text) {
+      const ev = parseScannedEvent(text);
+      if (!ev) return showNotify('Could not read that event', 'fa-solid fa-triangle-exclamation');
+      const due = ev.start ? (String(ev.start.getHours()).padStart(2, '0') + ':' + String(ev.start.getMinutes()).padStart(2, '0')) : '';
+      const day = ev.start ? ev.start.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : '';
+      const body = ev.summary + (day ? ' · ' + day : '') + (ev.location ? ' @ ' + ev.location : '');
+      if (typeof openSheet === 'function') openSheet('vibeSheet');
+      if (typeof switchTab === 'function') switchTab(null, 'tabPlan');
+      const task = normalizeTask({ text: body, category: 'Event', lane: 'next', due: due }, tasks.length);
+      tasks.push(task);
+      if (typeof saveTasks === 'function') saveTasks();
+      if (typeof renderTasks === 'function') renderTasks();
+      haptic([50]);
+      playSynthesizedSound('success-chord');
+      showNotify('Mission created: ' + body, 'fa-solid fa-list-check');
+      return true;
+    }
+
+    function downloadScannedEvent(text) {
+      const body = /^BEGIN:VCALENDAR/i.test(String(text || ''))
+        ? String(text)
+        : ('BEGIN:VCALENDAR\r\nVERSION:2.0\r\n' + String(text || '') + '\r\nEND:VCALENDAR');
+      downloadTextFile('scanned-event-' + new Date().toISOString().slice(0, 10) + '.ics', body, 'text/calendar;charset=utf-8');
+      showNotify('Event file saved', 'fa-solid fa-calendar-plus');
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       WI-FI JOIN SHEET — a printable guest-network card.
+    ═══════════════════════════════════════════════════════════ */
+    // The single source of truth for the Wi-Fi payload. QR Studio and the
+    // printable join sheet both go through this, so the printed code and the
+    // code made in QR Studio are always byte-identical.
+    function buildWifiPayloadParts(ssid, pass, enc) {
+      const esc = (v) => String(v == null ? '' : v).replace(/([\\;,:"])/g, '\\$1');
+      const type = String(enc || 'WPA').toUpperCase();
+      let payload = 'WIFI:T:' + type + ';S:' + esc(ssid) + ';';
+      if (type !== 'NOPASS' && pass) payload += 'P:' + esc(pass) + ';';
+      payload += ';';
+      return payload;
+    }
+
+    function buildWifiPayload(wifi) {
+      return buildWifiPayloadParts(wifi && wifi.ssid, wifi && wifi.pass, wifi && wifi.type);
+    }
+
+    // Wi-Fi payloads escape \ ; , : and " — undo that for display.
+    function unescapeWifiValue(v) {
+      return String(v == null ? '' : v).replace(/\\([\\;,:"])/g, '$1');
+    }
+
+    async function openWifiJoinSheet(wifiData) {
+      const data = wifiData || scannedWifiData;
+      if (!data || !data.ssid) return showNotify('No Wi-Fi details to print', 'fa-solid fa-wifi');
+      const qrImg = document.getElementById('wifiJoinQr');
+      try {
+        const url = await renderLocalQR(buildWifiPayload(data), '#000000');
+        if (qrImg) qrImg.src = url;
+      } catch (e) { if (qrImg) qrImg.removeAttribute('src'); }
+      const ssidEl = document.getElementById('wifiJoinSsid');
+      const passEl = document.getElementById('wifiJoinPass');
+      const typeEl = document.getElementById('wifiJoinType');
+      if (ssidEl) ssidEl.textContent = unescapeWifiValue(data.ssid);
+      if (passEl) passEl.textContent = unescapeWifiValue(data.pass) || 'None (open network)';
+      if (typeEl) typeEl.textContent = String(data.type || 'WPA/WPA2');
+      if (typeof openSheet === 'function') openSheet('wifiJoinSheet');
+      haptic([40]);
+      return true;
+    }
+
+    function openWifiJoinSheetFromText(text) {
+      const parsed = parseWifiQRCode(String(text || ''));
+      if (!parsed) return showNotify('That is not a Wi-Fi code', 'fa-solid fa-wifi');
+      return openWifiJoinSheet(parsed);
+    }
+
+    // Close only the join sheet — the scanner stays exactly where it was.
+    function closeWifiJoinSheet() {
+      const sheet = document.getElementById('wifiJoinSheet');
+      if (sheet) sheet.classList.remove('open');
+      if (!document.querySelector('.bottom-sheet.open')) {
+        const overlay = document.getElementById('overlay');
+        if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+        document.body.classList.remove('locked');
+      }
+    }
+
+    function copyWifiJoinPayload() {
+      const data = scannedWifiData;
+      if (!data) return showNotify('No Wi-Fi details loaded', 'fa-solid fa-wifi');
+      globalCopyText(buildWifiPayload(data), true);
+      showNotify('Wi-Fi payload copied', 'fa-solid fa-copy');
+    }
+
+    function downloadWifiJoinQr() {
+      const img = document.getElementById('wifiJoinQr');
+      if (!img || !img.src) return showNotify('No QR generated yet', 'fa-solid fa-qrcode');
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = 'wifi-join-qr.png';
+      a.target = '_blank';
+      a.click();
+      showNotify('QR image downloaded', 'fa-solid fa-download');
+    }
+
+    // Print the join sheet through a hidden iframe — no popup blockers.
+    function printWifiJoinSheet() {
+      const data = scannedWifiData;
+      if (!data) return showNotify('No Wi-Fi details loaded', 'fa-solid fa-wifi');
+      const qrImg = document.getElementById('wifiJoinQr');
+      const qrSrc = (qrImg && qrImg.src) ? qrImg.src : '';
+      const doc = '<!doctype html><html><head><meta charset="utf-8"><title>Wi-Fi Join Sheet</title><style>' +
+        'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:34px;color:#111;background:#fff;}' +
+        'h1{font-size:23px;margin:0 0 4px;letter-spacing:-0.02em;}' +
+        '.sub{color:#666;font-size:13px;margin-bottom:24px;}' +
+        '.card{border:2px solid #111;border-radius:20px;padding:24px;display:inline-block;text-align:center;}' +
+        'img{width:270px;height:270px;image-rendering:pixelated;}' +
+        '.row{margin-top:17px;text-align:left;}' +
+        '.row b{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#666;margin-bottom:3px;}' +
+        '.row span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:18px;font-weight:700;word-break:break-all;}' +
+        '.foot{margin-top:22px;font-size:11px;color:#888;}' +
+        '</style></head><body>' +
+        '<h1>Join this Wi-Fi network</h1>' +
+        '<div class="sub">Scan the code with your camera, or type the details in by hand.</div>' +
+        '<div class="card">' +
+          (qrSrc ? '<img src="' + qrSrc + '" alt="Wi-Fi QR code">' : '') +
+          '<div class="row"><b>Network (SSID)</b><span>' + escapeHtml(unescapeWifiValue(data.ssid)) + '</span></div>' +
+          '<div class="row"><b>Password</b><span>' + escapeHtml(unescapeWifiValue(data.pass) || 'None (open network)') + '</span></div>' +
+          '<div class="row"><b>Security</b><span>' + escapeHtml(data.type || 'WPA/WPA2') + '</span></div>' +
+        '</div>' +
+        '<div class="foot">Printed from the Digital Toolkit · nothing was sent anywhere.</div>' +
+        '</body></html>';
+      const iframe = document.createElement('iframe');
+      iframe.setAttribute('aria-hidden', 'true');
+      iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;';
+      document.body.appendChild(iframe);
+      const frameDoc = iframe.contentWindow.document;
+      frameDoc.open();
+      frameDoc.write(doc);
+      frameDoc.close();
+      setTimeout(() => {
+        try { iframe.contentWindow.focus(); iframe.contentWindow.print(); } catch (e) {}
+        setTimeout(() => iframe.remove(), 1200);
+      }, 400);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       BATCH SCANNING — many images and every page of a PDF
+    ═══════════════════════════════════════════════════════════ */
+    const PDFJS_BASE = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/';
+    let scannerBatchResults = [];
+
+    async function ensurePdfRenderer() {
+      if (!window.pdfjsLib) {
+        await lazyLoadScript(PDFJS_BASE + 'pdf.min.js');
+      }
+      if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions && !window.pdfjsLib.GlobalWorkerOptions.workerSrc) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_BASE + 'pdf.worker.min.js';
+      }
+      return !!window.pdfjsLib;
+    }
+
+    // Find the first QR / barcode inside an image or a canvas.
+    async function detectCodeInSource(source) {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      const w = source.naturalWidth || source.width || 0;
+      const h = source.naturalHeight || source.height || 0;
+      if (!w || !h) return null;
+      const maxSide = Math.max(w, h);
+      const scales = [...new Set([Math.min(1, 1600 / maxSide), Math.min(1, 1000 / maxSide), Math.min(1, 600 / maxSide)])];
+      for (const scale of scales) {
+        canvas.width = Math.max(1, Math.round(w * scale));
+        canvas.height = Math.max(1, Math.round(h * scale));
+        ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
+        if ('BarcodeDetector' in window) {
+          try {
+            if (!barcodeDetector) barcodeDetector = new BarcodeDetector({ formats: ['qr_code','code_128','code_39','code_93','ean_13','ean_8','upc_a','upc_e','itf','codabar','data_matrix','pdf417','aztec'] });
+            const codes = await barcodeDetector.detect(canvas);
+            if (codes && codes.length) return codes[0].rawValue || codes[0].rawData;
+          } catch (e) {}
+        }
+        if (window.jsQR) {
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'attemptBoth' });
+          if (code && code.data) return code.data;
+        }
+      }
+      return null;
+    }
+
+    function loadImageFromFile(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Could not read image')); };
+        img.src = url;
+      });
+    }
+
+    async function scanPdfForCodes(file) {
+      const ready = await ensurePdfRenderer();
+      if (!ready) throw new Error('PDF renderer unavailable');
+      const data = await file.arrayBuffer();
+      const doc = await window.pdfjsLib.getDocument({ data: data }).promise;
+      const found = [];
+      for (let p = 1; p <= doc.numPages; p++) {
+        const page = await doc.getPage(p);
+        const viewport = page.getViewport({ scale: 2 });
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.floor(viewport.width));
+        canvas.height = Math.max(1, Math.floor(viewport.height));
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+        const text = await detectCodeInSource(canvas);
+        if (text) found.push({ page: p, text: text });
+      }
+      return { found: found, pages: doc.numPages };
+    }
+
+    function renderScannerBatchResults() {
+      const panel = document.getElementById('scannerBatchPanel');
+      const list = document.getElementById('scannerBatchList');
+      if (!panel || !list) return;
+      if (!scannerBatchResults.length) { panel.style.display = 'none'; list.innerHTML = ''; return; }
+      panel.style.display = 'block';
+      list.innerHTML = scannerBatchResults.map((r, i) => {
+        const det = detectContentType(r.text);
+        return '<div class="data-item" style="padding:8px 12px; gap:8px; flex-wrap:wrap;">' +
+          '<div style="display:flex; flex-direction:column; gap:2px; min-width:0; flex:1;">' +
+            '<span style="font-size:0.78rem; font-weight:800; color:var(--text-main);">' + escapeHtml(det.label) + ' <span style="font-weight:600; color:var(--text-muted);">· ' + escapeHtml(r.source) + '</span></span>' +
+            '<span style="font-size:0.7rem; color:var(--text-muted); font-family:var(--font-mono); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + escapeHtml(r.text) + '</span>' +
+          '</div>' +
+          '<div style="display:flex; gap:6px; flex:none;">' +
+            '<button class="mission-mini-btn" type="button" onclick="copyBatchResult(' + i + ')" title="Copy"><i class="fa-solid fa-copy"></i></button>' +
+            '<button class="mission-mini-btn" type="button" onclick="useBatchResult(' + i + ')" title="Use this result"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>' +
+            '<button class="mission-mini-btn delete" type="button" onclick="removeBatchResult(' + i + ')" title="Remove"><i class="fa-solid fa-xmark"></i></button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function copyBatchResult(i) {
+      const r = scannerBatchResults[i];
+      if (!r) return;
+      globalCopyText(r.text, true);
+    }
+
+    function useBatchResult(i) {
+      const r = scannerBatchResults[i];
+      if (!r) return;
+      renderScannerSmartCard(r.text, detectContentType(r.text));
+      showNotify('Loaded into the result card', 'fa-solid fa-circle-check');
+    }
+
+    function removeBatchResult(i) {
+      scannerBatchResults.splice(i, 1);
+      renderScannerBatchResults();
+    }
+
+    function clearBatchResults() {
+      scannerBatchResults = [];
+      renderScannerBatchResults();
+    }
+
+    function copyAllBatchResults() {
+      if (!scannerBatchResults.length) return showNotify('No batch results to copy', 'fa-solid fa-layer-group');
+      globalCopyText(scannerBatchResults.map(r => r.text).join('\n'), true);
+      showNotify(scannerBatchResults.length + ' results copied', 'fa-solid fa-copy');
+    }
+
+    function saveAllBatchToClipboard() {
+      if (!scannerBatchResults.length) return showNotify('No batch results to save', 'fa-solid fa-layer-group');
+      scannerBatchResults.forEach(r => addClipToHistory(r.text, { source: 'scan', label: r.source }));
+      showNotify(scannerBatchResults.length + ' results saved to the clipboard vault', 'fa-solid fa-clipboard-list');
+    }
+
     function renderScannerSmartCard(text, detected) {
       const box = $('#scannerResultBox');
       const textEl = $('#scannerResultText');
@@ -20901,23 +22095,25 @@ async function ensureQRCodeLib() {
       textEl.textContent = text;
       if (typeTag) typeTag.innerHTML = '<i class="fa-solid ' + (detected.icon || 'fa-qrcode') + '"></i> ' + detected.label;
 
-      let actionsHtml = '';
+      // Type-specific actions (open / compose / dial / maps / mission / pay…)
+      let actionsHtml = scannerTypeActions(text);
+      actionsHtml += '<button class="mission-act-btn ripple-btn" type="button" onclick="addNewNoteWithContent(decodeURIComponent(\'' + jxEncText(text) + '\'))"><i class="fa-solid fa-note-sticky"></i> Save to Note</button>';
 
-      if (/^https?:\/\//i.test(text)) {
-        actionsHtml += '<a href="' + escapeHtml(text) + '" target="_blank" rel="noopener noreferrer" class="mission-act-btn primary ripple-btn" style="text-decoration:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open URL</a>';
-        actionsHtml += '<button class="mission-act-btn ripple-btn" type="button" onclick="globalCopyText(\'' + escapeHtml(text) + '\', true)"><i class="fa-solid fa-copy"></i> Copy URL</button>';
-      } else {
-        actionsHtml += '<button class="mission-act-btn primary ripple-btn" type="button" onclick="globalCopyText(\'' + escapeHtml(text) + '\', true)"><i class="fa-solid fa-copy"></i> Copy</button>';
+      if (actionsEl) {
+        actionsEl.innerHTML = actionsHtml;
+        // Hand the scanned payload straight to any other tool.
+        let sendHost = document.getElementById('scannerSendRow');
+        if (!sendHost) {
+          sendHost = document.createElement('div');
+          sendHost.id = 'scannerSendRow';
+          sendHost.className = 'jx-send-host';
+          actionsEl.parentNode.appendChild(sendHost);
+        }
+        sendHost.innerHTML = jxSendRow(
+          { text: text, label: 'Scan · ' + (detected.label || 'Result'), source: 'scan' },
+          ['clipboard', 'mission', 'counter', 'qr', 'notes']
+        );
       }
-      if (/^WIFI:/i.test(text)) {
-        actionsHtml += '<button class="mission-act-btn ripple-btn" type="button" onclick="globalCopyText(\'' + escapeHtml(text) + '\', true)"><i class="fa-solid fa-wifi"></i> Copy WiFi Key</button>';
-      }
-      if (/^upi:\/\//i.test(text)) {
-        actionsHtml += '<a href="' + escapeHtml(text) + '" class="mission-act-btn ripple-btn"><i class="fa-solid fa-indian-rupee-sign"></i> Pay Now</a>';
-      }
-      actionsHtml += '<button class="mission-act-btn ripple-btn" type="button" onclick="addNewNoteWithContent(\'' + escapeHtml(text) + '\')"><i class="fa-solid fa-note-sticky"></i> Save to Note</button>';
-
-      if (actionsEl) actionsEl.innerHTML = actionsHtml;
       box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
@@ -20936,59 +22132,70 @@ async function ensureQRCodeLib() {
     // ── Scan a QR/barcode from a gallery image ─────────────────
     async function scanFromGallery(event) {
       const input = event.target;
-      const file = input.files && input.files[0];
-      if (!file) return;
+      const files = Array.from((input.files || []));
+      if (!files.length) return;
       const status = $('#scannerStatus');
-      status.textContent = 'Loading scanner engine and reading image from gallery...';
-      await ensureJsQR().catch(() => {});
+      const results = [];
+      const failures = [];
+
       try {
-        const img = await new Promise((resolve, reject) => {
-          const url = URL.createObjectURL(file);
-          const image = new Image();
-          image.onload = () => { URL.revokeObjectURL(url); resolve(image); };
-          image.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Could not read image')); };
-          image.src = url;
-        });
-
-        const canvas = $('#scannerCanvas');
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        // Try multiple sizes: full-res first, then downscales (helps huge photos
-        // where QR modules blur, and screenshots with large quiet zones).
-        const maxSide = Math.max(img.naturalWidth, img.naturalHeight);
-        const scales = [...new Set([Math.min(1, 1600 / maxSide), Math.min(1, 1000 / maxSide), Math.min(1, 600 / maxSide)])];
-        let found = null;
-
-        for (const scale of scales) {
-          canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
-          canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          // 1) Native BarcodeDetector (QR + barcodes) when available
-          if ('BarcodeDetector' in window) {
-            try {
-              if (!barcodeDetector) barcodeDetector = new BarcodeDetector({ formats: ['qr_code','code_128','code_39','code_93','ean_13','ean_8','upc_a','upc_e','itf','codabar','data_matrix','pdf417','aztec'] });
-              const codes = await barcodeDetector.detect(canvas);
-              if (codes && codes.length) { found = codes[0].rawValue || codes[0].rawData; break; }
-            } catch(e) {}
-          }
-          // 2) jsQR fallback — try both normal and inverted (dark-mode screenshots)
-          if (window.jsQR) {
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'attemptBoth' });
-            if (code && code.data) { found = code.data; break; }
+        await ensureJsQR().catch(() => {});
+        for (const file of files) {
+          const isPdf = /\.pdf$/i.test(file.name) || (file.type || '').toLowerCase() === 'application/pdf';
+          if (status) status.textContent = 'Scanning ' + file.name + '…';
+          try {
+            if (isPdf) {
+              const res = await scanPdfForCodes(file);
+              res.found.forEach(r => results.push({ text: r.text, source: file.name + ' · p' + r.page }));
+              if (!res.found.length) failures.push(file.name + ' — no code in ' + res.pages + ' page(s)');
+            } else {
+              const img = await loadImageFromFile(file);
+              const found = await detectCodeInSource(img);
+              if (found) results.push({ text: found, source: file.name });
+              else failures.push(file.name + ' — no code found');
+            }
+          } catch (err) {
+            failures.push(file.name + ' — ' + (err && err.message ? err.message : 'could not be read'));
           }
         }
 
-        if (found) {
-          handleScannerText(found, true, 'qr');
-          status.textContent = 'Scanned from gallery and copied to Smart Clipboard.';
+        if (results.length) {
+          // Merge into the batch panel, the scan history and the clipboard vault.
+          scannerBatchResults = results.concat(scannerBatchResults).slice(0, 60);
+          const hist = getScanHistory();
+          results.forEach(r => {
+            const det = detectContentType(r.text);
+            hist.unshift({ text: r.text, type: det.type, label: det.label, icon: det.icon || 'fa-qrcode', time: new Date().toLocaleTimeString() });
+            addClipToHistory(r.text, { source: 'scan', label: r.source });
+          });
+          safeStoreSet('jsScanHistory', hist.slice(0, 20));
+          renderScanHistory();
+          renderScannerBatchResults();
+
+          // Show the first hit in the main result card.
+          const first = results[0];
+          renderScannerSmartCard(first.text, detectContentType(first.text));
           unlockAchievement('usedScanner');
+        }
+
+        // Always refresh the batch panel so it matches what is actually stored.
+        renderScannerBatchResults();
+
+        if (status) {
+          status.textContent = results.length
+            ? (results.length + ' code(s) found across ' + files.length + ' file(s).' + (failures.length ? ' ' + failures.length + ' file(s) had nothing readable.' : ''))
+            : 'No QR or barcode found. Try a sharper, closer photo.';
+        }
+        if (results.length) {
+          haptic([60, 40, 60]);
+          playSynthesizedSound('success-chord');
+          showNotify(results.length + ' code(s) scanned', 'fa-solid fa-circle-check');
         } else {
-          status.textContent = 'No QR or barcode found in that image. Try a sharper, closer photo.';
-          showNotify('Nothing detected in image', 'fa-solid fa-magnifying-glass');
+          showNotify('Nothing detected', 'fa-solid fa-magnifying-glass');
         }
       } catch (err) {
-        status.textContent = 'Could not read that image. Try a different photo.';
-        showNotify('Image scan failed', 'fa-solid fa-xmark');
+        if (status) status.textContent = 'Could not read those files. Try different images.';
+        showNotify('Batch scan failed', 'fa-solid fa-xmark');
       } finally {
         input.value = ''; // allow re-selecting the same file
       }
@@ -21256,8 +22463,9 @@ async function ensureQRCodeLib() {
       const olderWrap = $('#olderAutoChangelogList');
       const liveWrap = $('#jclLiveList');
       const detectedEntries = safeStoreGet('jsAutoChangelogEntries', []);
-      const latestHtml = jclState.official.slice(0, 5).map(entry => renderChangelogItem(entry)).join('');
-      const olderOfficialHtml = jclState.official.slice(5).map(entry => renderChangelogItem(entry)).join('');
+      const official = jclSortEntries(jclState.official);
+      const latestHtml = official.slice(0, 5).map(entry => renderChangelogItem(entry)).join('');
+      const olderOfficialHtml = official.slice(5).map(entry => renderChangelogItem(entry)).join('');
       const detectedHtml = detectedEntries.map(entry => renderChangelogItem(entry, 'HTML')).join('');
       if (latestWrap) latestWrap.innerHTML = latestHtml;
       if (olderWrap) olderWrap.innerHTML = olderOfficialHtml + detectedHtml;
@@ -21316,6 +22524,58 @@ async function ensureQRCodeLib() {
     // Pull the live index.html from GitHub (CORS-enabled contents API) and
     // extract SITE_VERSION + the changelog array, so new deploys propagate
     // to every visitor without touching the old cached file.
+    //
+    // The extractor is deliberately tolerant: the array may use any key
+    // order, single or double quotes and any number of lines. The old
+    // strict pattern only matched one exact shape, and when it missed it
+    // failed silently - which left "Recent Updates" frozen on an old
+    // version with no visible error.
+    function jclExtractChangelog(source) {
+      const src = String(source || '');
+      const verMatch = /SITE_VERSION\s*=\s*['"]([^'"]+)['"]/.exec(src);
+      const version = verMatch ? verMatch[1] : null;
+
+      const anchor = /SITE_CHANGELOG_FALLBACK\s*=\s*\[/.exec(src);
+      if (!anchor) return { version: version, entries: [] };
+      const open = src.indexOf('[', anchor.index);
+
+      // Walk to the matching closing bracket, ignoring brackets inside strings.
+      let depth = 0, end = -1, quote = '', escaped = false;
+      for (let i = open; i < src.length; i++) {
+        const ch = src[i];
+        if (quote) {
+          if (escaped) { escaped = false; continue; }
+          if (ch === '\\') { escaped = true; continue; }
+          if (ch === quote) quote = '';
+          continue;
+        }
+        if (ch === '"' || ch === "'" || ch === '`') { quote = ch; continue; }
+        if (ch === '[') depth++;
+        else if (ch === ']') { depth--; if (depth === 0) { end = i + 1; break; } }
+      }
+      if (end === -1) return { version: version, entries: [] };
+
+      const body = src.slice(open, end);
+      const entries = [];
+      const objRe = /\{([^{}]*)\}/g;
+      let m;
+      while ((m = objRe.exec(body)) !== null) {
+        const chunk = m[1];
+        const field = (key) => {
+          const fm = new RegExp(key + "\\s*:\\s*('(?:[^'\\\\]|\\\\.)*'|\"(?:[^\"\\\\]|\\\\.)*\")").exec(chunk);
+          if (!fm) return '';
+          return fm[1].slice(1, -1)
+            .replace(/\\u([0-9a-fA-F]{4})/g, (u, h) => String.fromCharCode(parseInt(h, 16)))
+            .replace(/\\n/g, ' ')
+            .replace(/\\(['"`])/g, '$1');
+        };
+        const v = field('version'), d = field('date'), t = field('text');
+        if (!v && !d && !t) continue;
+        entries.push({ version: v, date: d, text: t });
+      }
+      return { version: version, entries: entries };
+    }
+
     async function jclFetchLiveChangelog() {
       const res = await jclTimedFetch(JCL_REPO_API + '/contents/index.html');
       if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -21323,20 +22583,39 @@ async function ensureQRCodeLib() {
       if (!file.content || file.encoding !== 'base64') throw new Error('Unexpected file payload');
       const bytes = Uint8Array.from(atob(file.content.replace(/\s/g, '')), ch => ch.charCodeAt(0));
       const source = new TextDecoder('utf-8').decode(bytes);
-      const verMatch = /SITE_VERSION\s*=\s*'([^']+)'/.exec(source);
-      const liveVersion = verMatch ? verMatch[1] : null;
-      if (!liveVersion) return null;
-      const segMatch = /SITE_CHANGELOG_FALLBACK\s*=\s*(\[[\s\S]*?\n\s*\])/.exec(source);
-      if (!segMatch) return null;
-      const entries = [];
-      const objRe = /\{\s*version:\s*'((?:[^'\\]|\\.)*)'\s*,\s*date:\s*'((?:[^'\\]|\\.)*)'\s*,\s*text:\s*'((?:[^'\\]|\\.)*)'\s*\}/g;
-      let m;
-      while ((m = objRe.exec(segMatch[1])) !== null) {
-        const unesc = s => s.replace(/\\'/g, "'").replace(/\\"/g, '"').replace(/\\n/g, ' ').replace(/\\\\/g, '\\');
-        entries.push({ version: unesc(m[1]), date: unesc(m[2]), text: unesc(m[3]) });
+      const parsed = jclExtractChangelog(source);
+      if (!parsed || !parsed.version || !parsed.entries.length) {
+        try { console.warn('[changelog] could not read the live changelog from the deployed file'); } catch (e) {}
+        return null;
       }
-      if (!entries.length) return null;
-      return { version: liveVersion, entries };
+      return parsed;
+    }
+
+    // Newest version first, numerically (so v7.10 sorts above v7.9).
+    function jclSortEntries(list) {
+      return (list || []).slice().sort((a, b) => {
+        const pa = String((a && a.version) || '').replace(/^v/i, '').split('.').map(n => parseInt(n, 10) || 0);
+        const pb = String((b && b.version) || '').replace(/^v/i, '').split('.').map(n => parseInt(n, 10) || 0);
+        for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+          const x = pa[i] || 0, y = pb[i] || 0;
+          if (x !== y) return y - x;
+        }
+        return 0;
+      });
+    }
+
+    // Union two changelog lists. A list from the cache or from GitHub is
+    // merged in, never swapped over the local one, so no entry can be lost.
+    function jclMergeOfficial(local, remote) {
+      const seen = new Map();
+      const push = (e) => {
+        if (!e) return;
+        const key = e.version || ('x' + (e.date || '') + '|' + String(e.text || '').slice(0, 32));
+        if (!seen.has(key)) seen.set(key, e);
+      };
+      (local || []).forEach(push);
+      (remote || []).forEach(push);
+      return jclSortEntries(Array.from(seen.values()));
     }
 
     async function jclSync(force) {
@@ -21379,14 +22658,20 @@ async function ensureQRCodeLib() {
       if (fileReady) {
         try {
           const live = await jclFetchLiveChangelog();
-          if (live && jclVersionNewer(live.version, jclState.version)) {
-            jclState.official = live.entries;
-            jclState.version = live.version;
+          if (live) {
+            // Merge, never replace: a stale remote list must not delete
+            // entries that only exist in this build.
+            const merged = jclMergeOfficial(jclState.official, live.entries);
+            if (merged.length !== jclState.official.length) touched = true;
+            jclState.official = merged;
+            if (jclVersionNewer(live.version, jclState.version)) {
+              jclState.version = live.version;
+              touched = true;
+              if (typeof showNotify === 'function') { try { showNotify('Changelog updated to ' + live.version, 'fa-solid fa-code-branch'); } catch (e) {} }
+            }
+            jclState.lastFileSync = Date.now();
             touched = true;
-            if (typeof showNotify === 'function') { try { showNotify('Changelog updated to ' + live.version, 'fa-solid fa-code-branch'); } catch (e) {} }
           }
-          jclState.lastFileSync = Date.now();
-          if (live) touched = true;
         } catch (e) { /* offline — baked list stays */ }
       }
       if (touched) {
@@ -21405,7 +22690,11 @@ async function ensureQRCodeLib() {
         const cached = safeStoreGet(JCL_LS.cache, null);
         if (cached && cached.version && jclVersionNewer(cached.version, jclState.version)) {
           jclState.version = cached.version;
-          if (Array.isArray(cached.official) && cached.official.length) jclState.official = cached.official;
+        }
+        // Merge the cached list in - it may hold newer entries, but it must
+        // never wipe the ones this build already knows about.
+        if (cached && Array.isArray(cached.official) && cached.official.length) {
+          jclState.official = jclMergeOfficial(jclState.official, cached.official);
         }
         if (cached && Array.isArray(cached.activity) && !jclState.activity.length) {
           jclState.activity = cached.activity;
@@ -22694,9 +23983,6 @@ async function ensureQRCodeLib() {
       perPage: 100
     };
 
-    // Manual curation layer: keep these names in the order you want shown.
-    const OPEN_SOURCE_FEATURED_REPOS = ['About-Me', 'Code-Editor', 'Audio-Cutter', 'Health-App'];
-
     let openSourceRepos = [];
     let openSourceFilteredRepos = [];
     let openSourceActiveFilter = 'All';
@@ -22785,27 +24071,6 @@ async function ensureQRCodeLib() {
       const shown = openSourceFilteredRepos.length;
       const query = getOpenSourceSearchQuery();
       el.textContent = shown + ' of ' + total + ' repos' + (query ? ' matched' : ' shown');
-    }
-
-    function getFeaturedOpenSourceRepos() {
-      const byName = new Map(openSourceRepos.map(repo => [String(repo.name || '').toLowerCase(), repo]));
-      return OPEN_SOURCE_FEATURED_REPOS.map(name => byName.get(String(name).toLowerCase())).filter(Boolean);
-    }
-
-    function renderOpenSourceFeatured() {
-      const wrap = $('#openSourceFeaturedRail');
-      if (!wrap) return;
-      const featured = getFeaturedOpenSourceRepos();
-      if (!featured.length) {
-        wrap.innerHTML = '<div class="oss-state-card" style="margin:0; padding:16px;"><div class="oss-state-title">Featured repositories loading…</div><p class="oss-state-text" style="margin:0;">Curated projects appear here after GitHub data loads.</p></div>';
-        return;
-      }
-      wrap.innerHTML = featured.map(repo => {
-        const name = escapeHtml(repo.name || 'repository');
-        const desc = escapeHtml(repo.description || 'Featured public repository from my GitHub workbench.');
-        const demo = repoHasLiveDemo(repo) ? '<a class="oss-mini-link primary" href="' + escapeHtml(repo.homepage) + '" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>' : '';
-        return '<article class="oss-featured-card" role="listitem"><div class="repo-badges"><span class="repo-badge active"><i class="fa-solid fa-thumbtack"></i>Featured</span>' + (repoHasLiveDemo(repo) ? '<span class="repo-badge demo"><i class="fa-solid fa-globe"></i>Live demo</span>' : '') + '</div><div class="oss-featured-name">' + name + '</div><p class="oss-featured-text">' + desc + '</p>' + getRepoTopicsMarkup(repo, 2) + '<div class="oss-featured-actions"><a class="oss-mini-link" href="' + escapeHtml(repo.html_url) + '" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> Code</a>' + demo + '</div></article>';
-      }).join('');
     }
 
     /* ── Repository data source (v6.9) ────────────────────────────────
@@ -23004,8 +24269,6 @@ async function ensureQRCodeLib() {
 
     function renderOpenSourceSkeleton() {
       const rail = $('#openSourceRail');
-      const featured = $('#openSourceFeaturedRail');
-      if (featured) featured.innerHTML = Array.from({ length: 2 }).map(() => '<article class="oss-featured-card repo-skeleton" aria-hidden="true"><div class="repo-skeleton-line title"></div><div class="repo-skeleton-line"></div><div class="repo-skeleton-line short"></div></article>').join('');
       const count = $('#openSourceResultCount'); if (count) count.textContent = 'Loading repositories…';
       if (!rail) return;
       setOpenSourceState(null);
@@ -23076,7 +24339,6 @@ async function ensureQRCodeLib() {
         openSourceLoaded = true;
         openSourceActiveFilter = 'All';
         renderOpenSourceMetrics();
-        renderOpenSourceFeatured();
         renderOpenSourceFilters();
         renderOpenSourceRepos();
       } catch (error) {
@@ -23495,6 +24757,17 @@ async function ensureQRCodeLib() {
 
     async function bootstrapData() {
       const recovered = await initIndexedDB();
+      
+      // ── Restore wall-clock timers and catch up on missed rollovers ──
+      // The focus/stopwatch clocks are anchored to absolute timestamps, so a
+      // session that was running when the tab closed resumes exactly where it
+      // should be — and counters roll over on any boundary that passed.
+      try { if (typeof focusRestoreState === 'function') focusRestoreState(); } catch (e) { console.warn('Focus restore failed', e); }
+      try { if (typeof stopwatchRestoreState === 'function') stopwatchRestoreState(); } catch (e) { console.warn('Stopwatch restore failed', e); }
+      try {
+        if (typeof applyCounterAutoResets === 'function' && applyCounterAutoResets() && typeof renderCounters === 'function') renderCounters();
+      } catch (e) {}
+
       if (!recovered) return; // If everything was in localStorage, no need to re-render.
       
       requestAnimationFrame(() => {
@@ -23523,6 +24796,19 @@ async function ensureQRCodeLib() {
       else setTimeout(bootstrapData, 1500);
     }
     document.addEventListener('DOMContentLoaded', scheduleBootstrapData);
+
+    // Restore the clocks as early as possible so the UI shows the right
+    // remaining time straight away. The IndexedDB pass above re-checks them
+    // (focusRestoreState is a no-op once a session has been restored).
+    try { if (typeof focusRestoreState === 'function') focusRestoreState(); } catch (e) {}
+    try { if (typeof stopwatchRestoreState === 'function') stopwatchRestoreState(); } catch (e) {}
+
+    // Catch counter rollovers while the app stays open (e.g. midnight).
+    setInterval(() => {
+      try {
+        if (typeof applyCounterAutoResets === 'function' && applyCounterAutoResets() && typeof renderCounters === 'function') renderCounters();
+      } catch (e) {}
+    }, 60000);
   </script>
 <script>
 
@@ -23956,15 +25242,6 @@ async function ensureQRCodeLib() {
 
     function setQRLogo(logoKey, logoName) {
       activeQRLogo = logoKey || 'none';
-      // A center logo obstructs modules — keep error correction at H for scan reliability
-      if (activeQRLogo !== 'none' && typeof qrECLevel === 'string' && qrECLevel !== 'H') {
-        qrECLevel = 'H';
-        if (typeof saveQRStylePrefs === 'function') saveQRStylePrefs();
-        document.querySelectorAll('#qrEcOptions .qr-logo-chip').forEach(c => c.classList.toggle('active', c.dataset.ec === 'H'));
-        const ecLabel = document.getElementById('qrEcName');
-        if (ecLabel && typeof QR_EC_NAMES !== 'undefined') ecLabel.textContent = QR_EC_NAMES.H;
-        showNotify('Error correction set to H for logo safety', 'fa-solid fa-shield-halved');
-      }
       const nameEl = document.getElementById('qrLogoName');
       if (nameEl) nameEl.textContent = logoName || 'None';
       document.querySelectorAll('#qrLogoOptions .qr-logo-chip').forEach(chip => {
@@ -23980,14 +25257,13 @@ async function ensureQRCodeLib() {
       if (qrcode.stringToBytesFuncs && qrcode.stringToBytesFuncs['UTF-8']) {
         qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
       }
-      // Error correction: force H while a center logo is active, else use saved preference
-      const hasLogo = (typeof activeQRLogo !== 'undefined' && activeQRLogo && activeQRLogo !== 'none');
-      const ec = hasLogo ? 'H' : (typeof qrECLevel === 'string' && ['L', 'M', 'Q', 'H'].includes(qrECLevel) ? qrECLevel : 'H');
+      // Error correction is always H and the quiet zone the standard 4 modules.
+      const ec = QR_ERROR_CORRECTION;
       const qr = qrcode(0, ec);
       qr.addData(text, 'Byte');
       qr.make();
       const count = qr.getModuleCount();
-      const quiet = (typeof qrQuietZone === 'number' && Number.isFinite(qrQuietZone)) ? Math.max(0, Math.min(8, qrQuietZone)) : 3;
+      const quiet = QR_QUIET_ZONE;
       const scale = Math.max(8, Math.floor(640 / (count + quiet * 2)));
       const margin = scale * quiet;
       const size = count * scale + margin * 2;
@@ -24354,5 +25630,5 @@ async function ensureQRCodeLib() {
   });
 })();
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5489e72da15426e',t:'MTc5MzY3OTk2Nw=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5489e72da15426e',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
