@@ -9,6 +9,20 @@
     <generator>About-Me/tools/build_feed.js</generator>
     <atom:link href="https://jinosabu1999.github.io/About-Me/feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>v7.9 — The subscribe button no longer dumps a wall of XML in your face.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.9</guid>
+      <pubDate>Fri, 06 Nov 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>The subscribe button no longer dumps a wall of XML in your face. It opens a small sheet instead: what the feed is, the address on one tap to copy, and buttons that open it straight in a reader. The raw XML is still one link away for anyone who wants it. While checking the icons on the new sheet we found some of them were coming out empty - the icon font was missing a few of the glyphs it referenced - so the icon font was rebuilt and a couple of blank buttons around the site now show their symbol again.</p>]]></description>
+    </item>
+    <item>
+      <title>v7.8 — Three fixes you asked for.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.8</guid>
+      <pubDate>Fri, 06 Nov 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Three fixes you asked for. The top of the page no longer sits flush against the screen: it now keeps clear of the notch and the status bar on a phone and leaves a little breathing room everywhere else. The site name that lives in the OS title bar was being painted even when the browser had no title bar for it, so it overflowed the top of the screen and was cut in half at the corner - it now only appears when there is a real title bar to sit in. Recent Updates is a fixed panel that scrolls inside itself instead of a long section you have to scroll past, with the version and the sync controls pinned at the top. And the release feed is findable again: a subscribe row now sits right under the toolbar, so the RSS link is always one tap away.</p>]]></description>
+    </item>
+    <item>
       <title>v7.7 — A broken link, found by checking every link on this site.</title>
       <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
       <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.7</guid>
