@@ -7450,6 +7450,66 @@
     .jcl-rss-btn svg { width: 13px; height: 13px; flex: none; display: block; }
     .jcl-rss-btn:hover, .jcl-rss-btn:focus-visible { color: var(--accent); border-color: var(--accent); }
     .jcl-toolbar .jx-sync-chip { margin-left: auto; flex: 1 1 auto; min-width: 0; justify-content: flex-start; }
+
+    /* The release notes live in a panel of their own: the toolbar and the
+       subscribe row stay put, the entries scroll inside it. */
+    .changelog-scroll {
+      max-height: min(58vh, 460px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,.22) transparent;
+      padding-right: 4px;
+      margin-right: -4px;
+      scroll-padding-block: 12px;
+    }
+    .changelog-scroll::-webkit-scrollbar { width: 6px; }
+    .changelog-scroll::-webkit-scrollbar-track { background: transparent; }
+    .changelog-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.18); border-radius: 999px; }
+    .changelog-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.3); }
+    .changelog-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: var(--radius-sm); }
+    .changelog-scroll > *:first-child { margin-top: 0; }
+    .changelog-scroll > *:last-child { margin-bottom: 0; }
+
+    /* Subscribe row — the release feed, always on screen. */
+    .changelog-subscribe {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 0 14px;
+      padding: 11px 13px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      background: rgba(var(--surface-rgb), 0.45);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .changelog-subscribe:hover, .changelog-subscribe:focus-visible {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .changelog-subscribe svg { width: 15px; height: 15px; flex: none; display: block; color: var(--accent); }
+    .changelog-subscribe .cs-label { color: inherit; font-weight: 700; }
+    .changelog-subscribe .cs-url {
+      margin-left: auto;
+      color: var(--text-muted);
+      font-size: 0.66rem;
+      border: 1px dashed var(--border-strong);
+      border-radius: 999px;
+      padding: 4px 10px;
+    }
+    @media (max-width: 560px) {
+      .changelog-subscribe { gap: 8px; padding: 10px 12px; }
+      .changelog-subscribe .cs-desc { display: none; }
+      .changelog-subscribe .cs-long { display: none; }
+      .changelog-subscribe .cs-url { font-size: 0.62rem; padding: 3px 8px; }
+    }
     @media (max-width: 480px) {
       .jcl-toolbar { gap: 8px; }
       .jcl-toolbar .jx-sync-chip { padding-left: 9px; padding-right: 9px; }
@@ -12143,12 +12203,20 @@
        space to the left of those buttons. env() resolves to 0 wherever
        the API is missing, so all of this is inert in a normal tab.
        ═══════════════════════════════════════════════════════════ */
-    body { padding-top: env(titlebar-area-height, 0px); }
+    /* Reserve the space the OS hands us before the content starts: the
+       window-controls-overlay title bar on desktop, the notch and status bar
+       on a phone, plus a small gap so nothing ever touches the edge. */
+    body {
+      padding-top: calc(var(--wco-titlebar-h, env(titlebar-area-height, 0px)) + env(safe-area-inset-top, 0px));
+    }
+    @media (max-width: 768px) {
+      body { padding-top: calc(var(--wco-titlebar-h, env(titlebar-area-height, 0px)) + max(env(safe-area-inset-top, 0px), 20px)); }
+    }
     .wco-titlebar {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 45;
-      height: env(titlebar-area-height, 0px);
+      height: var(--wco-titlebar-h, env(titlebar-area-height, 0px));
       display: none;
       align-items: center;
       padding: 0 176px 0 max(16px, env(titlebar-area-x, 0px));
@@ -12160,6 +12228,7 @@
       text-transform: uppercase;
       color: var(--text-muted);
       -webkit-user-select: none; user-select: none;
+      overflow: hidden;
     }
     body.jx-wco .wco-titlebar { display: flex; }
     .wco-titlebar-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -13007,6 +13076,13 @@
           <span class="jcl-sync jx-sync-chip" id="jclSyncChip" role="status" aria-live="polite"><span class="jx-sync-dot" aria-hidden="true"></span><span class="jx-sync-label">Sync ready</span></span>
           <button class="jx-sync-btn ripple-btn" id="jclRefreshBtn" type="button" aria-label="Refresh changelog from GitHub" title="Refresh changelog from GitHub"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button>
         </div>
+        <a class="changelog-subscribe" href="feed.xml" title="Subscribe to the release feed (RSS)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9" /><path d="M4 4a16 16 0 0 1 16 16" /><circle cx="5.2" cy="18.8" r="1.5" fill="currentColor" stroke="none" /></svg>
+          <span class="cs-label">Subscribe<span class="cs-long"> to the release feed</span></span>
+          <span class="cs-desc">new versions, straight to your reader</span>
+          <span class="cs-url">feed.xml</span>
+        </a>
+        <div class="changelog-scroll" id="changelogScroll" tabindex="0" role="region" aria-label="Release notes">
         <div class="auto-changelog-list" id="jclLiveList" aria-label="Updates synced from GitHub"></div>
         <div class="auto-changelog-list" id="autoChangelogList"></div>
         <details class="changelog-more">
@@ -13047,6 +13123,7 @@
             </div>
           </div>
         </details>
+        </div>
       </div>
     </div>
  
@@ -13054,8 +13131,9 @@
   // Changelog bootstrap: renders latest updates immediately, even before the main app script finishes loading.
   // ▼ EDIT HERE: bump SITE_VERSION + add an entry at the TOP when you ship an update.
   //   Visitors see the new version automatically (live sync also pulls it from GitHub).
-  window.SITE_VERSION = 'v7.7';
+  window.SITE_VERSION = 'v7.8';
   window.SITE_CHANGELOG_FALLBACK = [
+    { version: 'v7.8', date: '6th Nov 2026', text: 'Three fixes you asked for. The top of the page no longer sits flush against the screen: it now keeps clear of the notch and the status bar on a phone and leaves a little breathing room everywhere else. The site name that lives in the OS title bar was being painted even when the browser had no title bar for it, so it overflowed the top of the screen and was cut in half at the corner - it now only appears when there is a real title bar to sit in. Recent Updates is a fixed panel that scrolls inside itself instead of a long section you have to scroll past, with the version and the sync controls pinned at the top. And the release feed is findable again: a subscribe row now sits right under the toolbar, so the RSS link is always one tap away.' },
     { version: 'v7.7', date: '6th Nov 2026', text: 'A broken link, found by checking every link on this site. The Carroms Pool live demo pointed at a repository name that no longer exists, so the button returned a 404 - it now points at the game. The README was rewritten as well: the old one still showed a social preview image that was never in the repository, documented a habit tracker that was removed months ago and keyboard shortcuts that no longer exist, and said nothing about the share sheet, the file handlers, the title-bar overlay or the release feed.' },
     { version: 'v7.6', date: '6th Nov 2026', text: 'The updates feed is live. Recent Updates now has an RSS endpoint - feed.xml - carrying every dated, versioned release note, with a link in the page head so feed readers and browsers discover it on their own, and a subscribe button beside the version chip for everyone else. The feed is generated from the same array the page renders, so it can never drift from what a visitor actually sees, and it is rebuilt automatically every time a new version ships.' },
     { version: 'v7.5', date: '4th Nov 2026', text: 'The operating system can now hand things to this site. Share a link, a snippet or a photo to it from any other app and the content arrives in the tool that owns it - text and links land in the Clipboard, images and PDFs go straight into the Scanner batch queue, a Markdown file opens as a new Scratchpad note, a CSV becomes a set of Counters and a backup JSON restores into the Data Vault. Opening a file with the app now routes it by extension instead of downloading it. Installed as a desktop app, the window controls no longer sit on top of the content: the top strip is reserved and the name moves into it. Also fixes a real export bug - every Export as .csv was throwing because the cell helper it relied on was missing.' },
@@ -24890,14 +24968,22 @@ async function ensureQRCodeLib() {
       const wco = navigator.windowControlsOverlay;
       if (!wco || !document.body) return;
       const apply = () => {
-        document.body.classList.add('jx-wco');
-        try { wco.setTitleBarAreaVisibility('visible'); } catch (e) { /* not supported */ }
+        // Only take the space if the browser really has a title bar to give.
+        // In a normal tab the rect is empty, and showing the strip anyway
+        // painted the site name above the top of the screen, clipped in half.
+        let height = 0;
         try {
           const rect = wco.getTitlebarAreaRect();
-          if (rect && rect.height) {
-            document.documentElement.style.setProperty('--wco-titlebar-h', rect.height + 'px');
-          }
+          height = (rect && rect.height) ? rect.height : 0;
         } catch (e) { /* ignore */ }
+        if (height > 0) {
+          document.body.classList.add('jx-wco');
+          document.documentElement.style.setProperty('--wco-titlebar-h', height + 'px');
+          try { wco.setTitleBarAreaVisibility('visible'); } catch (e) { /* not supported */ }
+        } else {
+          document.body.classList.remove('jx-wco');
+          document.documentElement.style.removeProperty('--wco-titlebar-h');
+        }
       };
       try { apply(); } catch (e) { /* ignore */ }
       try { wco.addEventListener('geometrychange', apply); } catch (e) { /* ignore */ }
@@ -26377,6 +26463,6 @@ async function ensureQRCodeLib() {
 })();
 </script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a56493158a6d8010',t:'MTc5Mzk3MzEwMg=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a56493158a6d8010',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a564be4528942b4a',t:'MTc5Mzk3NDg3MQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a564be4528942b4a',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
+</body>
 </html>
