@@ -4256,7 +4256,9 @@
     }
     .qr-studio-type-bar {
       display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px;
+      padding-right: 10px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
     }
+    .qr-studio-type-bar .qr-type-chip { scroll-snap-align: start; }
     .qr-studio-type-bar::-webkit-scrollbar { display: none; }
     .qr-type-chip {
       display: inline-flex; align-items: center; gap: 6px;
@@ -6081,6 +6083,14 @@
       overscroll-behavior: contain;
     }
     .bottom-sheet.open { transform: translateY(0) !important; }
+    /* v7.4 - the toolkit home hugs its content. A fixed 90vh panel left a
+       ~320px dead zone under the 3x3 tool grid; opening an actual tool
+       restores the full-height panel via the jx-tools-home class. */
+    #vibeSheet.jx-tools-home {
+      top: auto !important;
+      height: auto !important;
+      max-height: 86vh !important;
+    }
     .bottom-sheet .sheet-header {
       position: sticky;
       top: 0;
@@ -10819,32 +10829,41 @@
        QR STUDIO: PREVIEW-FIRST LAYOUT
        The generated QR sits directly under the type chips on
        mobile (no scrolling); desktop keeps form-left/preview-right.
+
+       On phones the preview is a single column: the code on top,
+       the payload badge under it, then the action buttons and the
+       send chips at full width. The old side-by-side row left the
+       action column ~140px wide and pushed long URLs (a GitHub
+       link, a WiFi payload) straight out of the sheet.
        ═══════════════════════════════════════════════════════════ */
     .qr-preview-panel {
-      flex-direction: row !important;
-      align-items: center !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
       justify-content: flex-start !important;
-      gap: 14px !important;
+      gap: 12px !important;
       padding: 14px !important;
       text-align: left !important;
     }
     .qr-studio-grid > .qr-preview-panel { flex: 1 1 auto !important; }
     .qr-canvas-holder {
-      width: 148px !important;
-      height: 148px !important;
+      width: 190px !important;
+      height: 190px !important;
+      max-width: 100% !important;
       flex: 0 0 auto !important;
+      margin: 0 auto !important;
       padding: 8px !important;
     }
     .qr-preview-side {
       flex: 1 1 auto;
       min-width: 0;
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 9px;
       align-items: stretch;
     }
     .qr-preview-side .qr-action-buttons-row {
-      grid-template-columns: 1fr !important;
+      grid-template-columns: 1fr 1fr !important;
       gap: 7px !important;
       width: 100% !important;
     }
@@ -10852,7 +10871,38 @@
       padding: 9px 10px !important;
       font-size: 0.78rem !important;
       width: 100% !important;
+      min-width: 0 !important;
+      overflow-wrap: anywhere !important;
     }
+
+    /* The badge carries the payload (often a long URL). Without these
+       rules the span refuses to shrink below its content width and the
+       whole panel overflows the sheet. */
+    .qr-preview-panel #qrBadgeInfo {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      flex-wrap: wrap !important;
+      align-items: flex-start !important;
+      text-align: left !important;
+      overflow-wrap: anywhere !important;
+      word-break: break-word !important;
+      line-height: 1.4 !important;
+    }
+    .qr-preview-panel #qrBadgeInfo > i {
+      flex: 0 0 auto !important;
+      margin-top: 2px !important;
+    }
+    .qr-preview-panel #qrBadgeText {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      /* basis 0 (not auto) so the text shares the icon's line instead of
+         being pushed onto its own row by flex-wrap */
+      flex: 1 1 0% !important;
+      overflow-wrap: anywhere !important;
+      word-break: break-word !important;
+      line-height: 1.4 !important;
+    }
+
     @media (min-width: 769px) {
       /* Desktop: original two-column reading order — form left, preview right */
       .qr-studio-grid > .qr-form-panel { order: -1; }
@@ -10861,9 +10911,10 @@
         align-items: center !important;
         text-align: center !important;
       }
-      .qr-canvas-holder { width: 190px !important; height: 190px !important; padding: 10px !important; }
+      .qr-canvas-holder { width: 190px !important; height: 190px !important; padding: 10px !important; margin: 0 !important; }
       .qr-preview-side { width: 100%; align-items: stretch; }
       .qr-preview-side #qrBadgeInfo { justify-content: center !important; }
+      .qr-preview-side #qrBadgeText { flex: 0 1 auto !important; }
       .qr-preview-side .qr-action-buttons-row { grid-template-columns: 1fr 1fr !important; }
     }
 
@@ -11956,7 +12007,7 @@
       background: var(--accent-text); color: var(--accent);
     }
 
-    .home-hero .hero-secondary-row { margin-top: 9px; gap: 9px; }
+    .home-hero .hero-secondary-row { margin-top: 9px; gap: 9px; display: flex; flex-wrap: wrap; }
     .home-hero .hero-share-btn {
       flex: 1 1 0; min-width: 0; height: 44px; padding: 0 12px;
       border-radius: 14px; border-width: 1px; font-size: 0.76rem;
@@ -11969,7 +12020,7 @@
       .home-hero { padding: 34px 36px 30px; }
       .home-hero .hero-title { font-size: 3.55rem; line-height: 0.9; }
       .home-hero .hh-role { margin-top: 16px; font-size: 0.56rem; letter-spacing: 0.18em; }
-      .home-hero .bio-text { margin-top: 20px; max-width: 48ch; font-size: 0.95rem; }
+      .home-hero .bio-text { margin-top: 20px; max-width: 66ch; font-size: 0.95rem; }
       .home-hero .hh-meta { margin-top: 16px; }
       .home-hero .hh-stats { margin-top: 26px; }
       .home-hero .hh-stat { padding: 15px 0 15px 4px; }
@@ -11984,6 +12035,83 @@
       .home-hero .hero-title { font-size: clamp(1.95rem, 10.4vw, 2.3rem); }
       .home-hero .hh-stat { padding-left: 3px; }
       .home-hero .hh-stat + .hh-stat { padding-left: 11px; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       v7.4 · WIDE-SCREEN HERO COMPOSITION
+       From 1024px the hero stops stacking and becomes a two-column
+       editorial split: a masthead row (eyebrow rule + portrait), the
+       name block on the left, the bio and the stat rail on the right,
+       and the action row across the base. Phones and tablets keep the
+       original single-column stack -- every rule lives in this query.
+       ═══════════════════════════════════════════════════════════ */
+    @media (min-width: 1024px) {
+      .home-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+        grid-template-areas:
+          "eyebrow avatar"
+          "left    bio"
+          "left    stats"
+          "cta     cta2";
+        column-gap: 56px;
+        row-gap: 24px;
+        align-items: start;
+        padding: 40px 48px 42px;
+      }
+      /* the wrappers dissolve so every child can be placed on the grid */
+      .home-hero .hh-top { display: contents; }
+      .home-hero .hh-left { grid-area: left; display: block; }
+      .home-hero .hh-right { display: contents; }
+
+      .home-hero .hh-eyebrow {
+        grid-area: eyebrow;
+        align-self: start;
+        justify-self: stretch;
+        position: relative; z-index: 2;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--border);
+      }
+      .home-hero .avatar-wrapper {
+        grid-area: avatar;
+        justify-self: end;
+        align-self: start;
+        position: relative; z-index: 2;
+        width: 64px; height: 64px;
+      }
+      .home-hero .bio-text {
+        grid-area: bio;
+        margin: 0;
+        max-width: 42ch;
+        font-size: 0.99rem;
+        line-height: 1.68;
+      }
+      .home-hero .hh-stats { grid-area: stats; margin: 2px 0 0; }
+      .home-hero .primary-btn {
+        grid-area: cta;
+        margin: 4px 0 0;
+        width: 100%;
+        max-width: 420px;
+        height: 56px;
+      }
+      .home-hero .hero-secondary-row {
+        grid-area: cta2;
+        margin: 0;
+        align-self: center;
+        justify-content: flex-end;
+        max-width: 420px;
+      }
+      .home-hero .hero-secondary-row .hero-share-btn { flex: 0 1 auto; }
+
+      .home-hero .hero-title {
+        font-size: 4.9rem;
+        line-height: 0.86;
+        letter-spacing: -0.048em;
+      }
+      .home-hero .hh-role { margin-top: 20px; font-size: 0.58rem; }
+      .home-hero .hh-meta { margin-top: 18px; }
+      .home-hero .hh-stat { padding: 16px 0 16px 4px; }
+      .home-hero .hh-stat + .hh-stat { padding-left: 16px; }
     }
     @media (prefers-reduced-motion: reduce) {
       .home-hero *, .home-hero *::before, .home-hero *::after {
@@ -12196,6 +12324,215 @@
       color: var(--text-main);
       overflow-wrap: anywhere;
     }
+
+
+    /* ═══════════════════════════════════════════════════════════
+       v7.4 — UI / UX REFINEMENT LAYER
+       The palette, the type and the shape language stay exactly as
+       they are. What changes is how the screens read and behave:
+
+         1 · READABILITY   muted text and accent chips clear WCAG AA
+         2 · HIT AREAS     every touch control reaches 44 × 44
+         3 · AFFORDANCE    a rail that scrolls says so
+         4 · CHROME        the dock and the sheet headers stop clipping
+         5 · RHYTHM        the page uses the width it was leaving unused
+
+       Everything below is additive: it overrides, it never removes.
+       ═══════════════════════════════════════════════════════════ */
+
+    /* ── 1 · READABILITY ───────────────────────────────────────
+       --text-muted was #8e8e99 — 2.7:1 to 3.2:1 against the light
+       surfaces, where WCAG AA asks for 4.5:1. One token brings about
+       a thousand labels back up to standard. */
+    [data-theme="light"] { --text-muted: #5f5f6b; }
+
+    /* Accent chips were bright text on a tint of the same hue
+       (≈1.9:1). Same hue, darker ink, same shape. */
+    [data-theme="light"] .repo-badge.active { color: #12703a; border-color: rgba(18,112,58,.34); background: rgba(18,112,58,.09); }
+    [data-theme="light"] .repo-badge.demo { color: #075e8d; border-color: rgba(7,94,141,.34); background: rgba(7,94,141,.09); }
+    [data-theme="light"] .xp-now { color: #12703a; }
+    [data-theme="light"] .xp-now::before { background: #12703a; box-shadow: 0 0 0 3px rgba(18,112,58,.16); }
+    [data-theme="light"] .jx-instant { color: #12703a; background: rgba(18,112,58,.1); border-color: rgba(18,112,58,.3); }
+    [data-theme="light"] .t-verified i { color: #12703a; }
+
+    /* The camera viewport is black in both themes, so the placeholder
+       inside it has to wear light ink. In light mode the default
+       --text-main made the title invisible against the feed. */
+    .scanner-viewport-box .empty-state,
+    .scanner-viewport-box .empty-state h3 { color: #f0f0f5; }
+    .scanner-viewport-box .empty-state p { color: #b4b4be; }
+    .scanner-viewport-box .primary-btn { background: #ffffff; color: #0c0c12; border: none; }
+
+    /* ── 2 · HIT AREAS ─────────────────────────────────────────
+       A 12px × 44px "clear" button is a 12px target. These become real
+       44 × 44 targets, and the search fields give up the room so the
+       text never runs underneath them. */
+    .mission-lane-add-mini {
+      min-width: 44px; min-height: 44px;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0 10px;
+    }
+    .counter-creator-toggle-btn {
+      min-width: 44px; min-height: 44px;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0 10px;
+    }
+    .counter-search-clear, .clip-search-clear {
+      width: 44px; height: 44px;
+      right: 2px;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0;
+      font-size: 0.82rem;
+    }
+    .counter-search-input, .clip-search-input { padding-right: 52px; }
+
+    /* ── 3 · AFFORDANCE ────────────────────────────────────────
+       A rail that is cut off at the edge reads as broken. These fade
+       out on whichever side still has content — jxUpdateRails() keeps
+       the two classes in step with the scroll position. */
+    .jx-rail-right {
+      -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent 100%);
+      mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent 100%);
+    }
+    .jx-rail-left {
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 34px);
+      mask-image: linear-gradient(to right, transparent 0, #000 34px);
+    }
+    .jx-rail-left.jx-rail-right {
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 34px, #000 calc(100% - 34px), transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0, #000 34px, #000 calc(100% - 34px), transparent 100%);
+    }
+    /* A faded rail still needs to show where the next chip starts. */
+    .jx-fade-rail { scroll-padding-inline: 10px; }
+
+    /* ── 4 · CHROME ────────────────────────────────────────────
+       The dock floats over the last row of the page. In light mode it
+       was 68% opaque at its lower edge, so the icons underneath showed
+       through as if they had been cut in half. More glass, more blur:
+       it reads as depth rather than as damage. */
+    [data-theme="light"] .dock {
+      background: linear-gradient(135deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.90) 100%);
+      border: 1px solid rgba(255,255,255,1);
+      box-shadow:
+        0 22px 50px -10px rgba(0,0,0,0.18),
+        0 8px 22px -4px rgba(0,0,0,0.10),
+        inset 0 1.5px 1.5px 0 rgba(255,255,255,1);
+    }
+    .dock {
+      backdrop-filter: blur(44px) saturate(220%) brightness(1.12);
+      -webkit-backdrop-filter: blur(44px) saturate(220%) brightness(1.12);
+    }
+    /* The centre button sat 14px proud of the pill and landed squarely on
+       whatever was underneath. */
+    .dock-btn.dock-fab { transform: translateY(-9px); }
+    .dock-btn.dock-fab:active { transform: translateY(-9px) scale(0.9); }
+    @media (max-width: 480px) {
+      .dock-btn.dock-fab { transform: translateY(-9px); }
+      .dock-btn.dock-fab:active { transform: translateY(-9px) scale(0.9); }
+    }
+
+    /* Sheet headers share the sheet's surface so there is no seam where
+       the header meets the sheet, and the two toolkit headers become the
+       sheet's rounded lid instead of a square block pasted onto it. */
+    .bottom-sheet .sheet-header {
+      background: linear-gradient(180deg, rgba(var(--surface-rgb), 0.9) 0%, rgba(var(--surface-rgb), 0.93) 100%);
+    }
+    .jx-tools-header, .jx-ne-head { border-radius: 26px 26px 0 0; }
+    #vibeSheet > .drag-handle, #notesSheet > .drag-handle { display: none; }
+    #vibeSheet > .jx-tools-header, #notesSheet > .jx-ne-head {
+      padding-top: 26px;
+      margin-top: 0;
+    }
+    #vibeSheet > .jx-tools-header::before,
+    #notesSheet > .jx-ne-head::before {
+      content: ''; position: absolute; top: 9px; left: 50%;
+      transform: translateX(-50%);
+      width: 40px; height: 5px; border-radius: 10px; padding: 4px;
+      background: var(--text-muted); opacity: 0.34; background-clip: content-box;
+    }
+    @media (min-width: 769px) {
+      .jx-tools-header, .jx-ne-head { border-radius: 36px 36px 0 0; }
+    }
+
+    /* The dock floats over the page, so anything that scrolls under it
+       used to be sliced in half by the pill's edge. A scrim lets the
+       content dissolve into the page instead. */
+    .dock-scrim {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      height: 118px; z-index: 99; pointer-events: none;
+      background: linear-gradient(to top,
+        var(--bg) 0%, var(--bg) 38%,
+        color-mix(in srgb, var(--bg) 58%, transparent) 72%,
+        transparent 100%);
+    }
+    @media (min-width: 769px) { .dock-scrim { height: 96px; } }
+
+    /* The Clipboard put twenty-one controls above the first clip. The
+       filter pills and the export actions are rails, not paragraphs —
+       one line each, fading at the edge, and the telemetry block is
+       compact on a phone. About 200px of chrome comes off the screen
+       and the content is reachable without scrolling. */
+    .clip-filter-row, .counter-filter-row { flex-wrap: nowrap !important; }
+    .clip-studio-actions, .counter-studio-actions {
+      flex-wrap: nowrap !important;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 2px 0;
+    }
+    .clip-studio-actions::-webkit-scrollbar,
+    .counter-studio-actions::-webkit-scrollbar { display: none; }
+    .clip-studio-actions .btn-secondary,
+    .counter-studio-actions .btn-secondary { flex: 0 0 auto; }
+    @media (max-width: 680px) {
+      /* Four compact stats in one strip instead of two rows of big tiles. */
+      .clip-telemetry-grid, .counter-telemetry-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 7px;
+      }
+      .clip-telemetry-card, .counter-telemetry-card {
+        flex-direction: column; align-items: flex-start; gap: 6px;
+        padding: 9px 9px 10px; border-radius: 16px;
+      }
+      .clip-telemetry-icon, .counter-telemetry-icon {
+        width: 28px; height: 28px; font-size: 0.8rem; border-radius: 10px;
+      }
+      .clip-telemetry-info, .counter-telemetry-info {
+        flex-direction: column-reverse; align-items: flex-start; width: 100%;
+      }
+      .clip-telemetry-label, .counter-telemetry-label {
+        font-size: 0.53rem; letter-spacing: 0.03em; line-height: 1.2;
+        white-space: normal; overflow: visible; text-overflow: clip;
+      }
+      .clip-telemetry-val, .counter-telemetry-val { font-size: 1.05rem; line-height: 1.1; }
+    }
+    /* Three actions on one line: the long labels shrink to their short
+       form, the full wording stays in the accessibility tree. */
+    @media (max-width: 430px) {
+      .clip-quick-capture-bar { flex-wrap: nowrap !important; }
+      .clip-quick-capture-bar .primary-btn,
+      .clip-quick-capture-bar .btn-secondary { flex: 1 1 0; min-width: 0; }
+      .clip-quick-capture-bar span[data-short] { font-size: 0; }
+      .clip-quick-capture-bar span[data-short]::after {
+        content: attr(data-short); font-size: 0.78rem;
+      }
+    }
+
+    /* ── 5 · RHYTHM ────────────────────────────────────────────
+       680px of a 1440px screen left the desktop reading like a phone
+       layout stretched into a column. The wide breakpoints get the
+       width they need; the phone layout is untouched. */
+    @media (min-width: 768px) {
+      .container { max-width: 880px; }
+    }
+    /* The metric tiles clipped a repository name to "Abou…". Let the name
+       wrap instead of truncating it. */
+    .oss-metric-value {
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.2;
+    }
+    /* "1 stars" reads wrong. */
+    .repo-meta span { white-space: nowrap; }
 
   </style>
 
@@ -12663,8 +13000,10 @@
   // Changelog bootstrap: renders latest updates immediately, even before the main app script finishes loading.
   // ▼ EDIT HERE: bump SITE_VERSION + add an entry at the TOP when you ship an update.
   //   Visitors see the new version automatically (live sync also pulls it from GitHub).
-  window.SITE_VERSION = 'v7.2';
+  window.SITE_VERSION = 'v7.4';
   window.SITE_CHANGELOG_FALLBACK = [
+    { version: 'v7.4', date: '4th Nov 2026', text: 'Interface and layout pass across the whole site. Every piece of muted text now clears the WCAG AA contrast bar - it was sitting at roughly three to one against the light surfaces, so labels, captions and metadata are properly legible instead of merely present. The accent chips keep their colour but use a darker ink, the touch targets that were only twelve pixels wide are now a full forty-four, the colour swatches and the password slider carry real labels, and every horizontal rail fades out on the side that still has content, so a cut-off row reads as scrollable rather than broken. The bottom dock is frosted glass and now sits on a soft scrim, so the last row of icons dissolves under it instead of being sliced in half. The clipboard panel fits one phone screen instead of two: four compact stat tiles, the capture buttons on a single line, and the export and filter rows scrolling sideways behind a fade. The toolkit sheet no longer leaves a third of the display empty under the tool grid - it fits its content now and grows to full height only when a tool is actually open. On a wide screen the hero becomes a real two-column split: the name and the role on the left, the introduction and the stat rail on the right, under a ruled masthead with the portrait. All five Focus mode chips carry their interval now, including Custom. Same palette, same type, same shapes - just easier to read and use.' },
+    { version: 'v7.3', date: '3rd Nov 2026', text: 'QR Studio layout fix for phones. The payload under the code no longer runs off the edge of the sheet - a long link now wraps inside the panel instead of being clipped mid-word - and the whole preview is a single column on a phone: a centred 190px code, the payload underneath it, Download PNG across the full width with Copy Image and Share side by side, and the send chips wrapping onto two rows instead of one chip per row. The type rail now scrolls with a snap so the last chip is always reachable. The desktop layout is unchanged.' },
     { version: 'v7.2', date: '3rd Nov 2026', text: 'Scanner and Passwords pass. Detected secrets - OpenAI, GitHub, AWS, Google, Slack and Stripe keys, JWTs, private keys, bearer tokens, database URLs - now render masked in the password vault and in the clipboard, each with its own reveal toggle, a type badge and an automatic re-mask, and the secret itself never reaches the DOM. The scanner reads whole batches now: images plus multi-page PDFs, with pdf.js lazy-loaded and every page rasterised and read. Each result offers the action that fits it - open, copy or shorten a URL, compose a mailto, dial a tel, drop a geo on the map, turn a calendar event into a Mission with its due time, or hand a UPI link to your payment app. A printable Wi-Fi join sheet turns a scanned network into an SSID, password and QR card you can leave for guests. The curated featured-repositories strip and the QR Studio quiet-zone and error-correction sliders are gone; the generator now always uses a 4-module quiet zone and level-H error correction so logo-watermarked codes stay scannable.' },
     { version: 'v7.1', date: '3rd Nov 2026', text: 'Toolkit focus pass. The Focus timer and the Stopwatch now run off an absolute wall-clock timestamp instead of a decrementing counter, so they stay accurate through a backgrounded tab, a screen sleep or a reload, and a running timer comes back exactly where it left off. Counters can roll over on their own - daily, weekly or monthly, with the hour you want the reset to land - so a weekly tally starts fresh without a manual reset. Every snippet, scan, QR, timer session and counter can now be sent straight to another tool: Clipboard, Scratchpad, Missions, Counters, Focus, QR Studio or the Focus Log, from one shared action row. No new tools and no new dependencies.' },
     { version: 'v7.0', date: '29th Oct 2026', text: 'Home hero rebuilt as an editorial split: the name leads at display size, the role reads as a mono eyebrow, the three stat boxes collapse into a single hairline rail, and the primary action gains a weighted arrow cap with matched ghost buttons beside it. The portrait is now a compact 44px chip in the top corner, the availability dot is gone for good, and the whole block is tightened to sit in one screen on a phone. Light mode, reduced motion and Performance mode are all respected - no new dependencies.' },
@@ -12983,6 +13322,7 @@
           <button class="focus-mode-btn" type="button" onclick="setFocusMode('custom', this)" data-mode="custom">
             <i class="fa-solid fa-sliders"></i>
             <span>Custom</span>
+            <span class="focus-mode-badge" id="focusCustomBadge">25/5m</span>
           </button>
         </div>
 
@@ -13358,7 +13698,7 @@
               <button class="password-len-chip" type="button" onclick="setPassLength(32)">32</button>
             </div>
           </div>
-          <input type="range" id="passLen" class="pass-slider" min="6" max="32" value="16" oninput="updatePassControls(true)">
+          <input type="range" id="passLen" class="pass-slider" min="6" max="32" value="16" aria-label="Password length in characters" oninput="updatePassControls(true)">
         </div>
 
         <!-- Character Sets Matrix -->
@@ -13442,15 +13782,15 @@
         <div class="clip-quick-capture-bar">
           <button class="primary-btn ripple-btn clip-paste-btn" type="button" onclick="pasteFromDeviceClipboard()">
             <i class="fa-solid fa-paste"></i>
-            <span>Paste from Device</span>
+            <span data-short="Paste">Paste from Device</span>
           </button>
           <button class="btn-secondary ripple-btn" type="button" onclick="toggleClipComposer()">
             <i class="fa-solid fa-pen-to-square"></i>
-            <span>New Snippet</span>
+            <span data-short="New">New Snippet</span>
           </button>
           <button class="btn-secondary ripple-btn" type="button" onclick="deleteExpiredClips()" title="Clear expired clips">
             <i class="fa-solid fa-broom"></i>
-            <span>Prune Expired</span>
+            <span data-short="Prune">Prune Expired</span>
           </button>
         </div>
 
@@ -13632,12 +13972,12 @@
               <div class="counter-input-group">
                 <label class="counter-input-label">Color Accent</label>
                 <div class="counter-color-picker" id="counterColorPicker">
-                  <button type="button" class="counter-color-dot active" data-color="accent" style="background:var(--accent);" onclick="selectCounterColor('accent', this)"></button>
-                  <button type="button" class="counter-color-dot" data-color="#06b6d4" style="background:#06b6d4;" onclick="selectCounterColor('#06b6d4', this)"></button>
-                  <button type="button" class="counter-color-dot" data-color="#10b981" style="background:#10b981;" onclick="selectCounterColor('#10b981', this)"></button>
-                  <button type="button" class="counter-color-dot" data-color="#8b5cf6" style="background:#8b5cf6;" onclick="selectCounterColor('#8b5cf6', this)"></button>
-                  <button type="button" class="counter-color-dot" data-color="#f59e0b" style="background:#f59e0b;" onclick="selectCounterColor('#f59e0b', this)"></button>
-                  <button type="button" class="counter-color-dot" data-color="#ec4899" style="background:#ec4899;" onclick="selectCounterColor('#ec4899', this)"></button>
+                  <button type="button" class="counter-color-dot active" data-color="accent" style="background:var(--accent);" aria-label="Accent colour" onclick="selectCounterColor('accent', this)"></button>
+                  <button type="button" class="counter-color-dot" data-color="#06b6d4" style="background:#06b6d4;" aria-label="Cyan colour" onclick="selectCounterColor('#06b6d4', this)"></button>
+                  <button type="button" class="counter-color-dot" data-color="#10b981" style="background:#10b981;" aria-label="Emerald colour" onclick="selectCounterColor('#10b981', this)"></button>
+                  <button type="button" class="counter-color-dot" data-color="#8b5cf6" style="background:#8b5cf6;" aria-label="Violet colour" onclick="selectCounterColor('#8b5cf6', this)"></button>
+                  <button type="button" class="counter-color-dot" data-color="#f59e0b" style="background:#f59e0b;" aria-label="Amber colour" onclick="selectCounterColor('#f59e0b', this)"></button>
+                  <button type="button" class="counter-color-dot" data-color="#ec4899" style="background:#ec4899;" aria-label="Pink colour" onclick="selectCounterColor('#ec4899', this)"></button>
                 </div>
               </div>
             </div>
@@ -13730,9 +14070,9 @@
 
           <div id="scannerPlaceholder" class="empty-state" style="padding:28px 18px; z-index:2;">
             <i class="fa-solid fa-qrcode" style="font-size:2.4rem; color:var(--accent); margin-bottom:10px;"></i>
-            <h3 style="font-size:1.05rem; font-weight:800; color:var(--text-main); margin:0 0 6px;">Camera Scanner Studio</h3>
-            <p style="font-size:0.82rem; color:var(--text-muted); margin:0 0 14px; max-width:320px;">Scan QR codes, barcodes, WiFi keys, or run instant OCR on printed text.</p>
-            <button class="primary-btn ripple-btn" type="button" onclick="toggleScanner()" style="padding:10px 24px; font-size:0.88rem;"><i class="fa-solid fa-camera"></i> Start Scanner</button>
+            <h3 style="font-size:1.05rem; font-weight:800; color:#f0f0f5; margin:0 0 6px;">Camera Scanner Studio</h3>
+            <p style="font-size:0.82rem; color:#b4b4be; margin:0 0 14px; max-width:320px;">Scan QR codes, barcodes, WiFi keys, or run instant OCR on printed text.</p>
+            <button class="primary-btn ripple-btn" type="button" onclick="toggleScanner()" style="padding:10px 24px; font-size:0.88rem; background:#ffffff; color:#0c0c12;"><i class="fa-solid fa-camera"></i> Start Scanner</button>
           </div>
 
           <!-- Floating HUD Toolbar over Camera -->
@@ -14134,7 +14474,7 @@
     </div>
     <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:20px;">Choose a platform to send your support.</p>
     <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
-      <a class="primary-btn ripple-btn" href="https://ko-fi.com/jinosabu1999" target="_blank" style="background:#29abe0; color:#fff; border:none; justify-content:center;">
+      <a class="primary-btn ripple-btn" href="https://ko-fi.com/jinosabu1999" target="_blank" style="background:#166f99; color:#fff; border:none; justify-content:center;">
         <i class="fa-solid fa-mug-hot"></i> Support on Ko-fi
       </a>
       <a class="primary-btn ripple-btn" href="https://paypal.me/jinosabu" target="_blank" style="background:#0079C1; color:#fff; border:none; justify-content:center;">
@@ -14554,6 +14894,8 @@
       const breadcrumbCurrent = document.getElementById('jxBreadcrumbCurrent');
 
       if (launcher) launcher.style.display = 'none';
+      const vibeSheet = document.getElementById('vibeSheet');
+      if (vibeSheet) vibeSheet.classList.remove('jx-tools-home');
       if (back) back.classList.add('visible');
       if (breadcrumb) breadcrumb.style.display = 'inline-flex';
       if (breadcrumbCurrent) breadcrumbCurrent.textContent = def.name;
@@ -14596,6 +14938,8 @@
       document.querySelectorAll('#vibeSheet .tab-content').forEach(c => c.classList.remove('active'));
       const launcher = document.getElementById('jxToolsLauncher');
       if (launcher) { launcher.style.display = ''; renderToolsLauncher(); }
+      const homeSheet = document.getElementById('vibeSheet');
+      if (homeSheet) homeSheet.classList.add('jx-tools-home');
       const back = document.getElementById('jxToolBack');
       if (back) back.classList.remove('visible');
       const breadcrumb = document.getElementById('jxToolsBreadcrumb');
@@ -17376,7 +17720,16 @@
       haptic([25]);
     }
 
+    function jxSyncFocusCustomBadge() {
+      const badge = document.getElementById('focusCustomBadge');
+      if (!badge || typeof FOCUS_PRESETS === 'undefined' || !FOCUS_PRESETS.custom) return;
+      const c = FOCUS_PRESETS.custom;
+      const label = Math.round(c.focus) + '/' + Math.round(c.shortBreak) + 'm';
+      if (badge.textContent !== label) badge.textContent = label;
+    }
+
     function updateFocusUI() {
+      jxSyncFocusCustomBadge();
       // While running, the displayed value is read from the wall clock so it
       // can never drift away from real elapsed time.
       if (focusEndsAt) {
@@ -19601,7 +19954,7 @@
         const filterActive = activeNoteFolderFilter !== 'All' || activeNoteTagFilter !== 'All';
         container.innerHTML = '<div class="jx-nb-empty">' +
           '<span class="jx-nb-empty-icon"><i class="fa-solid ' + (query || filterActive ? 'fa-magnifying-glass' : 'fa-feather') + '"></i></span>' +
-          '<h4>' + (query ? 'No notes match “' + escapeHtml(rawQuery) + '”' : (filterActive ? 'Nothing in this view yet' : 'A clean slate')) + '</h4>' +
+          '<h3>' + (query ? 'No notes match “' + escapeHtml(rawQuery) + '”' : (filterActive ? 'Nothing in this view yet' : 'A clean slate')) + '</h3>' +
           '<p>' + (query ? 'Try a different word, or capture the thought as a new note.' : (filterActive ? 'Create a note and it lands in this collection.' : 'Ideas, plans, journals — everything stays on this device.')) + '</p>' +
           '<button class="primary-btn ripple-btn" type="button" onclick="createNewNote()"><i class="fa-solid fa-plus"></i> ' + (query ? 'Create a note' : 'New note') + '</button>' +
           '</div>';
@@ -21411,7 +21764,10 @@ async function ensureQRCodeLib() {
         }
         const bText = $('#qrBadgeText');
         const bIcon = $('#qrBadgeIcon');
-        if (bText) bText.textContent = built.label;
+        if (bText) {
+          bText.textContent = built.label;
+          bText.title = built.payload || built.label || '';
+        }
         if (bIcon) bIcon.className = 'fa-solid ' + (built.icon || 'fa-qrcode');
         // Send-to row — the encoded payload can become a clip, a note or a mission.
         const sendHost = document.getElementById('qrSendRow');
@@ -21881,6 +22237,87 @@ async function ensureQRCodeLib() {
     }
 
     // Close only the join sheet — the scanner stays exactly where it was.
+    /* ═══════════════════════════════════════════════════════════
+       v7.4 — UI / UX REFINEMENT: scroll-rail affordances
+       A horizontal rail that is cut off at the edge reads as broken
+       rather than scrollable. Every rail in the app gets a soft fade
+       on whichever side still has content; the classes are kept in
+       step with the scroll position.
+       ═══════════════════════════════════════════════════════════ */
+    const JX_RAIL_IDS = [
+      'openSourceRail', 'openSourceFilters', 'xpRail', 'testimonialContainer',
+      'clipFilterRow', 'counterFilterRow',
+      'projectContainer', 'qrLogoOptions', 'qrStyleOptions',
+      'qrColorOptions', 'goalSteps'
+    ];
+    const JX_RAIL_CLASSES = [
+      'qr-studio-type-bar', 'jx-send-row', 'oss-filter-row',
+      'site-nav-rail', 'tool-stack-track', 'focus-tag-chips',
+      'clip-studio-actions', 'counter-studio-actions'
+    ];
+
+    function jxRailElements() {
+      const out = [];
+      JX_RAIL_IDS.forEach(id => { const el = document.getElementById(id); if (el) out.push(el); });
+      JX_RAIL_CLASSES.forEach(cls => {
+        document.querySelectorAll('.' + cls.split(' ').join('.')).forEach(el => out.push(el));
+      });
+      return out;
+    }
+
+    function jxUpdateRail(el) {
+      if (!el || !el.classList) return;
+      const max = el.scrollWidth - el.clientWidth;
+      if (max <= 2) { el.classList.remove('jx-rail-left', 'jx-rail-right'); return; }
+      const left = Math.max(0, el.scrollLeft);
+      el.classList.toggle('jx-rail-left', left > 2);
+      el.classList.toggle('jx-rail-right', left < max - 2);
+    }
+
+    function jxUpdateRails() {
+      jxRailElements().forEach(el => {
+        el.classList.add('jx-fade-rail');
+        jxUpdateRail(el);
+      });
+    }
+
+    // Wire the rails up once, and keep them honest as content changes.
+    function jxInitDockScrim() {
+      if (document.getElementById('jxDockScrim')) return;
+      if (!document.querySelector('.dock-wrapper')) return;
+      const scrim = document.createElement('div');
+      scrim.className = 'dock-scrim';
+      scrim.id = 'jxDockScrim';
+      scrim.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(scrim);
+    }
+
+    function jxInitRails() {
+      if (typeof jxUpdateRails === 'function') jxUpdateRails();
+      document.querySelectorAll('.jx-fade-rail').forEach(el => {
+        if (el.dataset.jxRailBound === '1') return;
+        el.dataset.jxRailBound = '1';
+        el.addEventListener('scroll', () => jxUpdateRail(el), { passive: true });
+      });
+      if (typeof MutationObserver !== 'undefined') {
+        const mo = new MutationObserver(() => {
+          window.requestAnimationFrame(jxUpdateRails);
+        });
+        const root = document.body;
+        if (root) mo.observe(root, { childList: true, subtree: true, characterData: true });
+        window.addEventListener('resize', () => jxUpdateRails(), { passive: true });
+        window.addEventListener('orientationchange', () => setTimeout(jxUpdateRails, 200));
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => { jxInitDockScrim(); jxInitRails(); }, { once: true });
+    } else {
+      jxInitDockScrim();
+      jxInitRails();
+    }
+    window.addEventListener('load', () => setTimeout(jxUpdateRails, 400), { once: true });
+
     function closeWifiJoinSheet() {
       const sheet = document.getElementById('wifiJoinSheet');
       if (sheet) sheet.classList.remove('open');
@@ -24253,7 +24690,7 @@ async function ensureQRCodeLib() {
           getRepoTopicsMarkup(repo, 4) +
           '<div class="repo-meta-grid" aria-label="Repository details">' +
             '<span class="repo-meta"><span class="repo-lang-dot" style="background:' + color + '; color:' + color + ';"></span><span>' + langSafe + '</span></span>' +
-            '<span class="repo-meta"><i class="fa-solid fa-star" aria-hidden="true"></i><span>' + stars + ' stars</span></span>' +
+            '<span class="repo-meta"><i class="fa-solid fa-star" aria-hidden="true"></i><span>' + stars + (stars === 1 ? ' star' : ' stars') + '</span></span>' +
             '<span class="repo-meta" title="' + escapeHtml(updatedDate) + '"><i class="fa-regular fa-clock" aria-hidden="true"></i><span>' + escapeHtml(updatedRelative) + '</span></span>' +
             '<span class="repo-meta"><i class="fa-solid fa-code-branch" aria-hidden="true"></i><span>' + escapeHtml(repo.default_branch || 'main') + '</span></span>' +
           '</div>' +
@@ -25630,5 +26067,5 @@ async function ensureQRCodeLib() {
   });
 })();
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5489e72da15426e',t:'MTc5MzY3OTk2Nw=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5489e72da15426e',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a562a69cfdd028bc',t:'MTc5Mzk1MjkzMQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a562a69cfdd028bc',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
