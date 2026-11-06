@@ -8,7 +8,7 @@
 
    Keep in sync: CACHE_VERSION here  ↔  window.SITE_VERSION in index.html
    ═══════════════════════════════════════════════════════════════════════════ */
-const CACHE_VERSION = 'v7.7';
+const CACHE_VERSION = 'v7.8';
 const CACHE_NAME = `jino-portfolio-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `jino-runtime-${CACHE_VERSION}`;
 
