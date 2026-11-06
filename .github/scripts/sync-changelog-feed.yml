@@ -1,0 +1,68 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SYNC CHANGELOG FEED — rebuilds feed.xml, the RSS feed of the changelog.
+#
+# Why: "Recent Updates" is already a live, dated, versioned feed, but until now
+# it could only be read in a browser. feed.xml publishes the same notes as RSS,
+# and the <link rel="alternate"> in index.html lets feed readers and browsers
+# discover it without anyone having to publish the URL.
+#
+# Single source of truth: window.SITE_CHANGELOG_FALLBACK in index.html.
+# .github/scripts/build_feed.js reads that array and writes feed.xml, using the
+# same tolerant extractor the page uses — so the feed can never drift from what
+# a visitor actually sees on the page.
+#
+# Loop-safe: the commit step only fires when the file really changed, and the
+# paths filter keeps this workflow away from its own commits (it only listens
+# to index.html and the builder).
+# ─────────────────────────────────────────────────────────────────────────────
+name: Sync changelog feed
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - '.github/scripts/build_feed.js'
+  schedule:
+    - cron: '41 3 * * *'      # daily, so a hand-edited feed.xml is corrected
+  workflow_dispatch:            # plus a manual "Run workflow" button
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-changelog-feed
+  cancel-in-progress: false     # queue, never cancel mid-push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the toolchain
+        run: |
+          set -e
+          node --version
+          python3 --version
+
+      - name: Build feed.xml from index.html
+        run: |
+          set -e
+          node .github/scripts/build_feed.js
+          # Never commit a feed that a parser would reject.
+          python3 -c "import xml.dom.minidom as m; d=m.parse('feed.xml'); print('feed.xml is valid XML —', len(d.getElementsByTagName('item')), 'items')"
+
+      - name: Commit if the feed changed
+        run: |
+          set -e
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add feed.xml
+          if git diff --cached --quiet; then
+            echo "feed.xml is already current — nothing to commit"
+          else
+            git commit -m "chore(feed): rebuild feed.xml from index.html"
+            git pull --rebase origin "${{ github.ref_name }}"
+            git push origin "${{ github.ref_name }}"
+          fi
