@@ -27,6 +27,7 @@
 
   <link rel="canonical" href="https://jinosabu1999.github.io/About-Me/" />
   <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
+  <link rel="alternate" type="application/rss+xml" title="Jino Sabu — Recent Updates" href="https://jinosabu1999.github.io/About-Me/feed.xml" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="author" content="Jino Sabu" />
   <meta name="theme-color" content="#030305" id="themeColorMeta" />
@@ -7428,6 +7429,26 @@
       font-weight: 900;
       letter-spacing: 0.04em;
     }
+    .jcl-rss-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 32px;
+      padding: 0 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: rgba(var(--surface-rgb), 0.5);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .jcl-rss-btn svg { width: 13px; height: 13px; flex: none; display: block; }
+    .jcl-rss-btn:hover, .jcl-rss-btn:focus-visible { color: var(--accent); border-color: var(--accent); }
     .jcl-toolbar .jx-sync-chip { margin-left: auto; flex: 1 1 auto; min-width: 0; justify-content: flex-start; }
     @media (max-width: 480px) {
       .jcl-toolbar { gap: 8px; }
@@ -12113,6 +12134,35 @@
       .home-hero .hh-stat { padding: 16px 0 16px 4px; }
       .home-hero .hh-stat + .hh-stat { padding-left: 16px; }
     }
+
+    /* ═══════════════════════════════════════════════════════════
+       v7.5 · WINDOW CONTROLS OVERLAY
+       Installed as a desktop app, the OS paints minimise / maximise /
+       close into the top strip of the window. Reserve that strip so no
+       content hides underneath it, and put the site name in the free
+       space to the left of those buttons. env() resolves to 0 wherever
+       the API is missing, so all of this is inert in a normal tab.
+       ═══════════════════════════════════════════════════════════ */
+    body { padding-top: env(titlebar-area-height, 0px); }
+    .wco-titlebar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 45;
+      height: env(titlebar-area-height, 0px);
+      display: none;
+      align-items: center;
+      padding: 0 176px 0 max(16px, env(titlebar-area-x, 0px));
+      pointer-events: none;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      -webkit-user-select: none; user-select: none;
+    }
+    body.jx-wco .wco-titlebar { display: flex; }
+    .wco-titlebar-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     @media (prefers-reduced-motion: reduce) {
       .home-hero *, .home-hero *::before, .home-hero *::after {
         transition-duration: 0.01ms !important; animation-duration: 0.01ms !important;
@@ -12539,6 +12589,9 @@
 </head>
 <body>
 
+<!-- Window-controls-overlay strip: only visible in an installed desktop app -->
+<div class="wco-titlebar" aria-hidden="true"><span class="wco-titlebar-title">Jino Sabu</span></div>
+
 <!-- Note Exporter Canvas -->
   <div id="exportCanvasContainer">
     <h3 id="exportCanvasTitle">Note</h3>
@@ -12945,11 +12998,12 @@
 
 
     <!-- Changelog -->
-    <h2 class="section-title reveal">Recent Updates</h2>
+    <h2 class="section-title reveal" id="recent-updates">Recent Updates</h2>
     <div class="bento-card glass-panel reveal">
       <div class="changelog-list" id="changelogList">
         <div class="jcl-toolbar">
           <span class="jcl-version-chip" id="jclVersionChip" title="Current site version"><i class="fa-solid fa-code-branch" aria-hidden="true"></i> <span id="jclVersionLabel">v7.2</span></span>
+          <a class="jcl-rss-btn" href="feed.xml" title="Subscribe to the updates feed (RSS)" aria-label="Subscribe to the updates feed (RSS)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9" /><path d="M4 4a16 16 0 0 1 16 16" /><circle cx="5.2" cy="18.8" r="1.5" fill="currentColor" stroke="none" /></svg><span>RSS</span></a>
           <span class="jcl-sync jx-sync-chip" id="jclSyncChip" role="status" aria-live="polite"><span class="jx-sync-dot" aria-hidden="true"></span><span class="jx-sync-label">Sync ready</span></span>
           <button class="jx-sync-btn ripple-btn" id="jclRefreshBtn" type="button" aria-label="Refresh changelog from GitHub" title="Refresh changelog from GitHub"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button>
         </div>
@@ -13000,8 +13054,10 @@
   // Changelog bootstrap: renders latest updates immediately, even before the main app script finishes loading.
   // ▼ EDIT HERE: bump SITE_VERSION + add an entry at the TOP when you ship an update.
   //   Visitors see the new version automatically (live sync also pulls it from GitHub).
-  window.SITE_VERSION = 'v7.4';
+  window.SITE_VERSION = 'v7.6';
   window.SITE_CHANGELOG_FALLBACK = [
+    { version: 'v7.6', date: '6th Nov 2026', text: 'The updates feed is live. Recent Updates now has an RSS endpoint - feed.xml - carrying every dated, versioned release note, with a link in the page head so feed readers and browsers discover it on their own, and a subscribe button beside the version chip for everyone else. The feed is generated from the same array the page renders, so it can never drift from what a visitor actually sees, and it is rebuilt automatically every time a new version ships.' },
+    { version: 'v7.5', date: '4th Nov 2026', text: 'The operating system can now hand things to this site. Share a link, a snippet or a photo to it from any other app and the content arrives in the tool that owns it - text and links land in the Clipboard, images and PDFs go straight into the Scanner batch queue, a Markdown file opens as a new Scratchpad note, a CSV becomes a set of Counters and a backup JSON restores into the Data Vault. Opening a file with the app now routes it by extension instead of downloading it. Installed as a desktop app, the window controls no longer sit on top of the content: the top strip is reserved and the name moves into it. Also fixes a real export bug - every Export as .csv was throwing because the cell helper it relied on was missing.' },
     { version: 'v7.4', date: '4th Nov 2026', text: 'Interface and layout pass across the whole site. Every piece of muted text now clears the WCAG AA contrast bar - it was sitting at roughly three to one against the light surfaces, so labels, captions and metadata are properly legible instead of merely present. The accent chips keep their colour but use a darker ink, the touch targets that were only twelve pixels wide are now a full forty-four, the colour swatches and the password slider carry real labels, and every horizontal rail fades out on the side that still has content, so a cut-off row reads as scrollable rather than broken. The bottom dock is frosted glass and now sits on a soft scrim, so the last row of icons dissolves under it instead of being sliced in half. The clipboard panel fits one phone screen instead of two: four compact stat tiles, the capture buttons on a single line, and the export and filter rows scrolling sideways behind a fade. The toolkit sheet no longer leaves a third of the display empty under the tool grid - it fits its content now and grows to full height only when a tool is actually open. On a wide screen the hero becomes a real two-column split: the name and the role on the left, the introduction and the stat rail on the right, under a ruled masthead with the portrait. All five Focus mode chips carry their interval now, including Custom. Same palette, same type, same shapes - just easier to read and use.' },
     { version: 'v7.3', date: '3rd Nov 2026', text: 'QR Studio layout fix for phones. The payload under the code no longer runs off the edge of the sheet - a long link now wraps inside the panel instead of being clipped mid-word - and the whole preview is a single column on a phone: a centred 190px code, the payload underneath it, Download PNG across the full width with Copy Image and Share side by side, and the send chips wrapping onto two rows instead of one chip per row. The type rail now scrolls with a snap so the last chip is always reachable. The desktop layout is unchanged.' },
     { version: 'v7.2', date: '3rd Nov 2026', text: 'Scanner and Passwords pass. Detected secrets - OpenAI, GitHub, AWS, Google, Slack and Stripe keys, JWTs, private keys, bearer tokens, database URLs - now render masked in the password vault and in the clipboard, each with its own reveal toggle, a type badge and an automatic re-mask, and the secret itself never reaches the DOM. The scanner reads whole batches now: images plus multi-page PDFs, with pdf.js lazy-loaded and every page rasterised and read. Each result offers the action that fits it - open, copy or shorten a URL, compose a mailto, dial a tel, drop a geo on the map, turn a calendar event into a Mission with its due time, or hand a UPI link to your payment app. A printable Wi-Fi join sheet turns a scanned network into an SSID, password and QR card you can leave for guests. The curated featured-repositories strip and the QR Studio quiet-zone and error-correction sliders are gone; the generator now always uses a 4-module quiet zone and level-H error correction so logo-watermarked codes stay scannable.' },
@@ -22571,6 +22627,17 @@ async function ensureQRCodeLib() {
       const input = event.target;
       const files = Array.from((input.files || []));
       if (!files.length) return;
+      try {
+        await scanFileList(files);
+      } finally {
+        input.value = ''; // allow re-selecting the same file
+      }
+    }
+
+    // The batch pipeline, split out of the file-input handler so a file that
+    // arrives from the OS share sheet can run through the exact same path.
+    async function scanFileList(files) {
+      if (!files || !files.length) return;
       const status = $('#scannerStatus');
       const results = [];
       const failures = [];
@@ -22633,8 +22700,6 @@ async function ensureQRCodeLib() {
       } catch (err) {
         if (status) status.textContent = 'Could not read those files. Try different images.';
         showNotify('Batch scan failed', 'fa-solid fa-xmark');
-      } finally {
-        input.value = ''; // allow re-selecting the same file
       }
     }
 
@@ -24265,48 +24330,7 @@ async function ensureQRCodeLib() {
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
-          const parsed = JSON.parse(e.target.result);
-          let restoredCount = 0;
-
-          // Check if Master Vault format or raw data
-          if (parsed && parsed.data) {
-            const d = parsed.data;
-            if (d.notes) { safeStoreSet('jsSmartNotes', d.notes); myNotes = d.notes; restoredCount++; }
-            if (d.folders) { safeStoreSet('jsNoteFolders', d.folders); }
-            if (d.tasks) { safeStoreSet('jsTasks', d.tasks); tasks = d.tasks; restoredCount++; }
-            if (d.habits) { safeStoreSet('jsHabits', d.habits); restoredCount++; }
-            if (d.counters) { safeStoreSet('jsCounters', d.counters); myCounters = d.counters; restoredCount++; }
-            if (d.clipboard) { safeStoreSet('jsClipboard', d.clipboard); sessionClipboard = d.clipboard; restoredCount++; }
-            if (d.passwords) { safeStoreSet('jsPasswords', d.passwords); savedPasswords = d.passwords; restoredCount++; }
-            if (d.focusSessions) { safeStoreSet('jsFocusSessions', d.focusSessions); restoredCount++; }
-            if (d.stopwatchSessions) { safeStoreSet('jsStopwatchSessions', d.stopwatchSessions); }
-            if (d.accessibility) { safeStoreSet('jsAccessibilityPrefs', d.accessibility); }
-          } else if (Array.isArray(parsed)) {
-            // Check content type heuristics
-            if (parsed.length > 0 && parsed[0].hasOwnProperty('content')) {
-              safeStoreSet('jsSmartNotes', parsed); myNotes = parsed; restoredCount++;
-            } else if (parsed.length > 0 && parsed[0].hasOwnProperty('pass')) {
-              safeStoreSet('jsPasswords', parsed); savedPasswords = parsed; restoredCount++;
-            } else if (parsed.length > 0 && parsed[0].hasOwnProperty('value')) {
-              safeStoreSet('jsCounters', parsed); myCounters = parsed; restoredCount++;
-            } else {
-              safeStoreSet('jsClipboard', parsed); sessionClipboard = parsed; restoredCount++;
-            }
-          }
-
-          // Re-render modules
-          if (typeof renderNotes === 'function') renderNotes();
-          if (typeof renderTasks === 'function') renderTasks();
-          if (typeof renderHabits === 'function') renderHabits();
-          if (typeof renderCounters === 'function') renderCounters();
-          if (typeof renderClipboard === 'function') renderClipboard();
-          if (typeof renderPasswords === 'function') renderPasswords();
-          if (typeof renderFocusAnalytics === 'function') renderFocusAnalytics();
-          updateVaultTelemetry();
-
-          haptic([100, 50, 100]);
-          playSynthesizedSound('success-chord');
-          showNotify('Vault restored successfully (' + restoredCount + ' modules)', 'fa-solid fa-circle-check');
+          restoreVaultPayload(JSON.parse(e.target.result));
         } catch (err) {
           showNotify('Failed to parse backup JSON file', 'fa-solid fa-triangle-exclamation');
         }
@@ -24854,6 +24878,279 @@ async function ensureQRCodeLib() {
     updateMetaTagsFromURL();
 
     // ═══════════════════════════════════════════════════════════
+    // v7.5 · PLATFORM INTEGRATION
+    // Window-controls overlay, OS share target and file handlers.
+    // Every path here is progressive enhancement — a browser that
+    // supports none of it simply never reaches these functions.
+    // ═══════════════════════════════════════════════════════════
+
+    /* ── Window controls overlay ───────────────────────────────────── */
+    function initWindowControlsOverlay() {
+      const wco = navigator.windowControlsOverlay;
+      if (!wco || !document.body) return;
+      const apply = () => {
+        document.body.classList.add('jx-wco');
+        try { wco.setTitleBarAreaVisibility('visible'); } catch (e) { /* not supported */ }
+        try {
+          const rect = wco.getTitlebarAreaRect();
+          if (rect && rect.height) {
+            document.documentElement.style.setProperty('--wco-titlebar-h', rect.height + 'px');
+          }
+        } catch (e) { /* ignore */ }
+      };
+      try { apply(); } catch (e) { /* ignore */ }
+      try { wco.addEventListener('geometrychange', apply); } catch (e) { /* ignore */ }
+    }
+
+    /* ── CSV helpers ───────────────────────────────────────────────── */
+    // csvCell was called by every CSV export but was never defined, so
+    // "Export as .csv" threw a ReferenceError. This is the missing half:
+    // quote a value when it contains a comma, a quote or a line break,
+    // and double any embedded quotes.
+    function csvCell(value) {
+      const s = (value === null || value === undefined) ? '' : String(value);
+      return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    }
+    function parseCsvRows(text) {
+      const rows = [];
+      let row = [], cell = '', quoted = false;
+      const src = String(text || '').replace(/\r\n?/g, '\n');
+      for (let i = 0; i < src.length; i++) {
+        const ch = src[i];
+        if (quoted) {
+          if (ch === '"') {
+            if (src[i + 1] === '"') { cell += '"'; i++; }
+            else quoted = false;
+          } else cell += ch;
+          continue;
+        }
+        if (ch === '"') { quoted = true; continue; }
+        if (ch === ',') { row.push(cell); cell = ''; continue; }
+        if (ch === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; continue; }
+        cell += ch;
+      }
+      if (cell.length || row.length) { row.push(cell); rows.push(row); }
+      return rows.filter(r => r.some(c => String(c).trim() !== ''));
+    }
+
+    /* ── CSV → Counters (the inverse of the existing CSV export) ───── */
+    function importCountersFromCsv(text) {
+      const rows = parseCsvRows(text);
+      if (!rows.length) { showNotify('That CSV file is empty', 'fa-solid fa-triangle-exclamation'); return 0; }
+      const header = rows[0].map(h => String(h).trim().toLowerCase());
+      const hasHeader = header.indexOf('name') >= 0 || header.indexOf('value') >= 0;
+      const col = {
+        name: header.indexOf('name'),
+        group: header.indexOf('category') >= 0 ? header.indexOf('category') : header.indexOf('group'),
+        value: header.indexOf('value'),
+        goal: header.indexOf('goal'),
+        step: header.indexOf('step')
+      };
+      const body = hasHeader ? rows.slice(1) : rows;
+      let added = 0, updated = 0;
+      body.forEach((r) => {
+        const name = String((hasHeader && col.name >= 0 ? r[col.name] : r[0]) || '').trim();
+        if (!name) return;
+        const rawValue = hasHeader && col.value >= 0 ? r[col.value] : r[1];
+        const num = Number(String(rawValue == null ? '' : rawValue).replace(/[^0-9.\-]/g, ''));
+        const value = Number.isFinite(num) ? Math.max(0, Math.round(num)) : 0;
+        const goalNum = hasHeader && col.goal >= 0 ? Number(r[col.goal]) : 0;
+        const stepNum = hasHeader && col.step >= 0 ? Number(r[col.step]) : 1;
+        const group = String((hasHeader && col.group >= 0 ? r[col.group] : '') || '').trim() || 'General';
+        const existing = myCounters.find(c => String(c.name || '').trim().toLowerCase() === name.toLowerCase());
+        if (existing) {
+          existing.value = value;
+          if (Number.isFinite(goalNum) && goalNum > 0) existing.goal = Math.round(goalNum);
+          if (Number.isFinite(stepNum) && stepNum > 0) existing.step = Math.max(1, Math.round(stepNum));
+          existing.updatedAt = new Date().toISOString();
+          updated++;
+        } else {
+          const counter = normalizeCounter({
+            name: name, group: group, goal: goalNum > 0 ? Math.round(goalNum) : 0,
+            step: stepNum > 0 ? Math.max(1, Math.round(stepNum)) : 1,
+            color: selectedCounterColor, value: value, important: false,
+            resetCycle: 'none', resetHour: 0,
+            createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+          }, myCounters.length);
+          counter.lastResetPeriod = counterPeriodKey(counter, new Date());
+          myCounters.unshift(counter);
+          added++;
+        }
+      });
+      if (!added && !updated) { showNotify('No counters found in that CSV', 'fa-solid fa-triangle-exclamation'); return 0; }
+      safeStoreSet('jsCounters', myCounters);
+      renderCounters();
+      haptic([60, 40]);
+      showNotify('Imported ' + added + ' counter(s)' + (updated ? ', updated ' + updated : ''), 'fa-solid fa-file-import');
+      return added + updated;
+    }
+
+    /* ── Vault restore, split out so a file handler can reuse it ────── */
+    function restoreVaultPayload(parsed) {
+      let restoredCount = 0;
+      if (parsed && parsed.data) {
+        const d = parsed.data;
+        if (d.notes) { safeStoreSet('jsSmartNotes', d.notes); myNotes = d.notes; restoredCount++; }
+        if (d.folders) { safeStoreSet('jsNoteFolders', d.folders); }
+        if (d.tasks) { safeStoreSet('jsTasks', d.tasks); tasks = d.tasks; restoredCount++; }
+        if (d.habits) { safeStoreSet('jsHabits', d.habits); restoredCount++; }
+        if (d.counters) { safeStoreSet('jsCounters', d.counters); myCounters = d.counters; restoredCount++; }
+        if (d.clipboard) { safeStoreSet('jsClipboard', d.clipboard); sessionClipboard = d.clipboard; restoredCount++; }
+        if (d.passwords) { safeStoreSet('jsPasswords', d.passwords); savedPasswords = d.passwords; restoredCount++; }
+        if (d.focusSessions) { safeStoreSet('jsFocusSessions', d.focusSessions); restoredCount++; }
+        if (d.stopwatchSessions) { safeStoreSet('jsStopwatchSessions', d.stopwatchSessions); }
+        if (d.accessibility) { safeStoreSet('jsAccessibilityPrefs', d.accessibility); }
+      } else if (Array.isArray(parsed)) {
+        if (parsed.length > 0 && parsed[0].hasOwnProperty('content')) {
+          safeStoreSet('jsSmartNotes', parsed); myNotes = parsed; restoredCount++;
+        } else if (parsed.length > 0 && parsed[0].hasOwnProperty('pass')) {
+          safeStoreSet('jsPasswords', parsed); savedPasswords = parsed; restoredCount++;
+        } else if (parsed.length > 0 && parsed[0].hasOwnProperty('value')) {
+          safeStoreSet('jsCounters', parsed); myCounters = parsed; restoredCount++;
+        } else {
+          safeStoreSet('jsClipboard', parsed); sessionClipboard = parsed; restoredCount++;
+        }
+      }
+      if (typeof renderNotes === 'function') renderNotes();
+      if (typeof renderTasks === 'function') renderTasks();
+      if (typeof renderHabits === 'function') renderHabits();
+      if (typeof renderCounters === 'function') renderCounters();
+      if (typeof renderClipboard === 'function') renderClipboard();
+      if (typeof renderPasswords === 'function') renderPasswords();
+      if (typeof renderFocusAnalytics === 'function') renderFocusAnalytics();
+      if (typeof updateVaultTelemetry === 'function') updateVaultTelemetry();
+      haptic([100, 50, 100]);
+      playSynthesizedSound('success-chord');
+      showNotify('Vault restored successfully (' + restoredCount + ' modules)', 'fa-solid fa-circle-check');
+      return restoredCount;
+    }
+
+    /* ── Route a file to the tool that owns its format ─────────────── */
+    async function routeSharedFile(file) {
+      const name = file.name || 'shared file';
+      const ext = (name.split('.').pop() || '').toLowerCase();
+      const type = (file.type || '').toLowerCase();
+      try {
+        if (ext === 'md' || ext === 'markdown' || type.indexOf('markdown') >= 0) {
+          const text = await file.text();
+          openSheet('notesSheet');
+          importMarkdownText(text, name);
+          return;
+        }
+        if (ext === 'json' || type.indexOf('json') >= 0) {
+          const text = await file.text();
+          let parsed = null;
+          try { parsed = JSON.parse(text); } catch (e) { parsed = null; }
+          if (!parsed || typeof parsed !== 'object') {
+            addClipToHistory(text, { source: 'file', label: name });
+            openSheet('vibeSheet'); switchTab(null, 'tabClip');
+            showNotify('Kept ' + name + ' in your Clipboard', 'fa-solid fa-clipboard');
+            return;
+          }
+          const looksLikeBackup = !!parsed.data || (Array.isArray(parsed) && parsed.length > 0);
+          if (!looksLikeBackup) {
+            addClipToHistory(text, { source: 'file', label: name });
+            openSheet('vibeSheet'); switchTab(null, 'tabClip');
+            showNotify('Kept ' + name + ' in your Clipboard', 'fa-solid fa-clipboard');
+            return;
+          }
+          const ok = window.confirm('Restore "' + name + '" into the Data Vault?\n\nYour current data will be replaced.');
+          if (!ok) { showNotify('Restore cancelled', 'fa-solid fa-circle-info'); return; }
+          restoreVaultPayload(parsed);
+          openSheet('vibeSheet'); switchTab(null, 'tabData');
+          return;
+        }
+        if (ext === 'csv' || type.indexOf('csv') >= 0) {
+          const text = await file.text();
+          openSheet('vibeSheet'); switchTab(null, 'tabCounters');
+          importCountersFromCsv(text);
+          return;
+        }
+        // .txt and anything else textual: the Clipboard is the generic inbox.
+        const text = await file.text();
+        addClipToHistory(text, { source: 'file', label: name });
+        openSheet('vibeSheet'); switchTab(null, 'tabClip');
+        showNotify('Added ' + name + ' to your Clipboard', 'fa-solid fa-clipboard');
+      } catch (e) {
+        showNotify('Could not open ' + name, 'fa-solid fa-triangle-exclamation');
+      }
+    }
+
+    /* ── File handlers (Chrome / Edge "Open with") ─────────────────── */
+    function initFileHandlers() {
+      if (!('launchQueue' in window)) return;
+      try {
+        window.launchQueue.setConsumer(async (params) => {
+          const handles = (params && params.files) || [];
+          if (!handles.length) return;
+          let file = null;
+          try { file = await handles[0].getFile(); } catch (e) { file = null; }
+          if (file) await routeSharedFile(file);
+        });
+      } catch (e) { /* not supported */ }
+    }
+
+    /* ── OS share target: read back what the service worker stashed ── */
+    const JX_SHARE_CACHE = 'jino-share-target';
+    async function consumeSharedPayload() {
+      if (!('caches' in window)) return;
+      let cache = null;
+      try { cache = await caches.open(JX_SHARE_CACHE); } catch (e) { return; }
+      let meta = null;
+      try {
+        const res = await cache.match('./__share_meta__');
+        if (res) meta = await res.json();
+      } catch (e) { meta = null; }
+      if (!meta) { showNotify('Nothing was shared', 'fa-solid fa-circle-info'); return; }
+
+      const metas = Array.isArray(meta.files) ? meta.files : [];
+      const files = [];
+      for (let i = 0; i < metas.length; i++) {
+        try {
+          const res = await cache.match('./__share_file_' + i + '__');
+          if (!res) continue;
+          const blob = await res.blob();
+          files.push(new File([blob], metas[i].name || ('shared-' + i), { type: metas[i].type || blob.type || '' }));
+        } catch (e) { /* skip unreadable file */ }
+      }
+      // One shot: clear the stash so a reload never replays it.
+      try {
+        await cache.delete('./__share_meta__');
+        for (let i = 0; i < metas.length; i++) await cache.delete('./__share_file_' + i + '__');
+      } catch (e) { /* ignore */ }
+
+      if (files.length) {
+        const images = files.filter(f => /^image\//.test(f.type) || /\.(png|jpe?g|webp|gif|bmp|heic)$/i.test(f.name));
+        const pdfs = files.filter(f => f.type === 'application/pdf' || /\.pdf$/i.test(f.name));
+        const rest = files.filter(f => images.indexOf(f) < 0 && pdfs.indexOf(f) < 0);
+        if (images.length || pdfs.length) {
+          openSheet('vibeSheet');
+          switchTab(null, 'tabScanner');
+          await new Promise(r => setTimeout(r, 450));
+          if (typeof scanFileList === 'function') await scanFileList(images.concat(pdfs));
+        }
+        for (const f of rest) await routeSharedFile(f);
+        return;
+      }
+
+      const title = String(meta.title || '').trim();
+      const text = String(meta.text || '').trim();
+      const link = String(meta.url || '').trim();
+      const parts = [];
+      if (title) parts.push(title);
+      if (text) parts.push(text);
+      if (link) parts.push(link);
+      const payload = parts.join('\n\n');
+      if (!payload) { showNotify('Nothing was shared', 'fa-solid fa-circle-info'); return; }
+      // Shared text and links land in the Clipboard, from where the send-to
+      // row can move them into any other tool with one tap.
+      addClipToHistory(payload, { source: 'share', label: title || (link ? link.slice(0, 48) : 'Shared text') });
+      openSheet('vibeSheet');
+      switchTab(null, 'tabClip');
+      showNotify('Shared content added to your Clipboard', 'fa-solid fa-share-nodes');
+    }
+
+    // ═══════════════════════════════════════════════════════════
     // PWA: service worker, install prompt & app shortcuts
     // ═══════════════════════════════════════════════════════════
     (function initPWA() {
@@ -24912,7 +25209,18 @@ async function ensureQRCodeLib() {
         showNotify('Installed — works offline now', 'fa-solid fa-bolt');
       });
 
-      // 3. Handle manifest shortcut deep-links (?app=notes, ?app=focus, ?app=missions, ?app=toolkit, etc.)
+      // 3. Platform integration: window-controls overlay, file handlers and
+      //    the OS share target (the payload is read back after the service
+      //    worker has redirected here with ?shared=).
+      initWindowControlsOverlay();
+      initFileHandlers();
+      try {
+        if ((new URLSearchParams(location.search).get('shared') || '').toLowerCase()) {
+          setTimeout(() => { consumeSharedPayload(); }, 700);
+        }
+      } catch (e) { /* ignore */ }
+
+      // 4. Handle manifest shortcut deep-links (?app=notes, ?app=focus, ?app=missions, ?app=toolkit, etc.)
       try {
         const appParam = (new URLSearchParams(location.search).get('app') || '').toLowerCase();
         if (appParam === 'notes') {
@@ -26067,5 +26375,6 @@ async function ensureQRCodeLib() {
   });
 })();
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a562a69cfdd028bc',t:'MTc5Mzk1MjkzMQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a562a69cfdd028bc',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
+</body>
 </html>

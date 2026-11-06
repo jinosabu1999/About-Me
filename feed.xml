@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jino Sabu — Recent Updates</title>
+    <link>https://jinosabu1999.github.io/About-Me/</link>
+    <description>Release notes for the portfolio and the in-browser toolkit — every update, dated and versioned.</description>
+    <language>en</language>
+    <lastBuildDate>Fri, 06 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <generator>About-Me/tools/build_feed.js</generator>
+    <atom:link href="https://jinosabu1999.github.io/About-Me/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>v7.6 — The updates feed is live.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.6</guid>
+      <pubDate>Fri, 06 Nov 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>The updates feed is live. Recent Updates now has an RSS endpoint - feed.xml - carrying every dated, versioned release note, with a link in the page head so feed readers and browsers discover it on their own, and a subscribe button beside the version chip for everyone else. The feed is generated from the same array the page renders, so it can never drift from what a visitor actually sees, and it is rebuilt automatically every time a new version ships.</p>]]></description>
+    </item>
+    <item>
+      <title>v7.5 — The operating system can now hand things to this site.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.5</guid>
+      <pubDate>Wed, 04 Nov 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>The operating system can now hand things to this site. Share a link, a snippet or a photo to it from any other app and the content arrives in the tool that owns it - text and links land in the Clipboard, images and PDFs go straight into the Scanner batch queue, a Markdown file opens as a new Scratchpad note, a CSV becomes a set of Counters and a backup JSON restores into the Data Vault. Opening a file with the app now routes it by extension instead of downloading it. Installed as a desktop app, the window controls no longer sit on top of the content: the top strip is reserved and the name moves into it. Also fixes a real export bug - every Export as .csv was throwing because the cell helper it relied on was missing.</p>]]></description>
+    </item>
+    <item>
+      <title>v7.4 — Interface and layout pass across the whole site.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.4</guid>
+      <pubDate>Wed, 04 Nov 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Interface and layout pass across the whole site. Every piece of muted text now clears the WCAG AA contrast bar - it was sitting at roughly three to one against the light surfaces, so labels, captions and metadata are properly legible instead of merely present. The accent chips keep their colour but use a darker ink, the touch targets that were only twelve pixels wide are now a full forty-four, the colour swatches and the password slider carry real labels, and every horizontal rail fades out on the side that still has content, so a cut-off row reads as scrollable rather than broken. The bottom dock is frosted glass and now sits on a soft scrim, so the last row of icons dissolves under it instead of being sliced in half. The clipboard panel fits one phone screen instead of two: four compact stat tiles, the capture buttons on a single line, and the export and filter rows scrolling sideways behind a fade. The toolkit sheet no longer leaves a third of the display empty under the tool grid - it fits its content now and grows to full height only when a tool is actually open. On a wide screen the hero becomes a real two-column split: the name and the role on the left, the introduction and the stat rail on the right, under a ruled masthead with the portrait. All five Focus mode chips carry their interval now, including Custom. Same palette, same type, same shapes - just easier to read and use.</p>]]></description>
+    </item>
+    <item>
+      <title>v7.3 — QR Studio layout fix for phones.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.3</guid>
+      <pubDate>Tue, 03 Nov 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>QR Studio layout fix for phones. The payload under the code no longer runs off the edge of the sheet - a long link now wraps inside the panel instead of being clipped mid-word - and the whole preview is a single column on a phone: a centred 190px code, the payload underneath it, Download PNG across the full width with Copy Image and Share side by side, and the send chips wrapping onto two rows instead of one chip per row. The type rail now scrolls with a snap so the last chip is always reachable. The desktop layout is unchanged.</p>]]></description>
+    </item>
+    <item>
+      <title>v7.2 — Scanner and Passwords pass.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.2</guid>
+      <pubDate>Tue, 03 Nov 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Scanner and Passwords pass. Detected secrets - OpenAI, GitHub, AWS, Google, Slack and Stripe keys, JWTs, private keys, bearer tokens, database URLs - now render masked in the password vault and in the clipboard, each with its own reveal toggle, a type badge and an automatic re-mask, and the secret itself never reaches the DOM. The scanner reads whole batches now: images plus multi-page PDFs, with pdf.js lazy-loaded and every page rasterised and read. Each result offers the action that fits it - open, copy or shorten a URL, compose a mailto, dial a tel, drop a geo on the map, turn a calendar event into a Mission with its due time, or hand a UPI link to your payment app. A printable Wi-Fi join sheet turns a scanned network into an SSID, password and QR card you can leave for guests. The curated featured-repositories strip and the QR Studio quiet-zone and error-correction sliders are gone; the generator now always uses a 4-module quiet zone and level-H error correction so logo-watermarked codes stay scannable.</p>]]></description>
+    </item>
+    <item>
+      <title>v7.1 — Toolkit focus pass.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.1</guid>
+      <pubDate>Tue, 03 Nov 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Toolkit focus pass. The Focus timer and the Stopwatch now run off an absolute wall-clock timestamp instead of a decrementing counter, so they stay accurate through a backgrounded tab, a screen sleep or a reload, and a running timer comes back exactly where it left off. Counters can roll over on their own - daily, weekly or monthly, with the hour you want the reset to land - so a weekly tally starts fresh without a manual reset. Every snippet, scan, QR, timer session and counter can now be sent straight to another tool: Clipboard, Scratchpad, Missions, Counters, Focus, QR Studio or the Focus Log, from one shared action row. No new tools and no new dependencies.</p>]]></description>
+    </item>
+    <item>
+      <title>v7.0 — Home hero rebuilt as an editorial split: the name leads at display size, the role reads as a mono eyebrow, the…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.0</guid>
+      <pubDate>Thu, 29 Oct 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Home hero rebuilt as an editorial split: the name leads at display size, the role reads as a mono eyebrow, the three stat boxes collapse into a single hairline rail, and the primary action gains a weighted arrow cap with matched ghost buttons beside it. The portrait is now a compact 44px chip in the top corner, the availability dot is gone for good, and the whole block is tightened to sit in one screen on a phone. Light mode, reduced motion and Performance mode are all respected - no new dependencies.</p>]]></description>
+    </item>
+    <item>
+      <title>v6.9 — Perf pass: fonts and icons are now self-hosted and subset (Inter, JetBrains Mono and only the 184 Font Awesome…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v6.9</guid>
+      <pubDate>Wed, 28 Oct 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Perf pass: fonts and icons are now self-hosted and subset (Inter, JetBrains Mono and only the 184 Font Awesome glyphs in use - about 78 KB total, zero third-party requests). Notes, counters, clipboard, focus and vault panels no longer render at boot; they build the first time you open a sheet. GitHub and Gumroad data now come from scheduled JSON snapshots in feeds/, so rate limits and CORS can no longer break the dashboard. sw.js got a versioned cache and a fresh strategy, and the availability pill is gone.</p>]]></description>
+    </item>
+    <item>
+      <title>v6.8 — Support goal rebuilt as a Studio Fund card: Rs 5,000 target with real milestone steps, live progress bar, lock-free…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v6.8</guid>
+      <pubDate>Wed, 28 Oct 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Support goal rebuilt as a Studio Fund card: Rs 5,000 target with real milestone steps, live progress bar, lock-free perks and one-tap Contribute / Patreon actions - no invented numbers (set SUPPORT_GOAL.raised, or point SUPPORT_GOAL.syncUrl at a JSON file to update it without a redeploy). Experience is now a horizontal snap rail with expandable descriptions instead of a tall column.</p>]]></description>
+    </item>
+    <item>
+      <title>v6.7 — Removed the custom long-press/right-click menu so the native browser menu works again.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v6.7</guid>
+      <pubDate>Wed, 28 Oct 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Removed the custom long-press/right-click menu so the native browser menu works again. Home now shows a live studio snapshot (real GitHub repo + star counts and live product count) instead of a money goal. The store shows real catalog facts (product count, price range, last update) plus an auto-detected newest drop. Experience rebuilt as cards, and the fake milestone roadmap is gone.</p>]]></description>
+    </item>
+    <item>
+      <title>v6.6 — Section navigation moved out of the hero into its own quick-nav strip.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v6.6</guid>
+      <pubDate>Wed, 28 Oct 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Section navigation moved out of the hero into its own quick-nav strip. Bottom dock redesigned with an accent-tinted active indicator, a raised tools button and larger tap targets. Recommendations rebuilt as swipeable cards with initials avatars, project chips, verified marks and a Read more toggle.</p>]]></description>
+    </item>
+    <item>
+      <title>v6.5 — Home screen rebuilt for clarity and speed: status pill with availability, live local clock, at-a-glance stats,…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v6.5</guid>
+      <pubDate>Wed, 28 Oct 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Home screen rebuilt for clarity and speed: status pill with availability, live local clock, at-a-glance stats, section-jump chips, a labelled Connect group and a dock that slides away while you read and returns on scroll-up. Selected Works now shows Lumiere, SonicForge and Carroms Pool Game with cover-art cards and one-tap Live demo. Scrolling is smoother on phones: rAF-throttled scroll feedback, decorations paused mid-swipe, lighter glass on touch devices, a reading-progress hairline and a Performance mode toggle.</p>]]></description>
+    </item>
+    <item>
+      <title>v6.4 — Selected Works refreshed: Lumière (image editor) and SonicForge (audio editor) replace Monadio and Modus Audio in a…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v6.4</guid>
+      <pubDate>Wed, 28 Oct 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Selected Works refreshed: Lumière (image editor) and SonicForge (audio editor) replace Monadio and Modus Audio in a new cover-art card layout with a one-tap Live demo button. Scrolling is finally smooth on phones: rAF-throttled scroll feedback, decorative animations paused mid-swipe, lighter glass blur on touch devices and a new Performance mode toggle. Plus a reading-progress hairline, tappable carousel dots, keyboard-scrollable rails and a hero header that no longer wraps to four lines on small screens.</p>]]></description>
+    </item>
+    <item>
+      <title>v6.3 — Complete Scratchpad revamp: library-first design with rich note cards, pin/filter/search everywhere, autosave while…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v6.3</guid>
+      <pubDate>Fri, 04 Sep 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Complete Scratchpad revamp: library-first design with rich note cards, pin/filter/search everywhere, autosave while typing, sticky editor toolbar with overflow actions, and a split-screen workspace on desktop — all smoother and faster on every device.</p>]]></description>
+    </item>
+    <item>
+      <title>v6.2 — Honest live visit counter (one count per device per 30 minutes, live/offline status dot, per-device tally), a…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v6.2</guid>
+      <pubDate>Fri, 04 Sep 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Honest live visit counter (one count per device per 30 minutes, live/offline status dot, per-device tally), a redesigned bottom dock with labeled buttons and a raised center Tools button, and a new Toolkit launcher with tool tiles, drill-down headers and back navigation.</p>]]></description>
+    </item>
+    <item>
+      <title>v6.1 — Unified ⌘K search across notes, missions and clipboard history, a Share Card studio that exports any note or…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v6.1</guid>
+      <pubDate>Fri, 04 Sep 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Unified ⌘K search across notes, missions and clipboard history, a Share Card studio that exports any note or mission list as a polished PNG, and automatic Gumroad sale detection with strike-through old prices and % OFF badges.</p>]]></description>
+    </item>
+    <item>
+      <title>v6.0 — Auto-updating store &amp; changelog: products now sync live from Gumroad (new products appear automatically), changelog…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v6.0</guid>
+      <pubDate>Fri, 04 Sep 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Auto-updating store & changelog: products now sync live from Gumroad (new products appear automatically), changelog syncs from GitHub, FITFLOW added, and a full mobile/responsive UX pass with readable cards, bigger touch targets, and zoom support.</p>]]></description>
+    </item>
+    <item>
+      <title>v5.6 — Smart Scratchpad editor UX upgrade: slash command hints, keyboard navigation, mobile formatting toolbar,…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v5.6</guid>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Smart Scratchpad editor UX upgrade: slash command hints, keyboard navigation, mobile formatting toolbar, touch-visible drag handles, and search snippets inside note results.</p>]]></description>
+    </item>
+    <item>
+      <title>v5.5 — Performance and scanner transparency pass: lazy-loaded jsQR and Prism, deferred Font Awesome loading, image…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v5.5</guid>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Performance and scanner transparency pass: lazy-loaded jsQR and Prism, deferred Font Awesome loading, image dimensions/lazy decoding, camera permission explainer, active camera indicator, and automatic camera stop on tab/sheet close.</p>]]></description>
+    </item>
+    <item>
+      <title>v5.4 — Open Source dashboard upgrades: featured repositories, sort options, topic chips, repository result count,…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v5.4</guid>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Open Source dashboard upgrades: featured repositories, sort options, topic chips, repository result count, live-demo badges, and controls moved above search.</p>]]></description>
+    </item>
+    <item>
+      <title>v5.3 — Creator Store redesign: compact mobile-safe Gumroad assets, real public product metadata, product sharing, preview…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v5.3</guid>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Creator Store redesign: compact mobile-safe Gumroad assets, real public product metadata, product sharing, preview cards, and support milestone roadmap improvements.</p>]]></description>
+    </item>
+    <item>
+      <title>v5.2 — GitHub Pages packaging updates: refreshed README, generated service worker for PWA/offline support, and icon cache…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v5.2</guid>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>GitHub Pages packaging updates: refreshed README, generated service worker for PWA/offline support, and icon cache list aligned with the repository files.</p>]]></description>
+    </item>
+    <item>
+      <title>v5.1 — Layout cleanup: removed Core Engine, removed the hero section sitemap scroller, and removed the animated hero…</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v5.1</guid>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Layout cleanup: removed Core Engine, removed the hero section sitemap scroller, and removed the animated hero crank/canvas background.</p>]]></description>
+    </item>
+  </channel>
+</rss>
