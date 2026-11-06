@@ -9,6 +9,13 @@
     <generator>About-Me/tools/build_feed.js</generator>
     <atom:link href="https://jinosabu1999.github.io/About-Me/feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>v7.7 — A broken link, found by checking every link on this site.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.7</guid>
+      <pubDate>Fri, 06 Nov 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>A broken link, found by checking every link on this site. The Carroms Pool live demo pointed at a repository name that no longer exists, so the button returned a 404 - it now points at the game. The README was rewritten as well: the old one still showed a social preview image that was never in the repository, documented a habit tracker that was removed months ago and keyboard shortcuts that no longer exist, and said nothing about the share sheet, the file handlers, the title-bar overlay or the release feed.</p>]]></description>
+    </item>
+    <item>
       <title>v7.6 — The updates feed is live.</title>
       <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
       <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.6</guid>

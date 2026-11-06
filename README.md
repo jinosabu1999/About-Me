@@ -1,343 +1,330 @@
 <div align="center">
 
+<img src="github-social-preview.png" alt="Jino Sabu — Digital Architect" width="100%">
+
 # ⚡ Jino Sabu — Digital Architect & Productivity Hub
 
-[![GitHub Social Preview](github-social-preview.png)](https://jinosabu1999.github.io/About-Me/)
+**A portfolio and a nine-tool, offline-first productivity suite — shipped as one HTML file.**
 
-<p align="center">
-  <b>A futuristic developer portfolio paired with a 100% client-side, zero-cloud Progressive Web App (PWA) productivity suite.</b>
+<p>
+  <a href="https://jinosabu1999.github.io/About-Me/"><strong>🌐 Open the app</strong></a> &nbsp;·&nbsp;
+  <a href="#-the-toolkit"><strong>🧰 The toolkit</strong></a> &nbsp;·&nbsp;
+  <a href="#-install-it"><strong>📲 Install it</strong></a> &nbsp;·&nbsp;
+  <a href="https://jinosabu1999.github.io/About-Me/feed.xml"><strong>📡 RSS</strong></a>
 </p>
 
-<!-- Dynamic Badges -->
-<p align="center">
-  <a href="https://jinosabu1999.github.io/About-Me/"><img src="https://img.shields.io/badge/Live_App-jinosabu1999.github.io-00e5ff?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo"></a>
-  <a href="#-pwa--offline-first-architecture"><img src="https://img.shields.io/badge/PWA-100%25_Offline_Ready-10b981?style=for-the-badge&logo=pwa&logoColor=white" alt="PWA Ready"></a>
-  <a href="#-privacy--zero-cloud-guarantee"><img src="https://img.shields.io/badge/Privacy-Zero_Cloud_Trackers-8b5cf6?style=for-the-badge&logo=shield&logoColor=white" alt="Privacy Shield"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge" alt="MIT License"></a>
-  <a href="https://github.com/jinosabu1999/About-Me/stargazers"><img src="https://img.shields.io/github/stars/jinosabu1999/About-Me?style=for-the-badge&logo=github&color=ec4899" alt="GitHub Stars"></a>
+<p>
+  <a href="https://jinosabu1999.github.io/About-Me/"><img src="https://img.shields.io/badge/live-jinosabu1999.github.io-00e5ff?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live site"></a>
+  <a href="#-install-it"><img src="https://img.shields.io/badge/PWA-installable-10b981?style=for-the-badge" alt="Installable PWA"></a>
+  <a href="#-architecture"><img src="https://img.shields.io/badge/offline--first-00b3a4?style=for-the-badge" alt="Offline first"></a>
+  <a href="https://jinosabu1999.github.io/About-Me/feed.xml"><img src="https://img.shields.io/badge/RSS-release_feed-ff9f43?style=for-the-badge&logo=rss&logoColor=white" alt="RSS feed"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-f59e0b?style=for-the-badge" alt="MIT License"></a>
+  <a href="https://github.com/jinosabu1999/About-Me/stargazers"><img src="https://img.shields.io/github/stars/jinosabu1999/About-Me?style=for-the-badge&logo=github&color=ec4899" alt="Stars"></a>
 </p>
-
-<!-- Quick Action Navigation Buttons -->
-<p align="center">
-  <a href="https://jinosabu1999.github.io/About-Me/"><b>🌐 Launch Web App</b></a> •
-  <a href="#-built-in-toolkit-studio-9-apps-in-1"><b>⚡ Explore Tools</b></a> •
-  <a href="#-pwa-installation-guide"><b>📱 Install PWA</b></a> •
-  <a href="#-keyboard-shortcuts--command-palette"><b>⌨️ Shortcuts</b></a> •
-  <a href="#-tech-stack--architecture"><b>🛠️ Architecture</b></a> •
-  <a href="#-support--connect"><b>🤝 Connect</b></a>
-</p>
-
----
 
 </div>
 
-## 📑 Table of Contents
+---
 
-- [🌟 Overview](#-overview)
-- [⚡ Built-in Toolkit Studio (9 Apps in 1)](#-built-in-toolkit-studio-9-apps-in-1)
-  - [1. 🍅 Focus Studio 2.0](#1--focus-studio-20)
-  - [2. 📝 Smart Scratchpad](#2--smart-scratchpad)
-  - [3. 🎯 Missions & Habits Hub](#3--missions--habits-hub)
-  - [4. 📋 Smart Clipboard & Snippets](#4--smart-clipboard--snippets)
-  - [5. 🔑 Passwords & Key Vault](#5--passwords--key-vault)
-  - [6. ⏱️ Stopwatch Chronograph](#6-️-stopwatch-chronograph)
-  - [7. 🔢 Multi-Counter Hub](#7--multi-counter-hub)
-  - [8. 📷 Viewfinder & OCR Scanner](#8--viewfinder--ocr-scanner)
-  - [9. 🔲 QR Code Studio](#9--qr-code-studio)
-  - [10. 🛡️ Data Vault & Storage Telemetry](#10-️-data-vault--storage-telemetry)
-- [📱 PWA & Offline-First Architecture](#-pwa--offline-first-architecture)
-- [⌨️ Keyboard Shortcuts & Command Palette](#-keyboard-shortcuts--command-palette)
-- [🎨 Dynamic Themes & Mood Presets](#-dynamic-themes--mood-presets)
-- [🛠️ Tech Stack & Architecture](#-tech-stack--architecture)
-- [🚀 Local Development & Deployment](#-local-development--deployment)
-- [🤝 Support & Connect](#-support--connect)
+## 📑 Contents
+
+- [✨ What this is](#-what-this-is)
+- [🧰 The Toolkit](#-the-toolkit)
+- [📲 Install it](#-install-it)
+- [🔗 Hand the app something](#-hand-the-app-something)
+- [📡 Follow the releases (RSS)](#-follow-the-releases-rss)
+- [⌨️ Keyboard](#-keyboard)
+- [🏗️ Architecture](#-architecture)
+- [🧪 Run it locally](#-run-it-locally)
+- [🚀 Deploy](#-deploy)
+- [🌐 The ecosystem](#-the-ecosystem)
+- [🛍️ Creator store](#-creator-store)
+- [🤝 Connect](#-connect)
+- [📄 License](#-license)
 
 ---
 
-## 🌟 Overview
+## ✨ What this is
 
-**Jino Sabu | Digital Architect** is an all-in-one web platform built from the ground up to unite **personal branding, portfolio showcase, and an ultra-fast offline productivity hub** inside a single zero-dependency frontend experience.
+A portfolio that *is* the product. There is no CMS behind it, no API to call, no
+build pipeline to run: `index.html` carries the entire experience — markup, styles,
+logic, icons and fonts — and the browser is the only runtime it needs.
 
-### ✨ Highlights:
-- **🚀 Zero Dependencies**: Engineered with vanilla ES6+ JavaScript, CSS3 Glassmorphism, and semantic HTML5. No bloated build frameworks or node runtimes required.
-- **🛡️ 100% Client-Side Privacy**: All notes, tasks, passwords, clipboard history, and timer logs live strictly within your browser's encrypted sandbox. Zero remote servers, zero trackers.
-- **📶 100% Offline Capable**: Backed by a high-performance Service Worker (`sw.js`) with cache fallback, stale-while-revalidate caching, and installable PWA manifest.
-- **🔊 Native WebAudio Feedback**: Synthesized interactive haptic and audio feedback (clicks, swooshes, success chords, and timer chimes) without external sound files.
+Every tool runs on-device. Notes, clips, counters, generated passwords and focus
+logs never leave your browser, because there is nowhere for them to go.
 
----
+### Why it's built this way
 
-## ⚡ Built-in Toolkit Studio (9 Apps in 1)
-
-Click on any module below to expand its full capability matrix and interactive preview:
-
-<details open>
-<summary><h3>1. 🍅 Focus Studio 2.0</h3></summary>
-
-> **Deep work intervals, Pomodoro cycles, and flow states with smooth SVG chronograph animations.**
-
-- **Preset Interval Modes**:
-  - `Pomodoro`: 25m Focus / 5m Break (4 Rounds)
-  - `Deep Work`: 50m Focus / 10m Break
-  - `Flow State`: 90m Focus / 20m Break
-  - `Sprint`: 15m Focus / 3m Break
-  - `Custom`: Single-row custom interval configuration with dynamic scaling
-- **Interactive Chronograph**:
-  - Dynamic SVG radial progress ring with animated gradient stroke
-  - `+1m`, `-1m`, and `+5m` quick extension buttons that scale progress in real time
-  - Round indicators & optional Auto-Advance toggle
-- **Telemetry & Daily History**:
-  - Focus session logs categorized by activity tags (`#Code`, `#Design`, `#Writing`, `#Study`)
-  - Streak tracker and weekly focus time chart
-
-</details>
-
-<details>
-<summary><h3>2. 📝 Smart Scratchpad</h3></summary>
-
-> **Private markdown notepad, code snippet manager, and document studio.**
-
-- **Rich Formatting & Paragraph Freedom**: Unrestricted typing across headings, code blocks, blockquotes, images, numbered lists, and checklists.
-- **Quick Templates**: One-click creation for *Meeting Notes, Personal Journal, Bug Reports, Checklists*, and *Brainstorms*.
-- **Live Metadata HUD**: Real-time character count, word count, estimated reading duration, and auto-save indicators.
-- **Collection Filters & Tag Chips**: Organize notes by folders and custom tags with debounced instant search.
-- **PNG Card Generator**: Export notes into aesthetic social share cards with *Midnight, Paper,* or *Neon* presets.
-
-</details>
-
-<details>
-<summary><h3>3. 🎯 Missions & Habits Hub</h3></summary>
-
-> **Visual Kanban board and daily habit streak tracker.**
-
-- **Interactive Kanban Board**: `To Do`, `In Progress`, and `Completed` columns with task prioritization and due dates.
-- **Habit Matrix**: Daily habit check-offs with sequential streak tracking and completion percentage gauges.
-- **Prominent Command Hub**: Quick task creation modal, filtering by status, and one-click clear options.
-
-</details>
-
-<details>
-<summary><h3>4. 📋 Smart Clipboard & Snippets</h3></summary>
-
-> **Intelligent text clipboard manager with pin support and auto-expiry hygiene.**
-
-- **Smart Content Detection**: Automatically classifies text as `Code / JSON`, `URL Link`, `Email`, or `Text Note`.
-- **Auto-Expiry Hygiene**: Set snippet expiry rules (*1 Hour, 24 Hours, 7 Days, Never*) to keep your workspace decluttered.
-- **Batch Operations**: Bulk pin, copy, share, or delete clips with a single tap.
-- **Cross-Tool Integration**: Send snippets directly to Scratchpad or generate QR codes instantly.
-
-</details>
-
-<details>
-<summary><h3>5. 🔑 Passwords & Key Vault</h3></summary>
-
-> **Cryptographically secure key generator and local encrypted vault.**
-
-- **Configurable Entropy Engine**: Uppercase, lowercase, numbers, symbols, and ambiguous character filtering.
-- **Length Control**: Slider with interactive fill progress line (up to 32 characters).
-- **Entropy & Strength Telemetry**: Real-time crack-time estimates and strength ratings (Weak, Good, Strong, Military-grade).
-- **Compact 3-Line Screen**: Mask/unmask toggle, copy-to-clipboard, and local password history vault.
-
-</details>
-
-<details>
-<summary><h3>6. ⏱️ Stopwatch Chronograph</h3></summary>
-
-> **Millisecond precision split timer and sprint tracker.**
-
-- **Session Tagging**: Name individual sprint sessions for targeted tracking.
-- **Lap & Split Comparison**: Logs split times with relative delta comparisons (`+0.42s`, `-0.18s`).
-- **Data Export**: Export complete lap logs directly to CSV spreadsheet format.
-
-</details>
-
-<details>
-<summary><h3>7. 🔢 Multi-Counter Hub</h3></summary>
-
-> **Multi-tally counter studio for habits, reps, inventory, and milestones.**
-
-- **Custom Increments**: Configure step values (+1, +5, +10, or custom), upper target limits, and initial values.
-- **Color Coding**: Organize tallies with colored theme tags.
-- **Milestone Alerts**: Haptic pulse and visual celebration upon reaching target milestones.
-
-</details>
-
-<details>
-<summary><h3>8. 📷 Viewfinder & OCR Scanner</h3></summary>
-
-> **Real-time camera scanner and file OCR engine.**
-
-- **Camera Viewfinder**: Live camera feed with hardware camera toggle (front / back) and flashlight support.
-- **QR & Barcode Decoder**: Instantly parses URLs, Wi-Fi credentials, and contacts from camera or image files.
-- **Scan History Log**: Copy, share, or export recognized scan results.
-
-</details>
-
-<details>
-<summary><h3>9. 🔲 QR Code Studio</h3></summary>
-
-> **Vector QR generator with custom payloads and styling.**
-
-- **Supported Formats**: URLs, Plain Text, Wi-Fi Networks (SSID + WPA password), and vCards.
-- **Color Customization**: Dynamic foreground and background color pickers.
-- **Export Formats**: High-resolution PNG download, clipboard copy, and native OS share dialog.
-
-</details>
-
-<details>
-<summary><h3>10. 🛡️ Data Vault & Storage Telemetry</h3></summary>
-
-> **Real-time storage quota telemetry and privacy management.**
-
-- **Storage Meter**: Visual multi-segment breakdown of browser quota consumption (Notes, Clips, Tasks, Passwords).
-- **Master JSON Backup**: One-click encrypted JSON backup and restore matrix.
-- **Granular Hygiene**: Selectively reset individual modules or execute a complete factory wipe.
-
-</details>
-
----
-
-## 📱 PWA & Offline-First Architecture
-
-This repository is a fully compliant **Progressive Web App (PWA)** that can be installed on any device:
-
-```
-├── manifest.json              # W3C Web App Manifest (standalone, theme colors, shortcuts)
-├── sw.js                      # Production Service Worker (pre-cache shell + runtime caching)
-├── browserconfig.xml          # Windows / Edge tile configuration
-└── icons/                     # Complete icon suite (16px to 512px + Maskable Android icons)
-```
-
-### 📲 How to Install:
-
-| Platform | Installation Steps |
+| | |
 |---|---|
-| **iOS / iPadOS (Safari)** | Open site in Safari → Tap **Share** icon → Select **"Add to Home Screen"** |
-| **Android (Chrome / Edge)** | Open site → Tap **"Install"** prompt badge or **Menu (⋮) → "Add to Home screen"** |
-| **macOS / Windows / Linux** | Click the **Install** icon in the browser address bar (Chrome, Edge, Brave) |
-
-### 🚀 Manifest Deep-Link Shortcuts:
-Launch directly into specific tool views from your device's home screen icon long-press menu:
-- `?app=notes` ➔ **Smart Scratchpad**
-- `?app=focus` ➔ **Focus Studio**
-- `?app=missions` ➔ **Missions & Kanban**
-- `?app=clip` ➔ **Smart Clipboard**
-- `?app=toolkit` ➔ **Digital Toolkit Launcher**
+| 🧩 **One file** | The whole application is a single 1.2 MB `index.html`. No bundler, no framework, no `npm install` to read or run it. |
+| 📴 **Offline-first** | A service worker precaches the shell, the fonts and the icon subsets, so the app boots and works with the network off. |
+| 🔒 **Private by construction** | Your data lives in your browser's storage. There is no server to sync it to and no account to create. |
+| 🔗 **OS-native** | Installed, the app registers as a **share target** and a **file handler** — other apps can hand it a link, a photo, a PDF or a `.csv`. |
+| 🪟 **Title-bar aware** | On desktop it uses the `window-controls-overlay` display mode, so the site name lives in the OS title bar instead of under the window buttons. |
+| 📡 **Subscribable** | The changelog is published as RSS at [`feed.xml`](https://jinosabu1999.github.io/About-Me/feed.xml) and is rebuilt automatically on every release. |
 
 ---
 
-## ⌨️ Keyboard Shortcuts & Command Palette
+## 🧰 The Toolkit
 
-Open the unified Command Palette from anywhere with <kbd>Cmd</kbd> + <kbd>K</kbd> or <kbd>Ctrl</kbd> + <kbd>K</kbd>:
+Nine tools behind one launcher. Open **Tools** in the bottom dock.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  Search commands, notes, missions, clips (Cmd+K)...        │
-└─────────────────────────────────────────────────────────────┘
-```
+| Tool | What it does | Stand-out feature |
+|---|---|---|
+| ⚡ **Focus Timer** | Deep-work countdown with presets (Pomodoro, Deep Work, Flow, Sprint) and custom intervals | Runs on a wall-clock timestamp, so it stays accurate through a reload, a backgrounded tab or a sleep |
+| ✅ **Missions** | Kanban board with categories and due dates | Send anything from any tool straight into a task |
+| ⏱️ **Stopwatch** | Lap timer with split deltas and tagged sessions | Export the full lap log to CSV |
+| 🔑 **Passwords** | Generator with entropy controls and crack-time estimates | Detected secrets (API keys, JWTs, private keys) are masked and never reach the DOM |
+| 📋 **Clipboard** | Smart history that classifies text, links, email and code | Pin it, filter it, send it to another tool, export it |
+| 🔢 **Counters** | Tally habits, reps, inventory and milestones | Roll over on their own — daily, weekly or monthly, at the hour you choose |
+| 📷 **Scanner** | Camera QR/barcode reader plus OCR for text in images | Reads whole batches: images *and* multi-page PDFs, with an action for each result |
+| 🔲 **QR Studio** | QR codes for links, plain text, Wi-Fi and vCards | Download PNG, copy the image, or share it |
+| 🛡️ **Data Vault** | Backup, restore and per-module privacy controls | One master JSON export and restore of everything |
 
-| Key / Command | Action |
+Plus three companion sheets: the **Smart Scratchpad** (Markdown notes, slash
+commands, PNG share cards), the **Appearance** sheet (themes, accents, accessibility)
+and the **Share Card** studio.
+
+### What a scan can do with the result
+
+Open it · copy it · shorten a URL · compose a `mailto:` · dial a `tel:` · drop a
+`geo:` on the map · turn a calendar event into a Mission with a due time · hand a
+UPI link to your payment app · print a Wi-Fi join card for guests.
+
+---
+
+## 📲 Install it
+
+The app is a standard, installable PWA — no store, no account.
+
+| Platform | Steps |
 |---|---|
-| <kbd>Cmd</kbd> + <kbd>K</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd> | Toggle Command Palette |
-| <kbd>N</kbd> | Create a new Note in Scratchpad |
-| <kbd>T</kbd> | Create a new Task in Missions |
-| <kbd>C</kbd> | Create a new Tally Counter |
-| `[Math Expression]` | Instant inline math calculations (e.g. `24 * 7`, `1000 / 4`) |
-| <kbd>Esc</kbd> | Close active sheet or modal |
+| **iOS / iPadOS** | Open it in Safari → tap **Share** → **Add to Home Screen** |
+| **Android** | Open it in Chrome → **⋮** menu → **Install app** / **Add to Home screen** |
+| **Windows / macOS / Linux** | Open it in Chrome or Edge → the **install icon** in the address bar |
+| **Any Chromium browser** | **⋮** menu → *Cast, save and share* → **Install page as app** |
+
+Once installed you get the app icon, a standalone window without browser chrome,
+offline support, and — on desktop — the native window controls.
+
+**Home-screen shortcuts.** Long-press the installed icon to jump straight into a
+tool: `?app=notes` · `?app=focus` · `?app=missions` · `?app=qr` · `?app=scan` ·
+`?app=clip` · `?app=counters` · `?app=data` · `?app=toolkit`.
 
 ---
 
-## 🎨 Dynamic Themes & Mood Presets
+## 🔗 Hand the app something
 
-Personalize the entire workspace with real-time CSS variable manipulation:
+The installed app registers itself with the operating system, so the things you
+share or open in other apps land in the tool that owns them.
 
-- **Theme Modes**: `Dark Mode` (Default obsidian) • `Light Mode` • `System Sync`
-- **Mood Presets**:
-  - 🟣 `Focus` — Deep midnight violet & calm indigo
-  - 🟢 `Neon` — Cyberpunk emerald & electric cyan
-  - ⚪ `Minimal` — High-contrast monochrome grayscale
-  - 🟠 `Warm` — Cozy amber & sunset orange
-  - 🟩 `Terminal` — Retro hacker phosphor green
-  - 🔵 `Ocean` — Deep marine blue & aqua
-- **Custom Accent Colors**: 10 selectable accent color swatches with dynamic glow shadows.
-- **Accessibility Engine**: Toggle *Reduce Motion*, *High Contrast*, *Larger Text*, or *Mute Audio SFX*.
+| You hand it… | It lands in… |
+|---|---|
+| Text or a link from the share sheet | **Clipboard** |
+| An image or a PDF from the share sheet | **Scanner** batch queue |
+| A `.md` file | A new **Scratchpad** note |
+| A `.txt` file | The **Clipboard** |
+| A `.csv` file | A set of **Counters** |
+| A `.json` backup | The **Data Vault** (restored after you confirm) |
+
+The hand-off is handled entirely by the service worker: it parks the payload,
+redirects into the app, and the app reads it back exactly once.
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## 📡 Follow the releases (RSS)
 
-```mermaid
-graph TD
-    A[User Interface Layer] --> B[Theme & Mood Engine]
-    A --> C[Command Palette & Shortcuts]
-    A --> D[Digital Toolkit 2.0]
-    
-    D --> E1[Focus Chronograph]
-    D --> E2[Smart Scratchpad]
-    D --> E3[Missions & Habits]
-    D --> E4[Clipboard Vault]
-    D --> E5[Pass & Key Engine]
-    D --> E6[QR & Scanner Studio]
-    
-    A --> F[WebAudio Synthesizer]
-    A --> G[Service Worker sw.js]
-    
-    G --> H1[App Shell Cache]
-    G --> H2[Runtime Font & CDN Cache]
-    G --> H3[Offline Network Fallback]
-    
-    D --> I[Local Data Vault]
-    I --> J1[(LocalStorage Sandbox)]
-    I --> J2[(IndexedDB Storage)]
+`Recent Updates` on the site is a live, dated, versioned feed — this publishes
+the same notes as RSS so you can subscribe instead of visiting.
+
+```text
+https://jinosabu1999.github.io/About-Me/feed.xml
 ```
 
-- **Frontend**: Pure HTML5, CSS3 Variables, Glassmorphism, Vanilla ES6+
-- **Offline Engine**: Service Worker API (`sw.js`), Web App Manifest (`manifest.json`)
-- **Audio Synthesis**: Native WebAudio API (Zero MP3/WAV dependencies)
-- **Data Layer**: Local-First Sandbox with Storage Quota Telemetry API
-- **Vector Graphics**: Native SVG & Canvas API
+- **Never out of date.** The feed is generated from the same array the page
+  renders, using the same extractor, so it cannot drift from what you see.
+- **Rebuilt for you.** The *Sync changelog feed* workflow regenerates it whenever
+  `index.html` changes and commits the result.
+- **Every release, dated and versioned.** RSS 2.0, with RFC 822 dates and stable
+  per-version GUIDs.
 
 ---
 
-## 🚀 Local Development & Deployment
+## ⌨️ Keyboard
 
-### Run Locally (Zero Setup):
-Because there are zero build steps, you can serve the project with any static HTTP server:
+| Key | Action |
+|---|---|
+| <kbd>⌘</kbd> + <kbd>K</kbd> / <kbd>Ctrl</kbd> + <kbd>K</kbd> | Open the command palette |
+| <kbd>↑</kbd> <kbd>↓</kbd> | Move through results |
+| <kbd>Enter</kbd> | Open the highlighted result |
+| <kbd>Esc</kbd> | Close the palette or any sheet |
+
+The palette searches **commands, notes, missions and clipboard history** in one
+place, and it doubles as a calculator — type `24 * 7` for the answer, or
+`10 kg to lbs` for a conversion. Both results are one click from being copied.
+
+---
+
+## 🏗️ Architecture
+
+### What's in the repository
+
+| Path | Purpose |
+|---|---|
+| `index.html` | The entire application — markup, styles, logic and the inline icon/font subsets |
+| `sw.js` | Service worker: versioned precache, caching strategy and the share-target handler |
+| `manifest.json` | Web App Manifest — icons, shortcuts, `share_target`, `file_handlers`, `display_override` |
+| `feed.xml` | The generated RSS feed of the changelog |
+| `feeds/` | JSON snapshots of the GitHub and Gumroad data, refreshed by CI |
+| `fonts/` | Self-hosted, subset Inter + JetBrains Mono and the Font Awesome glyphs actually used |
+| `icons/` | The full PWA icon suite, including maskable Android icons |
+| `.github/workflows/` | The three automation workflows (below) |
+| `.github/scripts/build_feed.js` | Builds `feed.xml` from the changelog array in `index.html` |
+| `browserconfig.xml`, `robots.txt`, `sitemap.xml` | Windows tile config, crawler policy and sitemap |
+
+### How caching works
+
+| Request | Strategy |
+|---|---|
+| `index.html` | **Network-first** with a 3-second timeout, falling back to the cached shell — a deploy is picked up immediately, and offline still works |
+| `feeds/*.json` | **Network-first**, cached copy as the fallback |
+| Fonts, icons, `feed.xml` | **Cache-first** with a background refresh |
+| Old cache buckets | Purged on `activate`, so a new `CACHE_VERSION` always means a clean slate |
+
+### Where your data lives
+
+`localStorage` is the primary store (`jsSmartNotes`, `jsTasks`, `jsClipboard`,
+`jsCounters`, `jsPasswords`, `jsFocusSessions`, `jsStopwatchSessions`,
+`jsScanHistory`, `jsHabits`, `jsNoteFolders`), with an **IndexedDB mirror**
+(`jino-portfolio-store`) used to recover data if local storage is ever cleared.
+The Data Vault can export and restore all of it as one master JSON file.
+
+### Dependencies
+
+The application ships with **no runtime dependencies and no build step**. Five
+optional libraries are lazy-loaded from a CDN the first time you use the feature
+that needs them, and are cached by the service worker afterwards:
+`jsQR` (QR decoding), `Tesseract.js` (OCR), `pdf.js` (PDF scanning), `Chart.js`
+(charts) and `Mermaid` (diagrams).
+
+---
+
+## 🧪 Run it locally
+
+There is no build step, so any static server works:
 
 ```bash
-# Clone repository
 git clone https://github.com/jinosabu1999/About-Me.git
 cd About-Me
 
-# Start a local web server (Python)
-python3 -m http.server 8080
-
-# Or with Node.js
-npx serve .
+python3 -m http.server 8080     # or: npx serve .
 ```
 
-Open your browser at `http://localhost:8080`.
+Open <http://localhost:8080>. The app registers `sw.js` itself, so the service
+worker, the manifest and the install prompt all work on `localhost` exactly as
+they do in production.
 
-### Deploy to GitHub Pages:
-1. Push this repository to GitHub.
-2. Go to **Settings** → **Pages**.
-3. Under **Build and deployment**, set Source to **Deploy from a branch** (`main` / root `/`).
-4. Your PWA will be live at `https://<username>.github.io/<repository-name>/`.
+> Use `http://` or `https://` rather than opening the file directly — service
+> workers and the manifest are blocked on `file://`.
 
 ---
 
-## 🤝 Support & Connect
+## 🚀 Deploy
 
-If you found this project helpful or inspiring, consider giving it a ⭐️ star on GitHub!
+This repository deploys to **GitHub Pages** straight from `main` — no Pages
+actions, no build configuration.
 
-<p align="center">
-  <a href="https://ko-fi.com/jinosabu1999"><img src="https://img.shields.io/badge/Ko--fi-Support_on_Kofi-29abe0?style=for-the-badge&logo=kofi&logoColor=white" alt="Support on Ko-fi"></a>
-  <a href="https://paypal.me/jinosabu1999"><img src="https://img.shields.io/badge/PayPal-Donate-0079c1?style=for-the-badge&logo=paypal&logoColor=white" alt="Support on PayPal"></a>
-  <a href="https://github.com/jinosabu1999"><img src="https://img.shields.io/badge/GitHub-Follow_@jinosabu1999-181717?style=for-the-badge&logo=github&logoColor=white" alt="Follow on GitHub"></a>
-  <a href="https://twitter.com/jinosabu1999"><img src="https://img.shields.io/badge/Twitter-@jinosabu1999-1da1f2?style=for-the-badge&logo=x&logoColor=white" alt="Follow on X"></a>
+**Settings → Pages → Build and deployment → Deploy from a branch** (`main`, `/`).
+
+Three workflows keep the site honest:
+
+| Workflow | Runs when | What it does |
+|---|---|---|
+| **Sync sw version** | `index.html` or `sw.js` is pushed | Writes `CACHE_VERSION` in `sw.js` to match `SITE_VERSION` in `index.html`, so the offline cache can never go stale |
+| **Sync feeds** | every 6 hours, or on demand | Refreshes `feeds/repos.json` and `feeds/store.json` from the GitHub and Gumroad APIs, so the browser never hits a rate limit |
+| **Sync changelog feed** | `index.html` is pushed, or daily | Rebuilds `feed.xml` from the changelog array and commits it if it changed |
+
+### Shipping a release
+
+1. Add your entry to the **top** of `window.SITE_CHANGELOG_FALLBACK` in `index.html`.
+2. Bump `window.SITE_VERSION` in the same file.
+3. Push.
+
+The workflows handle the rest: the cache version follows the site version, and the
+RSS feed picks up your new entry by itself.
+
+---
+
+## 🌐 The ecosystem
+
+21 public repositories, all deployed on GitHub Pages.
+
+**Selected work**
+
+| Project | What it is | Live |
+|---|---|---|
+| **Lumière** | A couture-grade image studio that resizes, crops, retouches and exports photos with pixel precision — entirely on your device | [Open](https://jinosabu1999.github.io/Lumiere/) · [Source](https://github.com/jinosabu1999/Lumiere) |
+| **SonicForge** | A complete audio cutter and music editor that trims, cleans and exports sound privately in your browser | [Open](https://jinosabu1999.github.io/SonicForge/) · [Source](https://github.com/jinosabu1999/SonicForge) |
+| **Carroms Pool Game** | A browser-based carroms pool game — classic carroms meets pool physics | [Open](https://jinosabu1999.github.io/Carroms-Pool/) · [Source](https://github.com/jinosabu1999/Carroms-Pool) |
+
+**Everything else**
+
+| Repository | What it is |
+|---|---|
+| [Snake-Game](https://github.com/jinosabu1999/Snake-Game) | Snake game |
+| [Lumiere](https://github.com/jinosabu1999/Lumiere) | Image editor and image resizer |
+| [SonicForge](https://github.com/jinosabu1999/SonicForge) | Audio editor, cutter and music editor |
+| [Monadio](https://github.com/jinosabu1999/Monadio) | TypeScript project |
+| [To-Do-List](https://github.com/jinosabu1999/To-Do-List) | Task list app |
+| [Notes-App](https://github.com/jinosabu1999/Notes-App) | Notes app |
+| [Calendar](https://github.com/jinosabu1999/Calendar) | Calendar |
+| [Periodic-Table](https://github.com/jinosabu1999/Periodic-Table) | Interactive periodic table |
+| [Carroms-Pool](https://github.com/jinosabu1999/Carroms-Pool) | Carroms pool game |
+| [Tic-Tac-Toe](https://github.com/jinosabu1999/Tic-Tac-Toe) | Tic-tac-toe |
+| [Flappy-Bird-Game](https://github.com/jinosabu1999/Flappy-Bird-Game) | Flappy Bird |
+| [Color-Palette-Generator](https://github.com/jinosabu1999/Color-Palette-Generator) | Colour palette generator |
+| [Text-To-Speech](https://github.com/jinosabu1999/Text-To-Speech) | Text to speech |
+| [Speech-To-Text](https://github.com/jinosabu1999/Speech-To-Text) | Speech to text |
+| [QR-Code-Generator](https://github.com/jinosabu1999/QR-Code-Generator) | QR code generator |
+| [Password-Generator](https://github.com/jinosabu1999/Password-Generator) | Password generator |
+| [Calculator](https://github.com/jinosabu1999/Calculator) | Calculator |
+| [Countdown-Timer](https://github.com/jinosabu1999/Countdown-Timer) | Countdown timer |
+| [Digital-Clock](https://github.com/jinosabu1999/Digital-Clock) | Digital clock |
+
+---
+
+## 🛍️ Creator store
+
+Digital products, priced in ₹, sold through Gumroad and synced live on the site.
+
+| Product | Price |
+|---|---|
+| [FITFLOW — Complete Workout & Progress System](https://jinosabu1999.gumroad.com/l/fitflow) | ₹99 |
+| [One Piece Anime 4K wallpaper bundle](https://jinosabu1999.gumroad.com/l/One-piece-wallpaper-pack) | ₹88 |
+| [Reset Your Life in 30 Days](https://jinosabu1999.gumroad.com/l/Reset-Your-Life) | ₹199 |
+
+---
+
+## 🤝 Connect
+
+<p>
+  <a href="https://github.com/jinosabu1999"><img src="https://img.shields.io/badge/GitHub-@jinosabu1999-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+  <a href="https://www.x.com/jinosabu1999"><img src="https://img.shields.io/badge/X-@jinosabu1999-1da1f2?style=for-the-badge&logo=x&logoColor=white" alt="X"></a>
+  <a href="https://www.instagram.com/jinosabu1999"><img src="https://img.shields.io/badge/Instagram-@jinosabu1999-e1306c?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"></a>
+  <a href="https://www.youtube.com/@JinoSabu1999"><img src="https://img.shields.io/badge/YouTube-@JinoSabu1999-ff0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube"></a>
+  <a href="https://ko-fi.com/jinosabu1999"><img src="https://img.shields.io/badge/Ko--fi-support_me-29abe0?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
+  <a href="https://paypal.me/jinosabu"><img src="https://img.shields.io/badge/PayPal-support-0079c1?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"></a>
 </p>
 
+Found something useful? A ⭐ on this repository helps more than you think.
+
 ---
 
-<div align="center">
-  <sub>Designed & Engineered with precision by <b>Jino Sabu</b>. MIT License.</sub>
-</div>
+## 📄 License
+
+MIT — see [LICENSE](LICENSE).
+
+<p align="center">
+  <sub>Designed and engineered by <b>Jino Sabu</b> · Mechanical Engineer &amp; Digital Architect · Kerala, India</sub>
+</p>
