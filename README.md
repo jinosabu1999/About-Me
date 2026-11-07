@@ -10,14 +10,12 @@
   <a href="https://jinosabu1999.github.io/About-Me/"><strong>🌐 Open the app</strong></a> &nbsp;·&nbsp;
   <a href="#-the-toolkit"><strong>🧰 The toolkit</strong></a> &nbsp;·&nbsp;
   <a href="#-install-it"><strong>📲 Install it</strong></a> &nbsp;·&nbsp;
-  <a href="https://jinosabu1999.github.io/About-Me/feed.xml"><strong>📡 RSS</strong></a>
 </p>
 
 <p>
   <a href="https://jinosabu1999.github.io/About-Me/"><img src="https://img.shields.io/badge/live-jinosabu1999.github.io-00e5ff?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live site"></a>
   <a href="#-install-it"><img src="https://img.shields.io/badge/PWA-installable-10b981?style=for-the-badge" alt="Installable PWA"></a>
   <a href="#-architecture"><img src="https://img.shields.io/badge/offline--first-00b3a4?style=for-the-badge" alt="Offline first"></a>
-  <a href="https://jinosabu1999.github.io/About-Me/feed.xml"><img src="https://img.shields.io/badge/RSS-release_feed-ff9f43?style=for-the-badge&logo=rss&logoColor=white" alt="RSS feed"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-f59e0b?style=for-the-badge" alt="MIT License"></a>
   <a href="https://github.com/jinosabu1999/About-Me/stargazers"><img src="https://img.shields.io/github/stars/jinosabu1999/About-Me?style=for-the-badge&logo=github&color=ec4899" alt="Stars"></a>
 </p>
@@ -32,7 +30,6 @@
 - [🧰 The Toolkit](#-the-toolkit)
 - [📲 Install it](#-install-it)
 - [🔗 Hand the app something](#-hand-the-app-something)
-- [📡 Follow the releases (RSS)](#-follow-the-releases-rss)
 - [⌨️ Keyboard](#-keyboard)
 - [🏗️ Architecture](#-architecture)
 - [🧪 Run it locally](#-run-it-locally)
@@ -62,7 +59,6 @@ logs never leave your browser, because there is nowhere for them to go.
 | 🔒 **Private by construction** | Your data lives in your browser's storage. There is no server to sync it to and no account to create. |
 | 🔗 **OS-native** | Installed, the app registers as a **share target** and a **file handler** — other apps can hand it a link, a photo, a PDF or a `.csv`. |
 | 🪟 **Title-bar aware** | On desktop it uses the `window-controls-overlay` display mode, so the site name lives in the OS title bar instead of under the window buttons. |
-| 📡 **Subscribable** | The changelog is published as RSS at [`feed.xml`](https://jinosabu1999.github.io/About-Me/feed.xml) and is rebuilt automatically on every release. |
 
 ---
 
@@ -133,22 +129,6 @@ redirects into the app, and the app reads it back exactly once.
 
 ---
 
-## 📡 Follow the releases (RSS)
-
-`Recent Updates` on the site is a live, dated, versioned feed — this publishes
-the same notes as RSS so you can subscribe instead of visiting.
-
-```text
-https://jinosabu1999.github.io/About-Me/feed.xml
-```
-
-- **Never out of date.** The feed is generated from the same array the page
-  renders, using the same extractor, so it cannot drift from what you see.
-- **Rebuilt for you.** The *Sync changelog feed* workflow regenerates it whenever
-  `index.html` changes and commits the result.
-- **Every release, dated and versioned.** RSS 2.0, with RFC 822 dates and stable
-  per-version GUIDs.
-
 ---
 
 ## ⌨️ Keyboard
@@ -175,12 +155,10 @@ place, and it doubles as a calculator — type `24 * 7` for the answer, or
 | `index.html` | The entire application — markup, styles, logic and the inline icon/font subsets |
 | `sw.js` | Service worker: versioned precache, caching strategy and the share-target handler |
 | `manifest.json` | Web App Manifest — icons, shortcuts, `share_target`, `file_handlers`, `display_override` |
-| `feed.xml` | The generated RSS feed of the changelog |
 | `feeds/` | JSON snapshots of the GitHub and Gumroad data, refreshed by CI |
 | `fonts/` | Self-hosted, subset Inter + JetBrains Mono and the Font Awesome glyphs actually used |
 | `icons/` | The full PWA icon suite, including maskable Android icons |
-| `.github/workflows/` | The three automation workflows (below) |
-| `.github/scripts/build_feed.js` | Builds `feed.xml` from the changelog array in `index.html` |
+| `.github/workflows/` | The two automation workflows (below) |
 | `browserconfig.xml`, `robots.txt`, `sitemap.xml` | Windows tile config, crawler policy and sitemap |
 
 ### How caching works
@@ -189,7 +167,7 @@ place, and it doubles as a calculator — type `24 * 7` for the answer, or
 |---|---|
 | `index.html` | **Network-first** with a 3-second timeout, falling back to the cached shell — a deploy is picked up immediately, and offline still works |
 | `feeds/*.json` | **Network-first**, cached copy as the fallback |
-| Fonts, icons, `feed.xml` | **Cache-first** with a background refresh |
+
 | Old cache buckets | Purged on `activate`, so a new `CACHE_VERSION` always means a clean slate |
 
 ### Where your data lives
@@ -237,13 +215,12 @@ actions, no build configuration.
 
 **Settings → Pages → Build and deployment → Deploy from a branch** (`main`, `/`).
 
-Three workflows keep the site honest:
+Two workflows keep the site honest:
 
 | Workflow | Runs when | What it does |
 |---|---|---|
 | **Sync sw version** | `index.html` or `sw.js` is pushed | Writes `CACHE_VERSION` in `sw.js` to match `SITE_VERSION` in `index.html`, so the offline cache can never go stale |
 | **Sync feeds** | every 6 hours, or on demand | Refreshes `feeds/repos.json` and `feeds/store.json` from the GitHub and Gumroad APIs, so the browser never hits a rate limit |
-| **Sync changelog feed** | `index.html` is pushed, or daily | Rebuilds `feed.xml` from the changelog array and commits it if it changed |
 
 ### Shipping a release
 
@@ -251,8 +228,7 @@ Three workflows keep the site honest:
 2. Bump `window.SITE_VERSION` in the same file.
 3. Push.
 
-The workflows handle the rest: the cache version follows the site version, and the
-RSS feed picks up your new entry by itself.
+The workflow handles the rest: the cache version follows the site version.
 
 ---
 

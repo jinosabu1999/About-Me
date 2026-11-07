@@ -27,7 +27,6 @@
 
   <link rel="canonical" href="https://jinosabu1999.github.io/About-Me/" />
   <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
-  <link rel="alternate" type="application/rss+xml" title="Jino Sabu — Recent Updates" href="https://jinosabu1999.github.io/About-Me/feed.xml" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="author" content="Jino Sabu" />
   <meta name="theme-color" content="#030305" id="themeColorMeta" />
@@ -1003,14 +1002,23 @@
       border-top: 1px solid var(--border); 
       border-radius: 36px 36px 0 0; 
       padding: 0 24px calc(24px + var(--safe-bottom)); 
-      z-index: 250; transform: translateY(105%); 
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
+      z-index: 250; transform: translateY(105%);
+      /* v7.10 - a closed sheet is hidden outright. It used to sit a few pixels
+         below the fold, where it could still be seen, tapped, or picked up by
+         a stray scrollIntoView - that is how the Wi-Fi Join Sheet turned up on
+         its own while the page was being scrolled. */
+      visibility: hidden;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.5s; 
       display: flex; flex-direction: column; 
       max-height: 90vh; overflow-y: auto; scrollbar-width: none; 
       box-shadow: 0 -20px 60px rgba(0,0,0,0.3), inset 0 1px 1px var(--border-glow); 
       will-change: transform; touch-action: pan-y; 
     }
-    .bottom-sheet.open { transform: translateY(0); }
+    .bottom-sheet.open {
+      transform: translateY(0);
+      visibility: visible;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s;
+    }
     .drag-handle { 
       width: 40px; height: 5px; background: var(--text-muted); 
       opacity: 0.3; border-radius: 10px; margin: 14px auto 24px; 
@@ -6087,13 +6095,6 @@
       overscroll-behavior: contain;
     }
     .bottom-sheet.open { transform: translateY(0) !important; }
-    /* v7.9 - the subscribe sheet hugs its content too; a full-height panel
-       left a large empty area under the URL. */
-    #feedSheet {
-      top: auto !important;
-      height: auto !important;
-      max-height: 88dvh !important;
-    }
     /* v7.4 - the toolkit home hugs its content. A fixed 90vh panel left a
        ~320px dead zone under the 3x3 tool grid; opening an actual tool
        restores the full-height panel via the jx-tools-home class. */
@@ -7439,26 +7440,6 @@
       font-weight: 900;
       letter-spacing: 0.04em;
     }
-    .jcl-rss-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      min-height: 32px;
-      padding: 0 11px;
-      border-radius: 999px;
-      border: 1px solid var(--border-strong);
-      background: rgba(var(--surface-rgb), 0.5);
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-size: 0.64rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: color 0.2s ease, border-color 0.2s ease;
-    }
-    .jcl-rss-btn svg { width: 13px; height: 13px; flex: none; display: block; }
-    .jcl-rss-btn:hover, .jcl-rss-btn:focus-visible { color: var(--accent); border-color: var(--accent); }
     .jcl-toolbar .jx-sync-chip { margin-left: auto; flex: 1 1 auto; min-width: 0; justify-content: flex-start; }
 
     /* The release notes live in a panel of their own: the toolbar and the
@@ -7466,13 +7447,22 @@
     .changelog-scroll {
       max-height: min(58vh, 460px);
       overflow-y: auto;
-      overscroll-behavior: contain;
+      /* v7.10 - let the scroll carry on into the page below: with `contain`
+         a swipe that landed on this panel could not continue, and the page
+         below looked stuck. */
+      overscroll-behavior: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
       scrollbar-color: rgba(255,255,255,.22) transparent;
       padding-right: 4px;
       margin-right: -4px;
       scroll-padding-block: 12px;
+    }
+    /* v7.10 - fade the bottom edge while there is more to read, so a cut-off
+       line reads as "more below" instead of "something is broken". */
+    .changelog-scroll.has-more {
+      -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 40px), transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 calc(100% - 40px), transparent 100%);
     }
     .changelog-scroll::-webkit-scrollbar { width: 6px; }
     .changelog-scroll::-webkit-scrollbar-track { background: transparent; }
@@ -7482,122 +7472,7 @@
     .changelog-scroll > *:first-child { margin-top: 0; }
     .changelog-scroll > *:last-child { margin-bottom: 0; }
 
-    /* Subscribe row — the release feed, always on screen. */
-    .changelog-subscribe {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 0 0 14px;
-      padding: 11px 13px;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-sm);
-      background: rgba(var(--surface-rgb), 0.45);
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.02em;
-      text-decoration: none;
-      transition: color 0.2s ease, border-color 0.2s ease;
-    }
-    .changelog-subscribe:hover, .changelog-subscribe:focus-visible {
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-    .changelog-subscribe svg { width: 15px; height: 15px; flex: none; display: block; color: var(--accent); }
-    .changelog-subscribe .cs-label { color: inherit; font-weight: 700; }
-    /* ── Subscribe sheet ───────────────────────────────────────────── */
-    .feed-sheet-intro {
-      font-size: 0.82rem;
-      line-height: 1.6;
-      color: var(--text-secondary);
-      margin: 0 0 16px;
-    }
-    .feed-url-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 14px;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-sm);
-      background: rgba(var(--surface-rgb), 0.55);
-      margin-bottom: 14px;
-    }
-    .feed-url-box code {
-      flex: 1;
-      min-width: 0;
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      line-height: 1.5;
-      color: var(--text-main);
-      white-space: normal;
-      overflow-wrap: normal;
-      word-break: normal;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .feed-copy-btn {
-      flex: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      min-height: 34px;
-      padding: 0 13px;
-      border-radius: 999px;
-      border: 1px solid var(--border-strong);
-      background: rgba(var(--surface-rgb), 0.7);
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: color 0.2s ease, border-color 0.2s ease;
-    }
-    .feed-copy-btn:hover, .feed-copy-btn:focus-visible { color: var(--accent); border-color: var(--accent); }
-    .feed-readers { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-    .feed-reader {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 46px;
-      padding: 0 14px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-strong);
-      background: rgba(var(--surface-rgb), 0.45);
-      color: var(--text-main);
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-    }
-    .feed-reader:hover, .feed-reader:focus-visible { color: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
-    .feed-reader svg, .feed-url-box svg { width: 15px; height: 15px; }
-    .feed-raw {
-      display: inline-block;
-      margin-top: 16px;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .feed-raw:hover { color: var(--accent); }
-
-    .changelog-subscribe .cs-url {
-      margin-left: auto;
-      color: var(--text-muted);
-      font-size: 0.66rem;
-      border: 1px dashed var(--border-strong);
-      border-radius: 999px;
-      padding: 4px 10px;
-    }
-    @media (max-width: 560px) {
-      .changelog-subscribe { gap: 8px; padding: 10px 12px; }
-      .changelog-subscribe .cs-desc { display: none; }
-      .changelog-subscribe .cs-long { display: none; }
-      .changelog-subscribe .cs-url { font-size: 0.62rem; padding: 3px 8px; }
+    /* Subscribe row — the release feed, always on screen. */    @media (max-width: 560px) {
     }
     @media (max-width: 480px) {
       .jcl-toolbar { gap: 8px; }
@@ -13161,16 +13036,9 @@
       <div class="changelog-list" id="changelogList">
         <div class="jcl-toolbar">
           <span class="jcl-version-chip" id="jclVersionChip" title="Current site version"><i class="fa-solid fa-code-branch" aria-hidden="true"></i> <span id="jclVersionLabel">v7.2</span></span>
-          <button class="jcl-rss-btn" type="button" data-open-feed-sheet title="Subscribe to the updates feed (RSS)" aria-label="Subscribe to the updates feed (RSS)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9" /><path d="M4 4a16 16 0 0 1 16 16" /><circle cx="5.2" cy="18.8" r="1.5" fill="currentColor" stroke="none" /></svg><span>RSS</span></button>
-          <span class="jcl-sync jx-sync-chip" id="jclSyncChip" role="status" aria-live="polite"><span class="jx-sync-dot" aria-hidden="true"></span><span class="jx-sync-label">Sync ready</span></span>
+            <span class="jcl-sync jx-sync-chip" id="jclSyncChip" role="status" aria-live="polite"><span class="jx-sync-dot" aria-hidden="true"></span><span class="jx-sync-label">Sync ready</span></span>
           <button class="jx-sync-btn ripple-btn" id="jclRefreshBtn" type="button" aria-label="Refresh changelog from GitHub" title="Refresh changelog from GitHub"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button>
         </div>
-        <button class="changelog-subscribe" type="button" data-open-feed-sheet title="Subscribe to the release feed (RSS)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9" /><path d="M4 4a16 16 0 0 1 16 16" /><circle cx="5.2" cy="18.8" r="1.5" fill="currentColor" stroke="none" /></svg>
-          <span class="cs-label">Subscribe<span class="cs-long"> to the release feed</span></span>
-          <span class="cs-desc">new versions, straight to your reader</span>
-          <span class="cs-url">feed.xml</span>
-        </button>
         <div class="changelog-scroll" id="changelogScroll" tabindex="0" role="region" aria-label="Release notes">
         <div class="auto-changelog-list" id="jclLiveList" aria-label="Updates synced from GitHub"></div>
         <div class="auto-changelog-list" id="autoChangelogList"></div>
@@ -13220,8 +13088,9 @@
   // Changelog bootstrap: renders latest updates immediately, even before the main app script finishes loading.
   // ▼ EDIT HERE: bump SITE_VERSION + add an entry at the TOP when you ship an update.
   //   Visitors see the new version automatically (live sync also pulls it from GitHub).
-  window.SITE_VERSION = 'v7.9';
+  window.SITE_VERSION = 'v7.10';
   window.SITE_CHANGELOG_FALLBACK = [
+    { version: 'v7.10', date: '6th Nov 2026', text: 'The subscribe button and its little sheet are gone again - you asked, so they are gone. While looking at that part of the page we also found why the page sometimes stopped scrolling right below Recent Updates: the notes panel was swallowing every swipe that landed on it, so the rest of the page could not be reached from there. It now behaves like an ordinary scroll area, it fades its bottom edge when there is more to read, and a fast flick can no longer leave a section of the page blank. The Wi-Fi Join Sheet that kept turning up on its own is fixed as well: a closed panel is now hidden outright instead of sitting just below the fold where it could still be seen or picked up, the Wi-Fi pop-up no longer scrolls the page out from under you, and the camera stops when you leave the tab. And the release feed is gone for good - no RSS file, no builder, no workflow, no button: Recent Updates on the site is the only place the release notes live now.' },
     { version: 'v7.9', date: '6th Nov 2026', text: 'The subscribe button no longer dumps a wall of XML in your face. It opens a small sheet instead: what the feed is, the address on one tap to copy, and buttons that open it straight in a reader. The raw XML is still one link away for anyone who wants it. While checking the icons on the new sheet we found some of them were coming out empty - the icon font was missing a few of the glyphs it referenced - so the icon font was rebuilt and a couple of blank buttons around the site now show their symbol again.' },
     { version: 'v7.8', date: '6th Nov 2026', text: 'Three fixes you asked for. The top of the page no longer sits flush against the screen: it now keeps clear of the notch and the status bar on a phone and leaves a little breathing room everywhere else. The site name that lives in the OS title bar was being painted even when the browser had no title bar for it, so it overflowed the top of the screen and was cut in half at the corner - it now only appears when there is a real title bar to sit in. Recent Updates is a fixed panel that scrolls inside itself instead of a long section you have to scroll past, with the version and the sync controls pinned at the top. And the release feed is findable again: a subscribe row now sits right under the toolbar, so the RSS link is always one tap away.' },
     { version: 'v7.7', date: '6th Nov 2026', text: 'A broken link, found by checking every link on this site. The Carroms Pool live demo pointed at a repository name that no longer exists, so the button returned a 404 - it now points at the game. The README was rewritten as well: the old one still showed a social preview image that was never in the repository, documented a habit tracker that was removed months ago and keyboard shortcuts that no longer exist, and said nothing about the share sheet, the file handlers, the title-bar overlay or the release feed.' },
@@ -14798,27 +14667,6 @@
       <button class="sheet-close-btn ripple-btn" onclick="closeAllSheets()" aria-label="Close and return home"><i class="fa-solid fa-xmark"></i><span class="sheet-close-label">Close</span></button>
     </div>
     <div id="projectSheetContent"></div>
-  </div>
-
-  <!-- Subscribe sheet — the release feed -->
-  <div class="bottom-sheet" id="feedSheet" aria-label="Subscribe to the release feed">
-    <div class="drag-handle"></div>
-    <div class="sheet-header">
-      <h2 class="sheet-title">Subscribe to updates</h2>
-      <button class="sheet-close-btn ripple-btn" onclick="closeAllSheets()" aria-label="Close and return home"><i class="fa-solid fa-xmark"></i><span class="sheet-close-label">Close</span></button>
-    </div>
-    <p class="feed-sheet-intro">Every release note on this site — dated, versioned, and written for humans — as an RSS feed. Paste the address into any reader and new versions arrive on their own.</p>
-    <div class="feed-url-box">
-      <span style="color:var(--accent); flex:none; display:flex;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9" /><path d="M4 4a16 16 0 0 1 16 16" /><circle cx="5.2" cy="18.8" r="1.5" fill="currentColor" stroke="none" /></svg></span>
-      <code id="feedUrlText">https://<wbr>jinosabu1999.<wbr>github.io/<wbr>About-Me/<wbr>feed.xml</code>
-      <button class="feed-copy-btn ripple-btn" id="feedCopyBtn" type="button" aria-label="Copy the feed address"><i class="fa-solid fa-copy" aria-hidden="true"></i><span>Copy</span></button>
-    </div>
-    <div class="feed-readers">
-      <a class="feed-reader" id="feedReaderFeedly" href="https://cloud.feedly.com/#subscription/feed/https%3A%2F%2Fjinosabu1999.github.io%2FAbout-Me%2Ffeed.xml" target="_blank" rel="noopener"><span style="display:flex; flex:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9" /><path d="M4 4a16 16 0 0 1 16 16" /><circle cx="5.2" cy="18.8" r="1.5" fill="currentColor" stroke="none" /></svg></span><span>Open in Feedly</span></a>
-      <a class="feed-reader" id="feedReaderInoreader" href="https://www.inoreader.com/?url=https%3A%2F%2Fjinosabu1999.github.io%2FAbout-Me%2Ffeed.xml" target="_blank" rel="noopener"><i class="fa-solid fa-inbox" aria-hidden="true"></i><span>Open in Inoreader</span></a>
-      <a class="feed-reader" id="feedReaderBrowser" href="feed.xml" target="_blank" rel="noopener"><i class="fa-solid fa-file-code" aria-hidden="true"></i><span>View the raw feed</span></a>
-    </div>
-    <a class="feed-raw" href="https://jinosabu1999.github.io/About-Me/feed.xml" id="feedRawLink">Copy this address instead</a>
   </div>
 
   <!-- Wi-Fi Join Sheet — printable guest network card -->
@@ -21197,7 +21045,40 @@
       paint();
     })();
     
-    const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); observer.unobserve(entry.target); } }); }, { threshold: 0.08 }); document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // v7.10 - threshold 0 (plus a small root margin) instead of 0.08: a tall
+    // section could never reach 8% of itself on a short screen, so it stayed
+    // invisible. Anything that peeks into the viewport now reveals.
+    const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); observer.unobserve(entry.target); } }); }, { threshold: 0, rootMargin: '0px 0px -40px 0px' }); document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Safety net: if the observer ever misses something (a fast fling, a
+    // restored scroll position), the section must still show up.
+    function revealOnScreen() {
+      document.querySelectorAll('.reveal:not(.active)').forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < innerHeight && r.bottom > 0) { el.classList.add('active'); observer.unobserve(el); }
+      });
+    }
+    let revealTicking = false;
+    window.addEventListener('scroll', function () {
+      if (revealTicking) return;
+      revealTicking = true;
+      requestAnimationFrame(function () { revealOnScreen(); revealTicking = false; });
+    }, { passive: true });
+    window.addEventListener('resize', revealOnScreen);
+    revealOnScreen();
+
+    // v7.10 - mark the release-notes panel while there is more to read
+    (function () {
+      const sc = document.getElementById('changelogScroll');
+      if (!sc) return;
+      const update = function () {
+        sc.classList.toggle('has-more', sc.scrollHeight - sc.clientHeight - sc.scrollTop > 8);
+      };
+      sc.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      setTimeout(update, 60);
+      update();
+    })();
 
     // Staggered reveal: grouped items cascade in, one after another, based on
     // their index within the group. Each item gets the .reveal transition and a
@@ -22162,6 +22043,11 @@ async function ensureQRCodeLib() {
         showNotify('Camera permission needed', 'fa-solid fa-triangle-exclamation');
       }
     }
+
+    // v7.10 - a detection must not arrive while the tab is in the background.
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden && scannerStream) stopScanner();
+    });
 
     function stopScanner() {
       if (scannerRaf) cancelAnimationFrame(scannerRaf);
@@ -25100,31 +24986,6 @@ async function ensureQRCodeLib() {
       try { wco.addEventListener('geometrychange', apply); } catch (e) { /* ignore */ }
     }
 
-    /* ── Subscribe sheet ───────────────────────────────────────────────
-       The feed itself is plain RSS, which a reader understands but a
-       browser renders as a tree of XML. The button opens this sheet
-       instead: the address, a copy button, and one-tap reader links. */
-    const FEED_URL = 'https://jinosabu1999.github.io/About-Me/feed.xml';
-    function openFeedSheet() {
-      const urlEl = document.getElementById('feedUrlText');
-      // keep the break hints - a plain textContent write would drop them
-      if (urlEl) urlEl.innerHTML = 'https://<wbr>jinosabu1999.<wbr>github.io/<wbr>About-Me/<wbr>feed.xml';
-      openSheet('feedSheet');
-    }
-    function copyFeedUrl() {
-      globalCopyText(FEED_URL, true);
-    }
-    document.addEventListener('click', function (e) {
-      const trigger = e.target && e.target.closest ? e.target.closest('[data-open-feed-sheet]') : null;
-      if (!trigger) return;
-      e.preventDefault();
-      openFeedSheet();
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-      const copyBtn = document.getElementById('feedCopyBtn');
-      if (copyBtn) copyBtn.addEventListener('click', copyFeedUrl);
-    });
-
     /* ── CSV helpers ───────────────────────────────────────────────── */
     // csvCell was called by every CSV export but was never defined, so
     // "Export as .csv" threw a ReferenceError. This is the missing half:
@@ -26168,7 +26029,15 @@ async function ensureQRCodeLib() {
       passVal.textContent = wifiData.pass ? '••••••••' : '(No Password / Open)';
       if (tag) tag.innerHTML = '<i class="fa-solid fa-shield-halved"></i> ' + (wifiData.type || 'WPA/WPA2');
       modal.style.display = 'block';
-      modal.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      // v7.10 - scroll the sheet, never the document: scrollIntoView() walks
+      // up the tree and scrolls the page too, which used to jump the reader
+      // past the section they were on.
+      const scroller = modal.closest('.bottom-sheet');
+      if (scroller) {
+        const mr = modal.getBoundingClientRect();
+        const sr = scroller.getBoundingClientRect();
+        scroller.scrollTop += (mr.top - sr.top) - 16;
+      }
     }
 
     function toggleWifiPassMask() {
