@@ -9,6 +9,13 @@
     <generator>About-Me/tools/build_feed.js</generator>
     <atom:link href="https://jinosabu1999.github.io/About-Me/feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>v7.10 — The subscribe button and its little sheet are gone again - you asked, so they are gone.</title>
+      <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
+      <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.10</guid>
+      <pubDate>Fri, 06 Nov 2026 00:00:00 +0000</pubDate>
+      <description><![CDATA[<p>The subscribe button and its little sheet are gone again - you asked, so they are gone. While looking at that part of the page we also found why the page sometimes stopped scrolling right below Recent Updates: the notes panel was swallowing every swipe that landed on it, so the rest of the page could not be reached from there. It now behaves like an ordinary scroll area, it fades its bottom edge when there is more to read, and a fast flick can no longer leave a section of the page blank. The Wi-Fi Join Sheet that kept turning up on its own is fixed as well: a closed panel is now hidden outright instead of sitting just below the fold where it could still be seen or picked up, the Wi-Fi pop-up no longer scrolls the page out from under you, and the camera stops when you leave the tab. And the release feed is gone for good - no RSS file, no builder, no workflow, no button: Recent Updates on the site is the only place the release notes live now.</p>]]></description>
+    </item>
+    <item>
       <title>v7.9 — The subscribe button no longer dumps a wall of XML in your face.</title>
       <link>https://jinosabu1999.github.io/About-Me/#recent-updates</link>
       <guid isPermaLink="false">https://jinosabu1999.github.io/About-Me/feed.xml#v7.9</guid>
