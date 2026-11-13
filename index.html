@@ -89,6 +89,9 @@
   <!-- Fonts + icons are self-hosted and subset (fonts/) — no third-party requests. -->
   <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/fa-solid-subset.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/fa-regular-subset.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/fa-brands-subset.woff2" as="font" type="font/woff2" crossorigin>
   
   <!-- Performance: Prism, jsQR, html2canvas, Tesseract.js, and Gumroad are lazy-loaded on demand. -->
   <!-- Fonts use display=swap; self-host/subset Inter + JetBrains Mono later if performance becomes the top priority. -->
@@ -418,7 +421,7 @@
     .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fastTabFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } } to { opacity: 1; transform: translateX(0); } }
+    @keyframes fastTabFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(52,199,89,0.4); } 70% { box-shadow: 0 0 0 8px rgba(52,199,89,0); } 100% { box-shadow: 0 0 0 0 rgba(52,199,89,0); } }
     @keyframes pulse-orange { 0% { box-shadow: 0 0 0 0 rgba(255,159,10,0.4); } 70% { box-shadow: 0 0 0 8px rgba(255,159,10,0); } 100% { box-shadow: 0 0 0 0 rgba(255,159,10,0); } }
     @keyframes slowSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -687,7 +690,7 @@
     }
     .storefront-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
     .store-bg-glow { 
-      position: absolute; top: -60px; right: -60px; 
+      position: absolute; top: -60px; right: 0; 
       width: 220px; height: 220px; background: var(--accent); 
       filter: blur(90px); opacity: 0.18; border-radius: 50%; 
       pointer-events: none; transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
@@ -977,12 +980,10 @@
       .dock-btn { width: 50px; min-height: 48px; font-size: 1.05rem; }
       .dock-btn .dock-label { font-size: 0.52rem; }
       .dock-btn.dock-fab { width: 54px; min-height: 54px; margin: 0 4px; font-size: 1.2rem; transform: translateY(-14px); }
-      .dock-btn.dock-fab:active { transform: translateY(-14px) scale(0.9); }
-    }
+      .dock-btn.dock-fab:active { transform: translateY(-14px) scale(0.9); }}
 
     @media (prefers-reduced-motion: reduce) {
-      .dock-btn, .dock-indicator, .dock-btn.dock-fab { transition: none !important; }
-    }
+      .dock-btn, .dock-indicator, .dock-btn.dock-fab { transition: none !important; }}
 
     /* ═══════════════════════════════════════════════════════════
        BOTTOM SHEETS, OVERLAYS & COMMAND UI
@@ -1518,8 +1519,7 @@
       .note-action-row { gap: 5px; }
       .note-action-row .primary-btn { padding-inline: 10px !important; font-size: 0.74rem; }
       .note-action-row .btn-secondary { min-width: 37px; padding-inline: 5px; }
-      .note-btn-label { font-size: 0.44rem; }
-    }
+      .note-btn-label { font-size: 0.44rem; }}
     .clip-filter-row { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
     .clip-filter-pill {
       padding: 7px 14px; border-radius: 100px; font-size: 0.76rem; font-weight: 700;
@@ -1592,7 +1592,7 @@
     .mood-minimal { color:#d4d4d8; background:#d4d4d8; }
     .mood-warm { color:#f59e0b; background:#f59e0b; }
     .mood-terminal { color:#39ff14; background:#39ff14; }
-    @media (max-width: 430px) { .mood-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 430px) { .mood-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }}
 
 
 
@@ -1614,8 +1614,28 @@
     .strength-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); min-width: 72px; text-align: right; }
 
     /* Modal/detail sheets */
-    .detail-hero { border-radius: var(--radius-md); border: 1.5px solid var(--border-strong); min-height: 150px; background: var(--detail-bg, var(--accent-glow)); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; }
-    .detail-hero::after { content:''; position:absolute; inset:0; background: linear-gradient(180deg, transparent, rgba(0,0,0,0.55)); }
+    /* The hero shows the artwork whole: a blurred copy fills the frame
+       and the real image is fitted on top, so nothing is ever cropped. */
+    .detail-hero {
+      border-radius: var(--radius-md); border: 1.5px solid var(--border-strong);
+      min-height: 170px; aspect-ratio: 16 / 10;
+      background: rgba(var(--surface-rgb), 0.55);
+      margin-bottom: 16px; position: relative; overflow: hidden;
+      display: grid; place-items: center;
+    }
+    .detail-hero::before {
+      content:''; position:absolute; inset:-22px;
+      background-image: var(--detail-bg, none);
+      background-size: cover; background-position: center;
+      filter: blur(26px) saturate(1.3); opacity: 0.55; transform: scale(1.08);
+    }
+    .detail-hero img {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .detail-hero::after { content:''; position:absolute; inset:0; z-index: 2; background: linear-gradient(180deg, transparent, rgba(0,0,0,0.45)); }
     .detail-section { margin: 16px 0; }
     .detail-section h3 { font-size: 0.82rem; color: var(--accent); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
     .detail-section p, .detail-section li { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; }
@@ -1657,52 +1677,80 @@
     /* Storefront upgrade */
     .storefront-card.upgraded-store { padding: 28px; }
     .store-layout { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr; gap: 18px; }
-    .store-kicker { font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 800; margin-bottom: 8px; }
     .store-title { font-size: 1.8rem; font-weight: 950; letter-spacing: -0.05em; margin-bottom: 10px; }
     .store-copy { color: var(--text-secondary); line-height: 1.62; font-size: 0.95rem; }
-    .store-product-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
-    .store-product-card {
-      position: relative; cursor: pointer;
-      overflow: hidden;
-      min-height: 126px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      background: rgba(0,0,0,0.10);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      box-shadow: inset 0 1px 1px var(--border-glow);
+
+    /* ── v7.13 Creator Store: compact intro + drawn artwork ───────
+       The intro is a two-column grid: copy on the left, a gift box
+       drawn inline on the right. The artwork reads the page's own
+       accent + surface variables, so it re-themes with the site and
+       every animation step has a reduced-motion escape. */
+    .store-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 92px;
+      gap: 6px 14px;
+      align-items: start;
     }
-    .store-product-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--thumb, radial-gradient(circle at 75% 15%, var(--accent-glow), transparent 45%));
-      background-size: cover;
-      background-position: center;
-      opacity: 0.22;
-      filter: saturate(1.1);
+    .store-intro .store-title { grid-column: 1; grid-row: 1; }
+    .store-intro .store-copy { grid-column: 1; grid-row: 2; }
+    .store-intro .store-badges { grid-column: 1 / -1; grid-row: 3; }
+    .store-art {
+      grid-column: 2; grid-row: 1 / span 2;
+      align-self: center; justify-self: end;
+      width: 92px; height: 92px; pointer-events: none;
     }
-    .store-product-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.48) 100%);
+    .store-art-svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .store-art-svg .sa-lid { fill: color-mix(in srgb, var(--accent) 52%, transparent); }
+    .store-art-svg .sa-body {
+      fill: color-mix(in srgb, var(--accent) 20%, transparent);
+      stroke: color-mix(in srgb, var(--accent) 52%, transparent);
+      stroke-width: 2;
     }
-    .store-product-card > * { position: relative; z-index: 1; }
-    .store-product-card h4 { font-size: 1rem; font-weight: 900; margin-bottom: 4px; }
-    .store-product-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .store-product-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.45; }
+    .store-art-svg .sa-ribbon { fill: color-mix(in srgb, var(--accent) 80%, #fff 6%); }
+    .store-art-svg .sa-bow { fill: color-mix(in srgb, var(--accent) 64%, transparent); }
+    .store-art-svg .sa-knot { fill: var(--accent); }
+    .store-art-svg .sa-arrow-stem,
+    .store-art-svg .sa-arrow-head {
+      stroke: var(--accent); stroke-width: 6;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .store-art-svg .sa-spark { fill: var(--accent); }
+    [data-theme="light"] .store-art-svg .sa-lid { fill: color-mix(in srgb, var(--accent) 46%, #fff); }
+    [data-theme="light"] .store-art-svg .sa-body { fill: color-mix(in srgb, var(--accent) 14%, #fff); }
+    .store-art-svg .sa-box {
+      transform-box: fill-box; transform-origin: center bottom;
+      animation: storeFloat 5.2s ease-in-out infinite;
+    }
+    @keyframes storeFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    .store-art-svg .sa-arrow {
+      transform-box: fill-box; transform-origin: center;
+      animation: storeDrop 2.4s ease-in-out infinite;
+    }
+    @keyframes storeDrop {
+      0%, 100% { transform: translateY(-5px); opacity: 0.5; }
+      50% { transform: translateY(4px); opacity: 1; }
+    }
+    .store-art-svg .sa-spark { animation: storeTwinkle 3.8s ease-in-out infinite; }
+    .store-art-svg .sa-spark-2 { animation-delay: 0.9s; }
+    .store-art-svg .sa-spark-3 { animation-delay: 1.7s; }
+    @keyframes storeTwinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.85; } }
+    @media (min-width: 860px) {
+      .store-intro { grid-template-columns: minmax(0, 1fr) 168px; gap: 8px 22px; }
+      .store-art { width: 168px; height: 168px; }}
+    @media (max-width: 520px) {
+      .store-intro { grid-template-columns: minmax(0, 1fr) 74px; gap: 4px 12px; }
+      .store-art { width: 74px; height: 74px; }}
+    @media (prefers-reduced-motion: reduce) {
+      .store-art-svg .sa-box,
+      .store-art-svg .sa-arrow,
+      .store-art-svg .sa-spark { animation: none !important; }}
     .store-badges { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 18px; }
     .store-badge { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; color: var(--accent); border: 1px solid var(--border); background: var(--accent-glow); padding: 6px 9px; border-radius: 999px; }
     .store-actions { display: grid; grid-template-columns: 1fr; gap: 10px; }
     .patreon-btn { background: var(--surface-solid); color: var(--accent); border: 1px solid var(--accent); }
     .store-note { margin-top: 12px; color: var(--text-muted); font-size: 0.78rem; line-height: 1.5; }
     @media (min-width: 680px) {
-      .store-product-grid { grid-template-columns: 1fr 1fr; }
-      .store-actions { grid-template-columns: 1fr 1fr; }
-    }
+      .store-actions { grid-template-columns: 1fr 1fr; }}
 
     /* Compact appearance sheet */
     #themeSheet { padding-left: 18px; padding-right: 18px; padding-bottom: calc(16px + var(--safe-bottom)); }
@@ -1766,7 +1814,7 @@
 
     /* Tool of the day, conveyor strip, and feedback */
     .insight-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
-    @media (min-width: 720px) { .insight-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 720px) { .insight-grid { grid-template-columns: 1fr 1fr; }}
     .mini-feature-card { padding: 22px; border-radius: var(--radius-lg); position: relative; overflow: hidden; }
     .mini-feature-kicker { font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 800; margin-bottom: 8px; }
     .mini-feature-title { font-size: 1.25rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 8px; }
@@ -1810,7 +1858,6 @@
     }
     /* Clear focus states for keyboard-navigable clickable cards */
     .hold-block:focus-visible,
-    .store-product-card:focus-visible,
     .project-card:focus-visible,
     .scroll-fab:focus-visible {
       outline: 3px solid var(--accent);
@@ -1904,57 +1951,6 @@
       font-size: 0.82rem;
       font-weight: 850;
       gap: 8px;
-    }
-    .opensource-metrics {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      padding: 0 22px 18px;
-    }
-    .oss-metric-pill {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-      padding: 13px 14px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(var(--surface-rgb), 0.32);
-      box-shadow: inset 0 1px 1px var(--border-glow);
-      transition: border-color 0.25s, transform 0.25s cubic-bezier(0.25,1.5,0.5,1), background 0.25s;
-    }
-    .oss-metric-pill:hover { border-color: var(--border-strong); background: rgba(var(--surface-rgb), 0.46); transform: translateY(-1px); }
-    .oss-metric-icon {
-      width: 36px;
-      height: 36px;
-      flex: 0 0 auto;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      color: var(--accent);
-      background: var(--accent-glow);
-      border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
-    }
-    .oss-metric-copy { min-width: 0; }
-    .oss-metric-value {
-      display: block;
-      font-size: 1rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .oss-metric-label {
-      display: block;
-      color: var(--text-muted);
-      font-size: 0.68rem;
-      font-weight: 750;
-      text-transform: uppercase;
-      letter-spacing: 0.055em;
-      margin-top: 2px;
     }
     .opensource-controls {
       position: relative;
@@ -2182,22 +2178,18 @@
     .repo-skeleton-line.short { width: 54%; }
     @keyframes ossShimmer { to { background-position: -220% 0; } }
     @media (min-width: 768px) {
-      .opensource-metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-      .repo-card { flex: 0 0 45%; }
-    }
+      .repo-card { flex: 0 0 45%; }}
     @media (max-width: 760px) {
       .opensource-head { flex-direction: column; padding-inline: 18px; }
       .opensource-actions { width: 100%; justify-content: space-between; }
       .opensource-profile-link { flex: 1; }
-      .opensource-metrics, .opensource-controls { padding-inline: 18px; }
+      .opensource-controls { padding-inline: 18px; }
       .opensource-rail { padding-inline: 18px; scroll-padding-inline: 18px; }
       .repo-card { flex-basis: 86%; padding: 22px; }
-      .opensource-icon-btn { width: 40px; height: 40px; }
-    }
+      .opensource-icon-btn { width: 40px; height: 40px; }}
     @media (prefers-reduced-motion: reduce) {
       .repo-card, .repo-link, .oss-filter-chip, .opensource-icon-btn { transition: none; }
-      .repo-skeleton-block, .repo-skeleton-line { animation: none; }
-    }
+      .repo-skeleton-block, .repo-skeleton-line { animation: none; }}
 
     .scanner-panel {
       display: flex;
@@ -2265,11 +2257,6 @@
        ═══════════════════════════════════════════════════════════ */
     /* Requested refinements */
     .hero-card { width: calc(100% - 16px); margin-inline: auto; }
-    @media (hover: none), (pointer: coarse) {
-    }
-    .store-product-card { border: 1.5px solid var(--accent); box-shadow: var(--shadow-sm), 0 0 18px -6px var(--accent-glow), inset 0 1px 1px var(--border-glow); min-height: 152px; }
-    .store-product-card::after { background: linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.70) 100%); }
-    .store-price { align-self: flex-start; margin-bottom: auto; display: inline-flex; padding: 5px 9px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); background: rgba(0,0,0,0.35); font-family: var(--font-mono); font-size: 0.64rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; }
 
     /* Markdown preview in Smart Scratchpad */
     .md-view-toggle { display: inline-flex; gap: 4px; padding: 4px; margin-bottom: 10px; background: rgba(var(--surface-rgb), 0.4); border: 1px solid var(--border-strong); border-radius: 100px; }
@@ -2338,7 +2325,7 @@
     .qr-template-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .qr-template-fields .search-input { margin-bottom: 0; }
     .qr-helper-text { color: var(--text-muted); font-size: 0.75rem; line-height: 1.45; margin: -2px 0 4px; }
-    @media (max-width: 430px) { .qr-template-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 430px) { .qr-template-grid { grid-template-columns: 1fr; }}
 
     /* ══════════════════════════════════════════════════════════════
        COUNTER STUDIO 2.0 & SMART CLIPBOARD STUDIO 2.0 ULTRA SUITE
@@ -2361,8 +2348,7 @@
     @media (max-width: 680px) {
       .counter-telemetry-grid, .clip-telemetry-grid {
         grid-template-columns: repeat(2, 1fr);
-      }
-    }
+      }}
 
     .counter-telemetry-card, .clip-telemetry-card {
       background: rgba(var(--surface-rgb), 0.5);
@@ -2749,8 +2735,7 @@
     @media (max-width: 540px) {
       .counter-cards-grid {
         grid-template-columns: 1fr;
-      }
-    }
+      }}
 
     .counter-card-v2 {
       border: 1.5px solid var(--c-accent-border, var(--border));
@@ -3445,7 +3430,7 @@
     .scanner-type-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
     .scanner-type-pill { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:rgba(0,0,0,0.08); color:var(--text-secondary); font-size:0.72rem; font-weight:850; }
     .scanner-type-pill i { color:var(--accent); }
-    @media (max-width: 520px) { .clip-manual-row { grid-template-columns:1fr; } }
+    @media (max-width: 520px) { .clip-manual-row { grid-template-columns:1fr; }}
 
     /* Digital Toolkit upgrades: mission lanes, stopwatch sessions, counter goals */
     .tool-form-grid { display: grid; grid-template-columns: 1fr 0.72fr; gap: 8px; margin-bottom: 10px; }
@@ -4030,8 +4015,7 @@
       }
       .sw-actions-row #swStartBtn {
         grid-column: 1 / -1;
-      }
-    }
+      }}
     .sw-ctrl-btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
       padding: 10px 14px; border-radius: 12px;
@@ -4231,8 +4215,7 @@
       display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
     }
     @media (max-width: 480px) {
-      .password-options-grid { grid-template-columns: 1fr; }
-    }
+      .password-options-grid { grid-template-columns: 1fr; }}
     .password-toggle-card {
       display: flex; align-items: center; justify-content: space-between;
       padding: 9px 12px; border-radius: 12px;
@@ -4253,8 +4236,7 @@
     }
     @media (max-width: 480px) {
       .password-bottom-actions { grid-template-columns: 1fr 1fr; }
-      .password-bottom-actions .primary-btn { grid-column: 1 / -1; }
-    }
+      .password-bottom-actions .primary-btn { grid-column: 1 / -1; }}
 
     /* ── QR Generator Studio Revamp ── */
     .qr-studio-card {
@@ -4292,8 +4274,7 @@
       display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; align-items: start;
     }
     @media (max-width: 720px) {
-      .qr-studio-grid { grid-template-columns: 1fr; }
-    }
+      .qr-studio-grid { grid-template-columns: 1fr; }}
 
     .qr-form-panel {
       display: flex; flex-direction: column; gap: 10px;
@@ -4413,8 +4394,7 @@
     }
     @media (max-width: 500px) {
       .scanner-controls-grid { grid-template-columns: 1fr 1fr; }
-      .scanner-controls-grid .primary-btn { grid-column: 1 / -1; }
-    }
+      .scanner-controls-grid .primary-btn { grid-column: 1 / -1; }}
 
     .scanner-smart-result-card {
       background: linear-gradient(135deg, rgba(var(--surface-rgb), 0.95), rgba(var(--surface-rgb), 0.85));
@@ -4450,8 +4430,7 @@
       }
       .mission-lane {
         min-height: auto;
-      }
-    }
+      }}
     
     .stopwatch-session-panel, .counter-card { border:1px solid var(--border); border-radius: var(--radius-md); background: rgba(0,0,0,0.06); box-shadow: inset 0 1px 1px var(--border-glow); }
     .stopwatch-session-panel { padding: 12px; margin-bottom: 12px; }
@@ -4471,8 +4450,8 @@
     .counter-title { font-size:0.98rem; font-weight:900; color:var(--text-main); word-break:break-word; }
     .counter-sub { margin-top:3px; color:var(--text-muted); font-size:0.72rem; font-weight:700; }
     .counter-history { margin-top: 10px; padding: 9px; border-radius: 12px; background: rgba(0,0,0,0.06); border:1px solid var(--border); color:var(--text-muted); font-size:0.72rem; display:grid; gap:4px; }
-    @media (min-width: 640px) { .mission-board { gap: 12px; } .mission-lane { padding: 12px; } }
-    @media (max-width: 430px) { .tool-form-grid, .tool-form-grid.three { grid-template-columns: 1fr; } .mission-toolbar { align-items:stretch; } .mission-toolbar .btn-secondary, .mission-toolbar .primary-btn { width:100%; } }
+    @media (min-width: 640px) { .mission-board { gap: 12px; } .mission-lane { padding: 12px; }}
+    @media (max-width: 430px) { .tool-form-grid, .tool-form-grid.three { grid-template-columns: 1fr; } .mission-toolbar { align-items:stretch; } .mission-toolbar .btn-secondary, .mission-toolbar .primary-btn { width:100%; }}
 
     /* Smart Scratchpad organization + richer Markdown */
     .notes-org-panel,
@@ -4560,105 +4539,39 @@
     .markdown-preview .md-image figcaption { padding: 10px 12px; color: var(--text-muted); font-size: 0.78rem; }
     @media (max-width: 430px) {
       .note-meta-panel { grid-template-columns: 1fr; }
-      .note-export-menu { grid-template-columns: repeat(2, minmax(0, 1fr)); bottom: 92px; }
-    }
+      .note-export-menu { grid-template-columns: repeat(2, minmax(0, 1fr)); bottom: 92px; }}
 
     /* Store ratings + product flags */
     .store-rating { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800; color: #fbbf24; margin-bottom: 6px; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
     .store-rating .rating-count { color: var(--text-secondary); font-weight: 700; }
-    .store-flag {
-      position: absolute; top: 10px; right: 10px; z-index: 2;
-      padding: 4px 10px; border-radius: 999px;
-      font-family: var(--font-mono); font-size: 0.6rem; font-weight: 900;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      animation: flagPop 0.5s cubic-bezier(0.25, 1.5, 0.5, 1) backwards;
-    }
     @keyframes flagPop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .store-flag.flag-new { background: var(--accent); color: var(--accent-text); box-shadow: 0 4px 14px -4px var(--accent); }
-    .store-flag.flag-bestseller { background: linear-gradient(135deg, #f59e0b, #f97316); color: #000; box-shadow: 0 4px 14px -4px #f59e0b; }
-
-
-    .store-goal-milestone-card {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background: linear-gradient(145deg, rgba(var(--surface-rgb), 0.38), rgba(var(--surface-rgb), 0.14));
-      padding: 14px 16px 12px;
-      box-shadow: var(--shadow-sm), inset 0 1px 1px var(--border-glow);
-    }
-    .store-goal-copy {
-      color: var(--text-muted);
-      font-size: 0.76rem;
-      line-height: 1.45;
-      margin: -2px 0 8px;
-    }
-    .store-section-milestones {
-      margin: 10px 6px 0;
-      min-height: 50px;
-    }
-
-    /* Product Card Upgrades: richer metadata, previews, share actions */
-    .store-product-card { min-height: 292px; justify-content: flex-start; gap: 10px; padding: 14px; }
-    .store-product-card .store-price { margin-bottom: 0; }
-    .store-card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      min-height: 28px;
-    }
-    .store-category {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      max-width: calc(100% - 42px);
-      padding: 5px 9px;
-      border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-      background: rgba(0,0,0,0.36);
-      color: var(--accent);
-      font-family: var(--font-mono);
-      font-size: 0.58rem;
-      font-weight: 950;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: inset 0 1px 1px var(--border-glow);
-    }
-    .store-card-share {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 auto;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      border: 1px solid var(--border-strong);
-      background: rgba(0,0,0,0.42);
-      color: var(--text-main);
-      cursor: pointer;
-      transition: all 0.22s cubic-bezier(0.25, 1.5, 0.5, 1);
-      box-shadow: inset 0 1px 1px var(--border-glow);
-    }
-    .store-card-share:hover,
-    .store-card-share:focus-visible { color: var(--accent); border-color: var(--accent); background: var(--accent-glow); }
-    .store-card-share:active { transform: scale(0.88); }
+    /* Same rule as the hero: blurred backdrop, fitted artwork, no crop. */
     .store-sample-preview {
-      min-height: 82px;
+      min-height: 170px;
       border-radius: 18px;
       border: 1px solid var(--border-strong);
-      background:
-        linear-gradient(135deg, rgba(0,0,0,0.18), rgba(0,0,0,0.60)),
-        var(--sample, var(--thumb));
-      background-size: cover;
-      background-position: center;
+      background: rgba(var(--surface-rgb), 0.5);
       overflow: hidden;
       display: flex;
       align-items: flex-end;
       padding: 9px;
+      position: relative;
       box-shadow: inset 0 1px 1px rgba(255,255,255,0.14), var(--shadow-sm);
     }
+    .store-sample-preview::before {
+      content: ''; position: absolute; inset: -18px;
+      background-image: var(--sample, none);
+      background-size: cover; background-position: center;
+      filter: blur(20px) saturate(1.25); opacity: 0.5;
+    }
+    .store-sample-preview img {
+      position: absolute; inset: 0; z-index: 1;
+      width: 100%; height: 100%;
+      object-fit: contain;
+      display: block;
+    }
     .store-sample-preview span {
+      position: relative; z-index: 2;
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -4670,34 +4583,6 @@
       font-size: 0.62rem;
       font-weight: 850;
       text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    }
-    .store-meta-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 7px;
-      margin: 2px 0 0;
-    }
-    .store-meta-item {
-      min-width: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 8px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(0,0,0,0.16);
-      color: var(--text-secondary);
-      font-size: 0.66rem;
-      font-weight: 780;
-      line-height: 1.2;
-      box-shadow: inset 0 1px 1px var(--border-glow);
-    }
-    .store-meta-item i { color: var(--accent); flex: 0 0 auto; }
-    .store-meta-item span:last-child {
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
     .instant-download-badge {
       display: inline-flex;
@@ -4716,23 +4601,6 @@
       letter-spacing: 0.07em;
       box-shadow: 0 0 18px rgba(16,185,129,0.08), inset 0 1px 1px var(--border-glow);
     }
-    .store-updated {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-muted);
-      font-size: 0.66rem;
-      font-weight: 760;
-      margin-top: auto;
-    }
-    .store-product-card .store-flag { top: 54px; right: 20px; }
-    .store-product-title-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .store-product-title-row h4 { margin: 0; }
     .product-fact-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4760,14 +4628,8 @@
     }
     .product-fact-value { color: var(--text-main); font-size: 0.86rem; font-weight: 850; line-height: 1.35; }
     .product-share-row { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
-    @media (min-width: 520px) { .product-share-row { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 560px) {
-      .store-product-grid { grid-template-columns: 1fr; }
-      .store-product-card { min-height: 300px; }
-    }
-    @media (max-width: 380px) {
-      .store-meta-grid, .product-fact-grid { grid-template-columns: 1fr; }
-    }
+    @media (min-width: 520px) { .product-share-row { grid-template-columns: 1fr 1fr; }}
+    @media (max-width: 380px) { .product-fact-grid { grid-template-columns: 1fr; }}
 
     /* Promo / discount banner */
     .promo-banner {
@@ -4799,80 +4661,7 @@
       display: grid; place-items: center; font-size: 0.8rem; transition: all 0.2s;
     }
     .promo-close:hover { color: var(--text-main); background: rgba(var(--surface-rgb), 0.9); }
-
-    /* Support goal meter */
-    .support-goal { max-width: 420px; margin: 14px auto 4px; padding: 0 28px; }
-    .support-goal-card {
-      background: rgba(var(--surface-rgb), 0.35);
-      border: 1.5px solid var(--border-strong);
-      border-radius: var(--radius-md); padding: 14px 16px;
-      box-shadow: inset 0 1px 1px var(--border-glow);
-    }
-    .support-goal-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 9px; }
-    .support-goal-label { font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); }
-    .support-goal-label i { color: var(--accent); margin-right: 5px; }
-    .support-goal-pct { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 900; color: var(--accent); }
-    .support-goal-track { height: 8px; border-radius: 999px; background: rgba(var(--surface-rgb), 0.8); border: 1px solid var(--border); overflow: hidden; }
-    .support-goal-fill {
-      height: 100%; width: 0%; border-radius: 999px;
-      background: var(--accent);
-      background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 60%, #fff));
-      box-shadow: 0 0 10px var(--accent-glow);
-      transition: width 1.2s cubic-bezier(0.25, 1, 0.35, 1);
-      position: relative;
-    }
-    .support-goal-fill::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-      animation: goalShimmer 2.2s linear infinite;
-    }
     @keyframes goalShimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
-    .support-goal-meta { margin-top: 8px; font-size: 0.7rem; color: var(--text-muted); display: flex; justify-content: space-between; gap: 8px; }
-    [data-reduce-motion="true"] .support-goal-fill::after { animation: none; }
-
-
-    .support-goal-milestones {
-      position: relative;
-      min-height: 46px;
-      margin: 9px 4px 0;
-    }
-    .goal-milestone {
-      position: absolute;
-      left: var(--ms-left, 0%);
-      top: 0;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      min-width: 64px;
-      max-width: 88px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.58rem;
-      font-weight: 800;
-      line-height: 1.16;
-    }
-    .goal-milestone-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--surface-solid);
-      border: 2px solid var(--border-strong);
-      box-shadow: 0 0 0 4px rgba(var(--surface-rgb),0.26);
-      transition: all 0.35s cubic-bezier(0.25, 1.5, 0.5, 1);
-    }
-    .goal-milestone.reached { color: var(--accent); }
-    .goal-milestone.reached .goal-milestone-dot {
-      background: var(--accent);
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px var(--accent-glow), 0 0 18px var(--accent-glow);
-    }
-    .goal-milestone-amount { font-family: var(--font-mono); font-size: 0.55rem; opacity: 0.9; }
-    @media (max-width: 430px) {
-      .support-goal-milestones { margin-inline: 0; min-height: 52px; }
-      .goal-milestone { min-width: 58px; font-size: 0.52rem; }
-    }
 
     /* Hero share / install row */
     .hero-secondary-row { display: flex; gap: 10px; margin-top: 10px; position: relative; z-index: 2; }
@@ -5017,8 +4806,7 @@
     }
     @media (max-width: 430px) {
       #toolkitTabs .segment-btn { min-width: 86px; padding: 11px 14px; font-size: 0.82rem; }
-      #toolkitTabs .segment-btn.active { min-width: 98px; }
-    }
+      #toolkitTabs .segment-btn.active { min-width: 98px; }}
 
     /* Toolkit scroll affordance: keep the next tab peeking and show a short swipe cue. */
     #toolkitTabWrap {
@@ -5033,133 +4821,7 @@
       mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 62px), rgba(0,0,0,0.72) calc(100% - 28px), transparent 100%);
       -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 62px), rgba(0,0,0,0.72) calc(100% - 28px), transparent 100%);
     }
-
-
-    /* Gumroad assets: compact horizontal carousel + redesigned milestone roadmap */
-    .store-product-grid {
-      display: flex !important;
-      grid-template-columns: none !important;
-      gap: 12px;
-      overflow-x: auto;
-      overscroll-behavior-inline: contain;
-      scroll-snap-type: inline mandatory;
-      scroll-padding-inline: 4px;
-      padding: 2px 4px 14px;
-      margin: 14px -4px 2px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 42px), transparent 100%);
-      -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 42px), transparent 100%);
-    }
-    .store-product-grid::-webkit-scrollbar { display: none; }
-    .store-product-card {
-      flex: 0 0 min(86%, 420px) !important;
-      scroll-snap-align: start;
-      min-height: 236px;
-      gap: 8px;
-    }
     .store-sample-preview { min-height: 68px; }
-    .store-meta-grid { gap: 6px; }
-    .store-meta-item { padding: 6px 7px; }
-    .store-product-card h4 { font-size: 0.98rem; line-height: 1.15; }
-    .store-product-card p { font-size: 0.78rem; line-height: 1.35; }
-    @media (min-width: 680px) {
-      .store-product-card { flex-basis: calc((100% - 12px) / 2) !important; }
-    }
-    @media (max-width: 560px) {
-      .store-product-grid { grid-template-columns: none !important; }
-      .store-product-card { flex-basis: min(88%, 360px) !important; min-height: 238px; }
-    }
-
-    .store-goal-milestone-card {
-      padding: 16px;
-      border-color: color-mix(in srgb, var(--accent) 28%, var(--border));
-      background:
-        radial-gradient(circle at 12% 0%, var(--accent-glow), transparent 34%),
-        linear-gradient(145deg, rgba(var(--surface-rgb), 0.48), rgba(var(--surface-rgb), 0.16));
-    }
-    .store-goal-milestone-card .support-goal-head { margin-bottom: 5px; }
-    .store-goal-copy { margin-bottom: 12px; }
-    .store-milestone-track {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      scroll-snap-type: inline mandatory;
-      padding: 2px 2px 4px;
-    }
-    .store-milestone-track::-webkit-scrollbar { display: none; }
-    .store-milestone-chip {
-      flex: 0 0 156px;
-      scroll-snap-align: start;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: rgba(0,0,0,0.12);
-      padding: 12px;
-      box-shadow: inset 0 1px 1px var(--border-glow);
-      transition: border-color 0.25s, transform 0.25s cubic-bezier(0.25, 1.5, 0.5, 1), background 0.25s;
-    }
-    .store-milestone-chip.reached {
-      border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-      background: var(--accent-glow);
-    }
-    .store-milestone-chip:hover { transform: translateY(-1px); border-color: var(--accent); }
-    .store-milestone-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-    .store-milestone-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      color: var(--accent);
-      background: var(--accent-glow);
-      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-    }
-    .store-milestone-amount {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      font-weight: 950;
-      color: var(--accent);
-      white-space: nowrap;
-    }
-    .store-milestone-label {
-      color: var(--text-main);
-      font-size: 0.82rem;
-      font-weight: 900;
-      line-height: 1.2;
-      margin-bottom: 8px;
-    }
-    .store-milestone-mini-track {
-      height: 5px;
-      border-radius: 999px;
-      background: rgba(var(--surface-rgb), 0.70);
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-    .store-milestone-mini-fill {
-      height: 100%;
-      width: var(--ms-pct, 0%);
-      border-radius: inherit;
-      background: var(--accent);
-      box-shadow: 0 0 12px var(--accent-glow);
-    }
-    .store-milestone-state {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 7px;
-      color: var(--text-muted);
-      font-size: 0.62rem;
-      font-weight: 850;
-    }
-    .store-milestone-chip.reached .store-milestone-state { color: var(--accent); }
 
     /* ═══════════════════════════════════════════════════════════
        RESPONSIVE BREAKPOINTS
@@ -5171,51 +4833,8 @@
 
       .container { max-width: 680px; }
       .hero-title { font-size: 3rem; }
-      .project-card { flex: 0 0 45%; }
-    }
-
-
-    /* Final Gumroad mobile fix: compact horizontal asset rail */
-    #storeSection + .storefront-card .store-product-grid {
-      display: flex !important;
-      flex-direction: row !important;
-      flex-wrap: nowrap !important;
-      grid-template-columns: none !important;
-      gap: 10px !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      scroll-snap-type: x mandatory !important;
-      scroll-padding-inline: 14px !important;
-      padding: 2px 14px 14px !important;
-      margin: 14px -14px 4px !important;
-      scrollbar-width: none !important;
-      -webkit-overflow-scrolling: touch !important;
-      mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 36px), transparent 100%) !important;
-      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 36px), transparent 100%) !important;
-    }
-    #storeSection + .storefront-card .store-product-grid::-webkit-scrollbar { display: none !important; }
-    #storeSection + .storefront-card .store-product-card {
-      flex: 0 0 clamp(238px, 72vw, 292px) !important;
-      width: clamp(238px, 72vw, 292px) !important;
-      max-width: 292px !important;
-      min-height: 222px !important;
-      padding: 12px !important;
-      gap: 7px !important;
-      scroll-snap-align: start !important;
-    }
+      .project-card { flex: 0 0 45%; }}
     #storeSection + .storefront-card .store-sample-preview { min-height: 58px !important; border-radius: 15px !important; }
-    #storeSection + .storefront-card .store-meta-grid { grid-template-columns: 1fr 1fr !important; gap: 5px !important; }
-    #storeSection + .storefront-card .store-meta-item { padding: 5px 6px !important; font-size: 0.58rem !important; border-radius: 10px !important; }
-    #storeSection + .storefront-card .instant-download-badge { font-size: 0.54rem !important; padding: 5px 7px !important; }
-    #storeSection + .storefront-card .store-product-card h4 { font-size: 0.9rem !important; margin-bottom: 1px !important; }
-    #storeSection + .storefront-card .store-product-card p { font-size: 0.72rem !important; line-height: 1.3 !important; }
-    @media (max-width: 380px) {
-      #storeSection + .storefront-card .store-product-card {
-        flex-basis: 235px !important;
-        width: 235px !important;
-      }
-      #storeSection + .storefront-card .store-meta-grid { grid-template-columns: 1fr !important; }
-    }
 
 
 
@@ -5253,189 +4872,8 @@
       max-width: 100% !important;
       white-space: nowrap !important;
     }
-    #storeSection + .storefront-card .store-product-grid {
-      display: flex !important;
-      flex-direction: row !important;
-      flex-wrap: nowrap !important;
-      gap: 10px !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      scroll-snap-type: x mandatory !important;
-      scroll-padding-inline: 16px !important;
-      padding: 2px 16px 12px !important;
-      margin: 4px -16px 0 !important;
-      width: calc(100% + 32px) !important;
-      max-width: none !important;
-      scrollbar-width: none !important;
-      -webkit-overflow-scrolling: touch !important;
-      mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 30px), transparent 100%) !important;
-      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 30px), transparent 100%) !important;
-    }
-    #storeSection + .storefront-card .store-product-grid::-webkit-scrollbar { display: none !important; }
-    #storeSection + .storefront-card .store-product-card {
-      flex: 0 0 clamp(214px, 64vw, 252px) !important;
-      width: clamp(214px, 64vw, 252px) !important;
-      max-width: 252px !important;
-      min-width: 0 !important;
-      min-height: 0 !important;
-      display: grid !important;
-      grid-template-columns: 72px minmax(0, 1fr) !important;
-      gap: 10px !important;
-      align-items: stretch !important;
-      padding: 10px !important;
-      border-radius: 20px !important;
-      overflow: hidden !important;
-      scroll-snap-align: start !important;
-      background: linear-gradient(145deg, rgba(var(--surface-rgb), 0.60), rgba(var(--surface-rgb), 0.18)) !important;
-      border: 1px solid var(--border-strong) !important;
-      box-shadow: var(--shadow-sm), inset 0 1px 1px var(--border-glow) !important;
-    }
-    #storeSection + .storefront-card .store-product-card::before,
-    #storeSection + .storefront-card .store-product-card::after { display: none !important; }
-    #storeSection + .storefront-card .asset-thumb {
-      min-width: 0 !important;
-      width: 72px !important;
-      min-height: 136px !important;
-      border-radius: 16px !important;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.52)),
-        var(--sample, var(--thumb)) !important;
-      background-size: cover !important;
-      background-position: center !important;
-      border: 1px solid var(--border-strong) !important;
-      display: flex !important;
-      align-items: flex-end !important;
-      justify-content: center !important;
-      padding: 6px !important;
-      overflow: hidden !important;
-    }
-    #storeSection + .storefront-card .asset-thumb-label {
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 4px !important;
-      padding: 4px 6px !important;
-      border-radius: 999px !important;
-      background: rgba(0,0,0,0.58) !important;
-      color: #fff !important;
-      font-size: 0.52rem !important;
-      font-weight: 850 !important;
-      white-space: nowrap !important;
-    }
-    #storeSection + .storefront-card .asset-body {
-      min-width: 0 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 5px !important;
-      padding-right: 20px !important;
-    }
-    #storeSection + .storefront-card .store-category {
-      align-self: flex-start !important;
-      max-width: 100% !important;
-      font-size: 0.48rem !important;
-      padding: 4px 7px !important;
-      background: rgba(0,0,0,0.18) !important;
-    }
-    #storeSection + .storefront-card .store-card-share {
-      position: absolute !important;
-      top: 8px !important;
-      right: 8px !important;
-      width: 28px !important;
-      height: 28px !important;
-      z-index: 4 !important;
-      font-size: 0.78rem !important;
-    }
-    #storeSection + .storefront-card .store-flag {
-      top: 8px !important;
-      left: 8px !important;
-      right: auto !important;
-      z-index: 4 !important;
-      font-size: 0.46rem !important;
-      padding: 3px 7px !important;
-      letter-spacing: 0.08em !important;
-    }
-    #storeSection + .storefront-card .store-product-card h4 {
-      font-size: 0.88rem !important;
-      line-height: 1.12 !important;
-      margin: 0 !important;
-      display: -webkit-box !important;
-      -webkit-line-clamp: 2 !important;
-      -webkit-box-orient: vertical !important;
-      overflow: hidden !important;
-    }
-    #storeSection + .storefront-card .store-product-card p {
-      font-size: 0.68rem !important;
-      line-height: 1.28 !important;
-      margin: 0 !important;
-      display: -webkit-box !important;
-      -webkit-line-clamp: 2 !important;
-      -webkit-box-orient: vertical !important;
-      overflow: hidden !important;
-      color: var(--text-muted) !important;
-    }
-    #storeSection + .storefront-card .asset-price-row {
-      display: flex !important;
-      align-items: center !important;
-      gap: 6px !important;
-      flex-wrap: wrap !important;
-      margin-top: 1px !important;
-    }
-    #storeSection + .storefront-card .store-price,
-    #storeSection + .storefront-card .instant-download-badge {
-      position: static !important;
-      align-self: auto !important;
-      margin: 0 !important;
-      font-size: 0.54rem !important;
-      padding: 4px 7px !important;
-      white-space: nowrap !important;
-    }
-    #storeSection + .storefront-card .asset-meta-line {
-      display: flex !important;
-      gap: 5px !important;
-      flex-wrap: wrap !important;
-      min-width: 0 !important;
-    }
-    #storeSection + .storefront-card .asset-meta-line > span {
-      min-width: 0 !important;
-      max-width: 100% !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 4px !important;
-      border: 1px solid var(--border) !important;
-      background: rgba(0,0,0,0.08) !important;
-      border-radius: 999px !important;
-      padding: 3px 6px !important;
-      color: var(--text-secondary) !important;
-      font-size: 0.54rem !important;
-      font-weight: 800 !important;
-    }
-    #storeSection + .storefront-card .asset-meta-line span span {
-      min-width: 0 !important;
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-      white-space: nowrap !important;
-    }
-    #storeSection + .storefront-card .asset-meta-line i { color: var(--accent) !important; }
-    #storeSection + .storefront-card .store-updated {
-      font-size: 0.54rem !important;
-      margin-top: auto !important;
-      gap: 4px !important;
-      white-space: nowrap !important;
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-    }
     #storeSection + .storefront-card .store-actions { gap: 8px !important; }
     #storeSection + .storefront-card .store-btn { min-height: 46px !important; padding: 12px 16px !important; font-size: 0.86rem !important; }
-    #storeSection + .storefront-card .store-goal-milestone-card { padding: 13px !important; }
-    #storeSection + .storefront-card .store-goal-milestone-card .support-goal-head { align-items: flex-start !important; }
-    #storeSection + .storefront-card .store-milestone-chip { flex-basis: 138px !important; padding: 10px !important; }
-    @media (max-width: 380px) {
-      #storeSection + .storefront-card .store-product-card {
-        flex-basis: 210px !important;
-        width: 210px !important;
-        grid-template-columns: 66px minmax(0, 1fr) !important;
-      }
-      #storeSection + .storefront-card .asset-thumb { width: 66px !important; min-height: 132px !important; }
-    }
 
 
 
@@ -5464,10 +4902,6 @@
       min-width: 0 !important;
       max-width: 100% !important;
       overflow: hidden !important;
-    }
-    #storeSection + .storefront-card .store-kicker {
-      font-size: 0.62rem !important;
-      overflow-wrap: anywhere !important;
     }
     #storeSection + .storefront-card .store-title {
       width: 100% !important;
@@ -5508,179 +4942,6 @@
       overflow-wrap: break-word !important;
       line-height: 1.15 !important;
     }
-
-    /* Contained horizontal rail: no negative margins, no width > 100%, no masking outside parent */
-    #storeSection + .storefront-card .store-product-grid {
-      width: 100% !important;
-      max-width: 100% !important;
-      min-width: 0 !important;
-      display: flex !important;
-      flex-direction: row !important;
-      flex-wrap: nowrap !important;
-      gap: 8px !important;
-      margin: 8px 0 0 !important;
-      padding: 0 0 10px 0 !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      overscroll-behavior-x: contain !important;
-      scroll-snap-type: x mandatory !important;
-      scroll-padding-left: 0 !important;
-      -webkit-overflow-scrolling: touch !important;
-      scrollbar-width: none !important;
-      mask-image: none !important;
-      -webkit-mask-image: none !important;
-      contain: content !important;
-    }
-    #storeSection + .storefront-card .store-product-grid::-webkit-scrollbar { display: none !important; }
-
-    #storeSection + .storefront-card .store-product-card {
-      flex: 0 0 clamp(168px, 52vw, 205px) !important;
-      width: clamp(168px, 52vw, 205px) !important;
-      min-width: clamp(168px, 52vw, 205px) !important;
-      max-width: 205px !important;
-      min-height: 0 !important;
-      height: auto !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 7px !important;
-      padding: 10px !important;
-      border-radius: 18px !important;
-      overflow: hidden !important;
-      scroll-snap-align: start !important;
-      background: linear-gradient(145deg, rgba(var(--surface-rgb),0.62), rgba(var(--surface-rgb),0.20)) !important;
-      border: 1px solid var(--border-strong) !important;
-      box-shadow: var(--shadow-sm), inset 0 1px 1px var(--border-glow) !important;
-      transform: none !important;
-    }
-    #storeSection + .storefront-card .store-product-card::before,
-    #storeSection + .storefront-card .store-product-card::after { display: none !important; content: none !important; }
-    #storeSection + .storefront-card .store-product-card:hover { transform: none !important; }
-    #storeSection + .storefront-card .asset-thumb {
-      width: 100% !important;
-      min-width: 0 !important;
-      height: 76px !important;
-      min-height: 76px !important;
-      max-height: 76px !important;
-      border-radius: 14px !important;
-      background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.54)), var(--sample, var(--thumb)) !important;
-      background-size: cover !important;
-      background-position: center !important;
-      display: flex !important;
-      align-items: flex-end !important;
-      justify-content: flex-start !important;
-      padding: 6px !important;
-      overflow: hidden !important;
-      border: 1px solid var(--border) !important;
-    }
-    #storeSection + .storefront-card .asset-thumb-label {
-      max-width: 100% !important;
-      font-size: 0.5rem !important;
-      padding: 3px 6px !important;
-      white-space: nowrap !important;
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-    }
-    #storeSection + .storefront-card .asset-body {
-      width: 100% !important;
-      min-width: 0 !important;
-      padding: 0 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 5px !important;
-      overflow: hidden !important;
-    }
-    #storeSection + .storefront-card .store-category {
-      max-width: calc(100% - 34px) !important;
-      align-self: flex-start !important;
-      font-size: 0.46rem !important;
-      padding: 4px 6px !important;
-      white-space: nowrap !important;
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-    }
-    #storeSection + .storefront-card .store-card-share {
-      position: absolute !important;
-      top: 8px !important;
-      right: 8px !important;
-      width: 26px !important;
-      height: 26px !important;
-      z-index: 5 !important;
-      font-size: 0.72rem !important;
-    }
-    #storeSection + .storefront-card .store-flag {
-      top: 8px !important;
-      left: 8px !important;
-      right: auto !important;
-      max-width: 62px !important;
-      font-size: 0.42rem !important;
-      padding: 3px 6px !important;
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-      white-space: nowrap !important;
-      z-index: 6 !important;
-    }
-    #storeSection + .storefront-card .store-product-card h4 {
-      width: 100% !important;
-      min-width: 0 !important;
-      font-size: 0.78rem !important;
-      line-height: 1.14 !important;
-      margin: 0 !important;
-      overflow: hidden !important;
-      display: -webkit-box !important;
-      -webkit-line-clamp: 2 !important;
-      -webkit-box-orient: vertical !important;
-      overflow-wrap: break-word !important;
-    }
-    #storeSection + .storefront-card .store-product-card p {
-      width: 100% !important;
-      font-size: 0.62rem !important;
-      line-height: 1.28 !important;
-      margin: 0 !important;
-      overflow: hidden !important;
-      display: -webkit-box !important;
-      -webkit-line-clamp: 2 !important;
-      -webkit-box-orient: vertical !important;
-      color: var(--text-muted) !important;
-    }
-    #storeSection + .storefront-card .asset-price-row,
-    #storeSection + .storefront-card .asset-meta-line {
-      width: 100% !important;
-      min-width: 0 !important;
-      display: flex !important;
-      flex-wrap: wrap !important;
-      gap: 4px !important;
-      overflow: hidden !important;
-    }
-    #storeSection + .storefront-card .store-price,
-    #storeSection + .storefront-card .instant-download-badge,
-    #storeSection + .storefront-card .asset-meta-line > span {
-      position: static !important;
-      min-width: 0 !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      border-radius: 999px !important;
-      font-size: 0.49rem !important;
-      line-height: 1.1 !important;
-      padding: 3px 6px !important;
-      white-space: nowrap !important;
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-    }
-    #storeSection + .storefront-card .asset-meta-line > span span {
-      min-width: 0 !important;
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-      white-space: nowrap !important;
-    }
-    #storeSection + .storefront-card .store-updated {
-      width: 100% !important;
-      min-width: 0 !important;
-      margin-top: 0 !important;
-      font-size: 0.5rem !important;
-      white-space: nowrap !important;
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-    }
     #storeSection + .storefront-card .store-actions,
     #storeSection + .storefront-card .product-share-row {
       width: 100% !important;
@@ -5696,126 +4957,10 @@
       padding: 11px 14px !important;
       font-size: 0.84rem !important;
     }
-    #storeSection + .storefront-card .store-goal-milestone-card {
-      width: 100% !important;
-      max-width: 100% !important;
-      overflow: hidden !important;
-      padding: 12px !important;
-      margin: 0 !important;
-    }
-    #storeSection + .storefront-card .store-milestone-track {
-      width: 100% !important;
-      max-width: 100% !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      gap: 8px !important;
-    }
-    #storeSection + .storefront-card .store-milestone-chip {
-      flex: 0 0 132px !important;
-      max-width: 132px !important;
-      min-width: 132px !important;
-      padding: 9px !important;
-    }
     @media (max-width: 380px) {
-      #storeSection + .storefront-card { padding-inline: 12px !important; }
-      #storeSection + .storefront-card .store-product-card {
-        flex-basis: 165px !important;
-        width: 165px !important;
-        min-width: 165px !important;
-      }
-    }
-
-
-
-    /* TRUE FINAL STORE FIX — show both Gumroad assets fully, no half-card overflow */
-    #storeSection + .storefront-card .store-product-grid {
-      display: grid !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      grid-auto-flow: row !important;
-      gap: 8px !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      min-width: 0 !important;
-      margin: 8px 0 0 !important;
-      padding: 0 !important;
-      overflow: visible !important;
-      scroll-snap-type: none !important;
-      mask-image: none !important;
-      -webkit-mask-image: none !important;
-      contain: layout paint !important;
-    }
-    #storeSection + .storefront-card .store-product-card {
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: 100% !important;
-      flex: none !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 6px !important;
-      padding: 8px !important;
-      border-radius: 16px !important;
-      scroll-snap-align: none !important;
-    }
-    #storeSection + .storefront-card .asset-thumb {
-      height: 58px !important;
-      min-height: 58px !important;
-      max-height: 58px !important;
-      border-radius: 12px !important;
-      padding: 5px !important;
-    }
-    #storeSection + .storefront-card .asset-thumb-label {
-      font-size: 0.44rem !important;
-      padding: 3px 5px !important;
-    }
-    #storeSection + .storefront-card .asset-body { gap: 4px !important; padding: 0 !important; }
-    #storeSection + .storefront-card .store-category {
-      max-width: calc(100% - 28px) !important;
-      font-size: 0.40rem !important;
-      padding: 3px 5px !important;
-      letter-spacing: 0.055em !important;
-    }
-    #storeSection + .storefront-card .store-card-share {
-      width: 24px !important;
-      height: 24px !important;
-      top: 7px !important;
-      right: 7px !important;
-      font-size: 0.68rem !important;
-    }
-    #storeSection + .storefront-card .store-flag {
-      max-width: 50px !important;
-      font-size: 0.38rem !important;
-      padding: 2px 5px !important;
-      top: 7px !important;
-      left: 7px !important;
-    }
-    #storeSection + .storefront-card .store-product-card h4 {
-      font-size: 0.68rem !important;
-      line-height: 1.12 !important;
-      -webkit-line-clamp: 2 !important;
-    }
-    #storeSection + .storefront-card .store-product-card p {
-      font-size: 0.54rem !important;
-      line-height: 1.22 !important;
-      -webkit-line-clamp: 2 !important;
-    }
-    #storeSection + .storefront-card .asset-price-row { gap: 3px !important; }
-    #storeSection + .storefront-card .store-price,
-    #storeSection + .storefront-card .instant-download-badge,
-    #storeSection + .storefront-card .asset-meta-line > span {
-      font-size: 0.42rem !important;
-      padding: 3px 5px !important;
-      gap: 3px !important;
-    }
-    #storeSection + .storefront-card .asset-meta-line { gap: 3px !important; }
-    #storeSection + .storefront-card .store-updated { font-size: 0.43rem !important; }
+      #storeSection + .storefront-card { padding-inline: 12px !important; }}
     @media (max-width: 360px) {
-      #storeSection + .storefront-card { padding-inline: 10px !important; }
-      #storeSection + .storefront-card .store-product-grid { gap: 6px !important; }
-      #storeSection + .storefront-card .store-product-card { padding: 7px !important; border-radius: 15px !important; }
-      #storeSection + .storefront-card .asset-thumb { height: 52px !important; min-height: 52px !important; }
-      #storeSection + .storefront-card .store-product-card p { display: none !important; }
-      #storeSection + .storefront-card .asset-meta-line:nth-of-type(2) { display: none !important; }
-    }
+      #storeSection + .storefront-card { padding-inline: 10px !important; }}
 
 
 
@@ -5911,8 +5056,7 @@
       .oss-control-actions { justify-content: flex-start; }
       .oss-control-actions .opensource-icon-btn { flex: 0 0 auto; }
       .oss-discovery-row { align-items: stretch; }
-      .oss-result-count, .oss-sort-wrap { width: 100%; flex-basis: 100%; }
-    }
+      .oss-result-count, .oss-sort-wrap { width: 100%; flex-basis: 100%; }}
 
 
 
@@ -6026,8 +5170,7 @@
       .b-handle { opacity: 0.45; padding: 6px; }
       .block:focus-within .b-handle,
       .block:hover .b-handle { opacity: 0.75; }
-      .slash-menu { max-width: min(86vw, 320px); }
-    }
+      .slash-menu { max-width: min(86vw, 320px); }}
 
 
 
@@ -6041,11 +5184,9 @@
     .project-card,
     .repo-card,
     .opensource-card,
-    .store-product-card,
     .changelog-item,
     .changelog-more,
     .hold-block,
-    .support-goal-card,
     .notes-org-panel,
     .note-meta-panel,
     .note-backlinks-panel,
@@ -6057,11 +5198,9 @@
       box-shadow: var(--shadow-sm), 0 0 0 1px rgba(255,255,255,0.015), inset 0 1px 1px var(--border-glow) !important;
     }
     .store-badge,
-    .store-meta-item,
     .repo-meta,
     .repo-badge,
     .repo-topic-chip,
-    .oss-metric-pill,
     .oss-filter-chip,
     .oss-search-wrap,
     .oss-sort-wrap,
@@ -6214,8 +5353,7 @@
       .sheet-close-btn { width: 44px !important; padding: 0 !important; }
       #vibeSheet .scroll-fade-wrapper { top: 60px !important; }
       #tabStopwatch .timer-actions .btn-secondary,
-      #tabPass .timer-actions .btn-secondary { min-width: 92px; font-size: 0.82rem; }
-    }
+      #tabPass .timer-actions .btn-secondary { min-width: 92px; font-size: 0.82rem; }}
 
 
 
@@ -6413,8 +5551,7 @@
       #vibeSheet .tool-form-grid,
       #vibeSheet .tool-form-grid.three { grid-template-columns: 1fr; }
       #vibeSheet .clip-manual-row { grid-template-columns: minmax(210px, 1fr) minmax(150px, .7fr) minmax(140px, .55fr) auto; }
-      #vibeSheet .focus-presets { justify-content: flex-start; }
-    }
+      #vibeSheet .focus-presets { justify-content: flex-start; }}
 
 
 
@@ -6559,8 +5696,7 @@
       #tabPass .timer-actions { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
       #notesSheet .note-meta-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       #notesSheet .note-action-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      #notesSheet .note-action-row .primary-btn { grid-column: span 1; }
-    }
+      #notesSheet .note-action-row .primary-btn { grid-column: span 1; }}
 
 
 
@@ -6705,8 +5841,7 @@
       #notesSheet .note-action-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       #notesSheet .note-action-row .primary-btn { grid-column: span 1; }
       #notesSheet .note-meta-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      #notesSheet .note-template-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    }
+      #notesSheet .note-template-row { grid-template-columns: repeat(2, minmax(0,1fr)); }}
 
 
     /* Scratchpad V3 mobile/debug pass: prevent horizontal page scrolling */
@@ -6882,8 +6017,7 @@
       }
       #notesSheet.scratchpad-v3 .note-export-menu {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      }
-    }
+      }}
 
     @media (max-width: 380px) {
       #notesSheet.scratchpad-v3 {
@@ -6903,8 +6037,7 @@
       }
       #notesSheet.scratchpad-v3 .note-tool-btn {
         justify-content: center;
-      }
-    }
+      }}
 
 
 
@@ -6925,8 +6058,7 @@
         width: 42px !important;
         height: 42px !important;
         border-radius: 15px !important;
-      }
-    }
+      }}
 
 
 
@@ -6980,8 +6112,7 @@
       #notesSheet.scratchpad-v3 .note-template-row {
         display: flex !important;
         grid-template-columns: none !important;
-      }
-    }
+      }}
 
 
     /* Scratchpad final alignment fix: star stays in the Write/Preview row + 3 action columns on mobile */
@@ -7026,8 +6157,7 @@
       }
       #notesSheet.scratchpad-v3 .note-action-row .note-btn-label {
         font-size: 0.58rem !important;
-      }
-    }
+      }}
     @media (max-width: 380px) {
       #notesSheet.scratchpad-v3 .note-action-row {
         grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
@@ -7037,8 +6167,7 @@
       #notesSheet.scratchpad-v3 .note-action-row .btn-secondary {
         min-height: 40px !important;
         font-size: 0.72rem !important;
-      }
-    }
+      }}
 
 
     /* ═══════════════════════════════════════════════════════════
@@ -7212,22 +6341,38 @@
     }
     .jx-product-card:active { transform: scale(0.985); }
     .jx-product-card:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow), var(--shadow-md); }
+    /* Square frame + fitted artwork: cover art is shown whole, never
+       cropped. A blurred copy of the same image fills the letterbox so
+       the frame still reads as one piece. */
     .jx-thumb {
       position: relative;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 1 / 1;
       width: 100%;
-      background: rgba(0,0,0,0.25);
+      background: rgba(var(--surface-rgb), 0.55);
       overflow: hidden;
+    }
+    .jx-thumb::before {
+      content: ''; position: absolute; inset: -14%;
+      background-image: var(--thumb, none);
+      background-size: cover; background-position: center;
+      filter: blur(18px) saturate(1.35);
+      opacity: 0.5; transform: scale(1.08);
+      transition: transform 0.5s ease, opacity 0.4s ease;
     }
     .jx-thumb img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       opacity: 0;
-      transition: opacity 0.45s ease, transform 0.45s ease;
+      transition: opacity 0.45s ease;
     }
     .jx-thumb.jx-loaded img { opacity: 1; }
-    .jx-product-card:hover .jx-thumb.jx-loaded img { transform: scale(1.04); }
+    .jx-product-card:hover .jx-thumb::before { transform: scale(1.16); opacity: 0.62; }
+    .jx-thumb-fallback {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+      font-size: 1.7rem; color: var(--text-muted); opacity: 0.45;
+    }
     .jx-thumb-skeleton {
       position: absolute; inset: 0;
       background: linear-gradient(100deg, rgba(255,255,255,0.03) 30%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.03) 70%);
@@ -7298,6 +6443,7 @@
     }
     .jx-product-card h4 {
       margin: 0;
+      overflow-wrap: anywhere;
       font-size: 1.02rem;
       font-weight: 800;
       line-height: 1.25;
@@ -7309,6 +6455,7 @@
     }
     .jx-product-card .jx-body > p {
       margin: 0;
+      overflow-wrap: anywhere;
       font-size: 0.85rem;
       line-height: 1.45;
       color: var(--text-secondary);
@@ -7421,8 +6568,7 @@
       .jx-store-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (min-width: 1024px) {
-      .jx-store-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    }
+      .jx-store-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }}
 
     /* ── Changelog: timeline entries + version chip ──────────── */
     .jcl-version-chip {
@@ -7477,8 +6623,7 @@
     @media (max-width: 480px) {
       .jcl-toolbar { gap: 8px; }
       .jcl-toolbar .jx-sync-chip { padding-left: 9px; padding-right: 9px; }
-      .jcl-version-chip { padding: 5px 10px; font-size: 0.64rem; min-height: 32px; }
-    }
+      .jcl-version-chip { padding: 5px 10px; font-size: 0.64rem; min-height: 32px; }}
     .jcl-entry {
       display: flex;
       gap: 12px;
@@ -7553,16 +6698,14 @@
       .jx-sync-chip { font-size: 0.62rem; padding: 5px 10px; min-height: 32px; }
       .jx-body { padding: 12px 12px 13px; }
       .jx-product-card h4 { font-size: 0.98rem; }
-      .jx-price { font-size: 1rem; }
-    }
+      .jx-price { font-size: 1rem; }}
 
     @media (prefers-reduced-motion: reduce) {
       .jx-product-card, .jx-share, .jx-sync-btn, .jx-thumb img, .jx-details-hint { transition: none !important; }
       .jx-thumb-skeleton { animation: none !important; }
       .jx-sync-chip[data-state="loading"] .jx-sync-dot { animation: none !important; }
       .jx-sync-btn.jx-spinning i { animation: none !important; }
-      .jx-product-card:hover { transform: none; }
-    }
+      .jx-product-card:hover { transform: none; }}
 
   
     /* ═══════════════════════════════════════════════════════════
@@ -7679,12 +6822,10 @@
     #jxCardRender { position: fixed; left: -9999px; top: 0; z-index: -1; pointer-events: none; }
     @media (max-width: 420px) {
       .jx-card-actions { flex-direction: column; }
-      .jx-card-actions .primary-btn, .jx-card-actions .btn-secondary { width: 100%; }
-    }
+      .jx-card-actions .primary-btn, .jx-card-actions .btn-secondary { width: 100%; }}
     @media (prefers-reduced-motion: reduce) {
       .jx-flash { animation: none !important; }
-      .jx-style-chip { transition: none !important; }
-    }
+      .jx-style-chip { transition: none !important; }}
 
 /* ═══════════════════════════════════════════════════════════
        v6.2 — toolkit launcher, adaptive tool header, honest counter
@@ -7765,8 +6906,7 @@
       gap: 10px;
     }
     @media (min-width: 640px) {
-      .jx-tools-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
-    }
+      .jx-tools-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }}
     .jx-tool-tile {
       position: relative;
       display: flex; flex-direction: column;
@@ -7872,13 +7012,11 @@
       .jx-tools-grid { gap: 8px; }
       .jx-tool-tile { padding: 13px 4px 11px; }
       .jx-tile-icon { width: 42px; height: 42px; font-size: 1.05rem; }
-      .jx-tile-name { font-size: 0.66rem; }
-    }
+      .jx-tile-name { font-size: 0.66rem; }}
     @media (prefers-reduced-motion: reduce) {
       .jx-tool-tile, .jx-tool-wide, .jx-tool-continue { transition: none !important; animation: none !important; }
       .jx-tool-tile:hover { transform: none; }
-      .jx-tool-back { transition: none !important; }
-    }
+      .jx-tool-back { transition: none !important; }}
 
     /* Honest visitor counter: state dot on the footer pill */
     .footer-metric-pill[data-state="live"]::after,
@@ -8022,8 +7160,7 @@
       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--note-color, var(--accent)) 30%, transparent);
     }
     @supports not (color: color-mix(in srgb, red 10%, blue)) {
-      .jx-nc-icon { background: var(--accent-glow); color: var(--accent); }
-    }
+      .jx-nc-icon { background: var(--accent-glow); color: var(--accent); }}
     .jx-nc-folder {
       font-family: var(--font-mono);
       font-size: 0.6rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
@@ -8326,8 +7463,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 10px !important;
         padding: 12px 14px !important;
-      }
-    }
+      }}
     .jx-ne-meta .note-meta-control,
     #notesSheet .note-meta-control {
       display: flex;
@@ -8485,13 +7621,11 @@
       .jx-notes .jx-nb, .jx-notes .jx-ne { padding-inline: 14px; }
       .jx-ne-head { margin-inline: -14px; padding-inline: 12px; }
       .jx-note-card { padding: 12px 12px 14px; }
-      .jx-nb-fab { padding: 13px 18px; }
-    }
+      .jx-nb-fab { padding: 13px 18px; }}
     @media (prefers-reduced-motion: reduce) {
       .jx-ne, .jx-nb { animation: none !important; }
       .jx-note-card, .jx-nc-star, .jx-nc-del, .jx-nb-fab, .jx-ne-back, .jx-ov-item { transition: none !important; }
-      .jx-note-card:hover { transform: none; }
-    }
+      .jx-note-card:hover { transform: none; }}
 
   
     /* ══════════════════════════════════════════════════════════════
@@ -8520,8 +7654,7 @@
     @media (max-width: 640px) {
       .focus-mode-selector {
         grid-template-columns: repeat(3, 1fr);
-      }
-    }
+      }}
 
     .focus-mode-btn {
       display: flex;
@@ -8880,8 +8013,7 @@
     @media (max-width: 460px) {
       .focus-custom-inputs {
         grid-template-columns: 1fr;
-      }
-    }
+      }}
 
     .focus-custom-group {
       display: flex;
@@ -9054,8 +8186,7 @@
     @media (max-width: 520px) {
       .focus-sound-options {
         grid-template-columns: repeat(2, 1fr);
-      }
-    }
+      }}
 
     .focus-sound-pill {
       padding: 8px 6px;
@@ -9134,8 +8265,7 @@
     @media (max-width: 600px) {
       .focus-stats-grid {
         grid-template-columns: repeat(2, 1fr);
-      }
-    }
+      }}
 
     .focus-stat-box {
       padding: 10px;
@@ -9425,8 +8555,7 @@
     @media (max-width: 600px) {
       .data-modules-grid {
         grid-template-columns: 1fr;
-      }
-    }
+      }}
 
     .data-module-card {
       border: 1.5px solid var(--border);
@@ -9522,13 +8651,11 @@
     @media (max-width: 640px) {
       .data-hygiene-grid {
         grid-template-columns: repeat(2, 1fr);
-      }
-    }
+      }}
     @media (max-width: 420px) {
       .data-hygiene-grid {
         grid-template-columns: 1fr;
-      }
-    }
+      }}
 
     .data-hygiene-grid .btn-secondary {
       min-height: 38px;
@@ -10027,8 +9154,7 @@
     @media (max-width: 768px) {
       .scratchpad-editor-shell.split-view-active {
         grid-template-columns: 1fr !important;
-      }
-    }
+      }}
 
     /* ═══════════════════════════════════════════════════════════
        BIDIRECTIONAL BACKLINK VISUALIZER
@@ -10681,8 +9807,7 @@
       .qr-studio-grid {
         grid-template-columns: minmax(0, 1fr) !important;
         gap: 14px !important;
-      }
-    }
+      }}
 
     .qr-form-panel {
       display: flex !important;
@@ -10960,8 +10085,7 @@
       .qr-preview-side { width: 100%; align-items: stretch; }
       .qr-preview-side #qrBadgeInfo { justify-content: center !important; }
       .qr-preview-side #qrBadgeText { flex: 0 1 auto !important; }
-      .qr-preview-side .qr-action-buttons-row { grid-template-columns: 1fr 1fr !important; }
-    }
+      .qr-preview-side .qr-action-buttons-row { grid-template-columns: 1fr 1fr !important; }}
 
     /* ═══════════════════════════════════════════════════════════
        v6.4 — SCROLL SMOOTHNESS + UX POLISH LAYER
@@ -11083,8 +10207,7 @@
       .avatar-wrapper { width: 74px; height: 74px; }
       .hero-title { font-size: clamp(1.7rem, 8.2vw, 2rem); line-height: 1.02; }
       .hero-subtitle { font-size: 0.63rem; letter-spacing: 1.1px; line-height: 1.55; }
-      .bio-text { font-size: 0.95rem; margin: 16px 0 14px; }
-    }
+      .bio-text { font-size: 0.95rem; margin: 16px 0 14px; }}
 
     /* ── 7. Selected Works v2: cover-art cards with two clear actions ── */
     .project-card.pc2 {
@@ -11124,6 +10247,13 @@
         linear-gradient(rgba(12,12,18,0.10) 1px, transparent 1px),
         linear-gradient(90deg, rgba(12,12,18,0.10) 1px, transparent 1px);
     }
+    /* the static cover art: a small still of the app, drawn in the
+       theme's own ink so it works in light and dark without a second file */
+    .pc-art {
+      position: absolute; inset: 0; pointer-events: none;
+      display: block; color: var(--text-main);
+    }
+    .pc-art svg { width: 100%; height: 100%; display: block; }
     .pc-cover-icon {
       position: absolute; top: 12px; left: 14px;
       width: 42px; height: 42px; border-radius: 13px;
@@ -11283,7 +10413,7 @@
       color: var(--text-muted); letter-spacing: 0.2px; margin-top: 1px;
     }
     .hh-meta i { font-size: 0.62rem; opacity: 0.8; margin-right: 2px; }
-    @media (max-width: 379px) { .hh-meta-clock { display: none; } }
+    @media (max-width: 379px) { .hh-meta-clock { display: none; }}
     .hh-meta-sep { opacity: 0.5; }
     .hh-live {
       position: absolute; right: 1px; bottom: 4px;
@@ -11501,8 +10631,7 @@
     @media (max-width: 380px) {
       .dock { gap: 0; padding: 6px; }
       .dock-btn { width: 54px; min-height: 52px; }
-      .dock-btn.dock-fab { width: 58px; }
-    }
+      .dock-btn.dock-fab { width: 58px; }}
 
 
     /* v6.6 — section sub-line (Recommendations, and reusable) */
@@ -11670,12 +10799,12 @@
       font-size: 0.54rem; font-weight: 700; letter-spacing: 0.3px;
       text-transform: uppercase; color: var(--text-muted); white-space: nowrap;
     }
-    @media (max-width: 360px) {
-      .store-stats { gap: 6px; }
-      .store-stat { padding: 9px 8px; }
-      .store-stat-value { font-size: 0.82rem; }
-      .store-stat-label { font-size: 0.5rem; }
-    }
+    @media (max-width: 480px) {
+      .store-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+      .store-stats .store-stat:last-child { grid-column: 1 / -1; }
+      .store-stat { padding: 9px 10px; }
+      .store-stat-value { font-size: 0.84rem; }
+      .store-stat-label { font-size: 0.5rem; }}
     .store-newest {
       margin: 10px 0 2px; padding: 12px;
       border-radius: 16px;
@@ -11760,8 +10889,7 @@
       .xp-card { padding: 13px 14px 12px; gap: 7px; }
       .xp-title { font-size: 0.95rem; }
       .xp-desc { font-size: 0.81rem; line-height: 1.5; }
-      .xp-chip { font-size: 0.59rem; padding: 2px 6px; }
-    }
+      .xp-chip { font-size: 0.59rem; padding: 2px 6px; }}
     .xp-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1px; }
     .xp-chip {
       font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2px;
@@ -11772,11 +10900,14 @@
     }
     @media (min-width: 720px) {
       .xp-list { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
-      .xp-card.current { grid-column: 1 / -1; }
-    }
+      .xp-card.current { grid-column: 1 / -1; }}
 
     /* ═══════════════════════════════════════════════════════════
-       v6.8 — STUDIO FUND (support goal) · HORIZONTAL EXPERIENCE
+       v7.13 — CREATOR FUND (support goal) · compact + responsive
+       One card, one bar, four milestone chips, two actions. The
+       horizontal milestone rail is gone — milestones now wrap into
+       the card instead of scrolling out of view, and the artwork is
+       drawn inline so it themes with the rest of the page.
        ═══════════════════════════════════════════════════════════ */
 
     .goal-card {
@@ -11784,25 +10915,30 @@
       border-radius: var(--radius-xl);
       border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
       background:
-        radial-gradient(130% 90% at 100% 0%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 58%),
+        radial-gradient(120% 80% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 58%),
         linear-gradient(160deg, rgba(var(--surface-rgb), 0.62), rgba(var(--surface-rgb), 0.3));
       box-shadow: var(--shadow-lg), inset 0 1px 1px var(--border-glow);
-      padding: 18px 18px 16px;
-      display: flex; flex-direction: column; gap: 11px;
+      padding: 16px 16px 14px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
       isolation: isolate;
     }
     [data-theme="light"] .goal-card {
       background:
-        radial-gradient(130% 90% at 100% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 58%),
+        radial-gradient(120% 80% at 100% 0%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 58%),
         #fff;
     }
     .goal-glow {
-      position: absolute; z-index: -1; top: -80px; right: -60px;
+      position: absolute; z-index: -1; top: -80px; right: 0;
       width: 220px; height: 220px; border-radius: 50%; pointer-events: none;
       background: radial-gradient(circle, color-mix(in srgb, var(--accent) 26%, transparent), transparent 68%);
       opacity: 0.7;
     }
-    .goal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .goal-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; position: relative; z-index: 1;
+    }
     .goal-eyebrow {
       display: inline-flex; align-items: center; gap: 6px;
       font-size: 0.6rem; font-weight: 800; letter-spacing: 1.2px;
@@ -11815,14 +10951,18 @@
       border-radius: 100px; padding: 3px 9px; line-height: 1.4;
       font-variant-numeric: tabular-nums;
     }
+    .goal-body {
+      display: flex; flex-direction: column; gap: 10px;
+      min-width: 0; position: relative; z-index: 1;
+    }
     .goal-title {
-      font-size: 1.22rem; font-weight: 900; letter-spacing: -0.035em;
-      line-height: 1.15; color: var(--text-main); margin-top: -2px;
+      font-size: 1.2rem; font-weight: 900; letter-spacing: -0.035em;
+      line-height: 1.15; color: var(--text-main);
     }
     .goal-copy { font-size: 0.85rem; line-height: 1.55; color: var(--text-secondary); }
-    .goal-amounts { display: flex; align-items: baseline; gap: 7px; margin-top: 2px; }
+    .goal-amounts { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; }
     .goal-raised {
-      font-family: var(--font-mono); font-size: 1.6rem; font-weight: 900;
+      font-family: var(--font-mono); font-size: 1.55rem; font-weight: 900;
       letter-spacing: -0.04em; color: var(--text-main);
       font-variant-numeric: tabular-nums; line-height: 1;
     }
@@ -11848,7 +10988,6 @@
       animation: goalShine 2.6s ease-in-out infinite;
     }
     @keyframes goalShine { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(220%); } }
-    @media (prefers-reduced-motion: reduce) { .goal-fill::after { animation: none; } }
     .goal-ticks { position: absolute; inset: 0; pointer-events: none; }
     .goal-tick {
       position: absolute; top: 0; bottom: 0; width: 2px;
@@ -11862,114 +11001,298 @@
       font-size: 0.72rem; font-weight: 700; color: var(--text-muted);
       font-family: var(--font-mono); letter-spacing: 0.1px;
     }
+
+    /* Milestones — compact chips that wrap. No horizontal rail. */
     .goal-steps {
-      list-style: none; display: flex; gap: 7px; overflow-x: auto;
-      scrollbar-width: none; -webkit-overflow-scrolling: touch;
-      margin: 1px -18px 0; padding: 2px 18px 4px;
-      scroll-snap-type: x proximity;
-      -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 16px), transparent 100%);
-      mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 16px), transparent 100%);
+      list-style: none; display: flex; flex-wrap: wrap; gap: 6px;
+      margin: 0; padding: 0;
     }
-    .goal-steps::-webkit-scrollbar { display: none; }
     .goal-step {
-      flex: 0 0 auto; scroll-snap-align: start;
-      min-width: 104px;
-      border: 1px solid var(--border); border-radius: 13px;
-      background: rgba(var(--surface-rgb), 0.55);
-      padding: 8px 10px;
-      display: flex; flex-direction: column; gap: 2px;
+      display: inline-flex; align-items: center; gap: 6px;
+      min-width: 0; max-width: 100%;
+      border: 1px solid var(--border); border-radius: 100px;
+      background: rgba(var(--surface-rgb), 0.5);
+      padding: 4px 9px;
       transition: border-color 0.25s, background 0.25s;
     }
     .goal-step.reached {
       border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-      background: color-mix(in srgb, var(--accent) 10%, rgba(var(--surface-rgb), 0.55));
+      background: color-mix(in srgb, var(--accent) 10%, rgba(var(--surface-rgb), 0.5));
     }
     .goal-step-amt {
-      font-family: var(--font-mono); font-size: 0.74rem; font-weight: 800;
-      color: var(--accent); letter-spacing: -0.02em;
+      font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800;
+      color: var(--accent); letter-spacing: -0.02em; flex: none;
     }
-    .goal-step-label { font-size: 0.64rem; font-weight: 700; color: var(--text-secondary); line-height: 1.25; }
+    .goal-step-label {
+      font-size: 0.66rem; font-weight: 700; color: var(--text-secondary);
+      line-height: 1.25; min-width: 0;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
     .goal-step-state {
+      display: inline-flex; align-items: center; gap: 4px; flex: none;
       font-size: 0.55rem; font-weight: 800; letter-spacing: 0.4px;
       text-transform: uppercase; color: var(--text-muted);
-      display: inline-flex; align-items: center; gap: 4px; margin-top: 1px;
     }
+    .goal-step-state i { font-size: 0.6rem; }
     .goal-step.reached .goal-step-state { color: var(--accent); }
-    .goal-perks { display: flex; flex-direction: column; gap: 7px; margin-top: 1px; }
+
+    /* Reassurances — one wrapping row of quiet chips. */
+    .goal-perks { display: flex; flex-wrap: wrap; gap: 6px; }
     .goal-perk {
-      display: flex; align-items: flex-start; gap: 8px;
-      font-size: 0.76rem; line-height: 1.45; color: var(--text-secondary);
+      display: inline-flex; align-items: center; gap: 6px;
+      max-width: 100%;
+      font-size: 0.68rem; font-weight: 700; line-height: 1.3;
+      color: var(--text-secondary);
+      border: 1px solid var(--border); border-radius: 100px;
+      background: rgba(var(--surface-rgb), 0.35);
+      padding: 4px 10px 4px 8px;
     }
-    .goal-perk i { color: var(--accent); font-size: 0.72rem; margin-top: 3px; flex-shrink: 0; }
+    .goal-perk i { color: var(--accent); font-size: 0.64rem; flex: none; }
     .goal-perk strong { color: var(--text-main); font-weight: 800; }
-    .goal-cta-row { display: flex; gap: 8px; margin-top: 3px; }
+
+    .goal-cta-row { display: flex; gap: 8px; }
     .goal-cta {
       display: inline-flex; align-items: center; gap: 9px;
-      border-radius: 15px; min-height: 50px; padding: 0 14px;
+      border-radius: 15px; min-height: 48px; padding: 0 14px;
       font-weight: 800; border: 1px solid transparent;
       transition: transform 0.2s var(--ease-glide), box-shadow 0.25s, border-color 0.25s, background 0.25s;
       position: relative; overflow: hidden;
     }
     .goal-cta:active { transform: scale(0.97); }
     .goal-cta-primary {
-      flex: 1 1 auto; justify-content: flex-start;
+      flex: 1 1 auto; justify-content: flex-start; min-width: 0;
       background: var(--accent); color: var(--accent-text);
       box-shadow: 0 10px 26px -12px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.28);
     }
-    .goal-cta-primary > i:first-child { font-size: 1rem; }
-    .goal-cta-copy { display: flex; flex-direction: column; line-height: 1.15; text-align: left; }
-    .goal-cta-copy strong { font-size: 0.86rem; font-weight: 900; letter-spacing: -0.01em; }
-    .goal-cta-copy small { font-size: 0.6rem; font-weight: 700; opacity: 0.72; letter-spacing: 0.2px; }
-    .goal-cta-arrow { margin-left: auto; font-size: 0.78rem; opacity: 0.8; }
+    .goal-cta-primary > i:first-child { font-size: 1rem; flex: none; }
+    .goal-cta-copy {
+      display: flex; flex-direction: column; line-height: 1.15; text-align: left;
+      min-width: 0;
+    }
+    .goal-cta-copy strong {
+      font-size: 0.86rem; font-weight: 900; letter-spacing: -0.01em;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .goal-cta-copy small {
+      font-size: 0.6rem; font-weight: 700; opacity: 0.72; letter-spacing: 0.2px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .goal-cta-arrow { margin-left: auto; font-size: 0.78rem; opacity: 0.8; flex: none; }
     .goal-cta-ghost {
-      flex: 0 0 auto;
+      flex: 0 1 auto; min-width: 0;
       background: rgba(var(--surface-rgb), 0.55);
       border-color: var(--border-strong); color: var(--text-main);
     }
-    .goal-cta-ghost i { font-size: 0.95rem; color: var(--accent); }
+    .goal-cta-ghost i { font-size: 0.95rem; color: var(--accent); flex: none; }
     .goal-cta-ghost .goal-cta-copy small { opacity: 0.6; }
     .goal-why, .goal-source {
       font-size: 0.68rem; line-height: 1.5; color: var(--text-muted);
+      margin: 0;
     }
     .goal-why a { color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
     .goal-source { font-family: var(--font-mono); font-size: 0.6rem; opacity: 0.8; }
     .goal-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-    /* ── Experience: horizontal snap rail, one swipe instead of a long column ── */
-    .xp-rail {
-      display: flex; gap: 10px; overflow-x: auto;
-      scrollbar-width: none; -webkit-overflow-scrolling: touch;
-      scroll-snap-type: x proximity; overscroll-behavior-x: contain;
-      padding: 2px 1px 8px;
+    /* ── Creator Fund artwork ───────────────────────────────────────
+       Drawn inline so it inherits the theme: the card, the bars and
+       the trend line all read from the page's own accent + surface
+       variables, and every motion step has a reduced-motion escape. */
+    .goal-art {
+      position: absolute; top: -16px; right: 0;
+      width: 142px; height: 142px;
+      opacity: 0.26; pointer-events: none; z-index: 0;
     }
-    .xp-rail::-webkit-scrollbar { display: none; }
-    .xp-rail .xp-card {
-      flex: 0 0 84%; scroll-snap-align: center;
-      padding: 14px 15px 13px; gap: 7px;
+    .fund-art { width: 100%; height: 100%; display: block; overflow: visible; }
+    .fund-art .fa-frame {
+      fill: color-mix(in srgb, var(--accent) 8%, transparent);
+      stroke: color-mix(in srgb, var(--accent) 26%, transparent);
+      stroke-width: 2;
     }
-    .xp-rail .xp-desc {
-      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
-      overflow: hidden;
+    .fund-art .fa-bar {
+      fill: color-mix(in srgb, var(--accent) 24%, transparent);
+      stroke: color-mix(in srgb, var(--accent) 52%, transparent);
+      stroke-width: 1.5;
+      transform-box: fill-box; transform-origin: center bottom;
+      animation: fundGrow 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
     }
-    .xp-rail .xp-card.expanded .xp-desc { -webkit-line-clamp: unset; display: block; }
-    .xp-more {
-      align-self: flex-start; margin-top: 0;
-      background: none; border: 0; padding: 2px 0; cursor: pointer;
-      color: var(--accent); font-size: 0.7rem; font-weight: 800;
-      display: inline-flex; align-items: center; gap: 5px;
+    .fund-art .fa-bar-2 { animation-delay: 0.12s; }
+    .fund-art .fa-bar-3 { animation-delay: 0.24s; }
+    @keyframes fundGrow { from { transform: scaleY(0.04); } to { transform: scaleY(1); } }
+    .fund-art .fa-trend {
+      stroke: var(--accent); stroke-width: 7;
+      stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 170; stroke-dashoffset: 170;
+      animation: fundDraw 1.15s 0.3s ease-out forwards;
     }
-    .xp-more i { font-size: 0.58rem; transition: transform 0.25s var(--ease-glide); }
-    .xp-card.expanded .xp-more i { transform: rotate(180deg); }
-    .xp-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .xp-card { height: 100%; }
+    @keyframes fundDraw { to { stroke-dashoffset: 0; } }
+    .fund-art .fa-node {
+      fill: var(--accent);
+      transform-box: fill-box; transform-origin: center;
+      animation: fundPulse 2.9s 1.2s ease-in-out infinite;
+    }
+    @keyframes fundPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.14); opacity: 0.82; }
+    }
+    .fund-art .fa-spark { fill: var(--accent); opacity: 0.7; animation: fundTwinkle 3.6s ease-in-out infinite; }
+    .fund-art .fa-spark-2 { animation-delay: 1.1s; }
+    @keyframes fundTwinkle { 0%, 100% { opacity: 0.22; } 50% { opacity: 0.9; } }
+    [data-theme="light"] .fund-art .fa-frame { fill: color-mix(in srgb, var(--accent) 10%, #fff); }
+    [data-theme="light"] .fund-art .fa-bar { fill: color-mix(in srgb, var(--accent) 28%, #fff); }
+
+    /* Wide screens: the artwork gets its own column beside the copy. */
+    @media (min-width: 900px) {
+      .goal-card {
+        grid-template-columns: minmax(0, 1fr) 186px;
+        grid-template-areas: "head art" "body art";
+        align-content: start; gap: 14px 24px;
+        padding: 20px 22px 18px;
+      }
+      .goal-head { grid-area: head; }
+      .goal-body { grid-area: body; }
+      .goal-art {
+        grid-area: art; position: static; align-self: center; justify-self: end;
+        width: 186px; height: 186px; opacity: 1;
+      }
+    }
+
+    /* Small screens: stack the two actions so neither gets squeezed. */
+    @media (max-width: 560px) {
+      .goal-card { padding: 15px 14px 13px; }
+      .goal-cta-row { flex-direction: column; }
+      .goal-cta { width: 100%; justify-content: center; min-height: 46px; }
+      .goal-cta-primary { justify-content: flex-start; }
+      .goal-cta-ghost { justify-content: center; }
+      .goal-art { width: 124px; height: 124px; top: -12px; right: 0; opacity: 0.2; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .goal-fill::after { animation: none; }
+      .fund-art .fa-bar,
+      .fund-art .fa-trend,
+      .fund-art .fa-node,
+      .fund-art .fa-spark { animation: none !important; }
+      .fund-art .fa-bar { transform: none; }
+      .fund-art .fa-trend { stroke-dashoffset: 0; }}
+
+    /* ── v7.11 Experience: a drawn timeline ───────────────────────────
+       A vertical spine with one marker per role. The line is drawn from
+       the SVG and grows with the scroll position, and each marker lights
+       up exactly when its card reaches the reading line - the drawing and
+       the content are measured from the same cards. */
+    .xp-timeline {
+      --xp-spine-x: 27px;
+      position: relative;
+      padding-left: 62px;
+    }
+    .xp-stack { display: grid; gap: 12px; }
+    .xp-spine {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; overflow: visible;
+    }
+    .xp-spine-base {
+      stroke: var(--border-strong); stroke-width: 2; stroke-linecap: round;
+      stroke-dasharray: var(--xp-len, 1200);
+      stroke-dashoffset: var(--xp-len, 1200);
+    }
+    /* the line draws itself from the first role to the last */
+    .xp-timeline.is-drawn .xp-spine-base {
+      animation: xpDrawIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .xp-timeline.is-drawn-done .xp-spine-base { stroke-dashoffset: 0; }
+    @keyframes xpDrawIn {
+      from { stroke-dashoffset: var(--xp-len, 1200); }
+      to   { stroke-dashoffset: 0; }
+    }
+    /* the marker pops in around its own centre as the line reaches it.
+       The centre is given in SVG coordinates by the script - the browser
+       must not be left to guess it from a bounding box. */
+    .xp-mark-core {
+      transform-box: view-box; transform-origin: center;
+      opacity: 0; transform: scale(0.35);
+    }
+    .xp-mark-conn { opacity: 0; }
+    .xp-timeline.is-drawn .xp-mark-core { animation: xpPop 0.52s var(--ease-glide) backwards; }
+    .xp-timeline.is-drawn .xp-mark-conn { animation: xpFadeIn 0.45s ease backwards; }
+    .xp-timeline.is-drawn-done .xp-mark-core { opacity: 1; transform: scale(1); }
+    .xp-timeline.is-drawn-done .xp-mark-conn { opacity: 1; }
+    @keyframes xpPop {
+      from { opacity: 0; transform: scale(0.35); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes xpFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .xp-spine-progress {
+      stroke: var(--accent); stroke-width: 2; stroke-linecap: round;
+      transition: stroke-dashoffset 0.4s linear;
+    }
+    .xp-spine-tip {
+      fill: var(--accent); opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .xp-mark-ring {
+      fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0;
+      transform-box: view-box; transform-origin: center; transform: scale(0.55);
+      transition: opacity 0.45s ease, transform 0.45s var(--ease-glide);
+    }
+    .xp-mark.is-live .xp-mark-ring { opacity: 0.5; transform: scale(1); }
+    .xp-mark.is-hot .xp-mark-ring { opacity: 0.9; transform: scale(1.14); }
+    .xp-mark.is-hot .xp-mark-tick { opacity: 1; stroke: var(--accent); }
+    .xp-mark.is-hot .xp-mark-disc { stroke: var(--accent); }
+    .xp-mark-disc {
+      fill: rgba(var(--surface-rgb), 0.92); stroke: var(--border-strong); stroke-width: 1.4;
+      transition: stroke 0.45s ease, fill 0.45s ease;
+    }
+    [data-theme="light"] .xp-mark-disc { fill: #fff; }
+    .xp-mark.is-live .xp-mark-disc {
+      stroke: var(--accent);
+      fill: color-mix(in srgb, var(--accent) 12%, rgba(var(--surface-rgb), 0.94));
+    }
+    .xp-mark-glyph {
+      color: var(--text-muted);
+      fill: none; stroke: currentColor; stroke-width: 1.7;
+      stroke-linecap: round; stroke-linejoin: round;
+      transition: color 0.45s ease;
+    }
+    .xp-mark.is-live .xp-mark-glyph { color: var(--accent); }
+    .xp-mark-tick {
+      stroke: var(--border-strong); stroke-width: 1.4; stroke-linecap: round; opacity: 0.45;
+      transition: stroke 0.45s ease, opacity 0.45s ease;
+    }
+    .xp-mark.is-live .xp-mark-tick { stroke: var(--accent); opacity: 0.85; }
+    .xp-mark-halo {
+      fill: none; stroke: var(--accent); stroke-width: 1.2; opacity: 0;
+      transform-box: view-box; transform-origin: center;
+      animation: xpPulse 2.8s ease-out infinite;
+    }
+    @keyframes xpPulse {
+      0%   { transform: scale(0.8); opacity: 0.65; }
+      70%  { transform: scale(1.55); opacity: 0; }
+      100% { transform: scale(1.55); opacity: 0; }
+    }
+    /* the card is lit while its marker is live */
+    .xp-card { transition: border-color 0.4s ease, background 0.4s ease, transform 0.25s var(--ease-glide); }
+    .xp-card.is-live {
+      border-color: color-mix(in srgb, var(--accent) 26%, var(--border));
+    }
+    .xp-card.is-live:not(.current) {
+      background:
+        radial-gradient(120% 100% at 0% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 58%),
+        rgba(var(--surface-rgb), 0.44);
+    }
     @media (min-width: 700px) {
-      .xp-rail { gap: 12px; }
-      .xp-rail .xp-card { flex: 0 0 calc((100% - 24px) / 3); }
-      .xp-rail .xp-desc { -webkit-line-clamp: 4; }
-    }
+      .xp-timeline { --xp-spine-x: 29px; padding-left: 68px; }
+      .xp-stack { gap: 14px; }}
     @media (max-width: 360px) {
-      .xp-rail .xp-card { flex: 0 0 90%; }
-    }
+      .xp-timeline { --xp-spine-x: 25px; padding-left: 56px; }}
+    @media (prefers-reduced-motion: reduce) {
+      .xp-mark-halo { animation: none; opacity: 0; }
+      .xp-spine-progress { transition: none; }
+      .xp-mark-ring, .xp-mark-disc, .xp-mark-glyph, .xp-mark-tick { transition: none; }
+      .xp-timeline.is-drawn .xp-spine-base { animation: none; stroke-dashoffset: 0; }
+      .xp-timeline.is-drawn .xp-mark-core { animation: none; opacity: 1; transform: none; }
+      .xp-timeline.is-drawn .xp-mark-conn { animation: none; opacity: 1; }}
 
     /* ═══════════════════════════════════════════════════════════
        v7.0 · HOME HERO — EDITORIAL SPLIT
@@ -12079,8 +11402,7 @@
       .home-hero { padding: 22px 18px 16px; }
       .home-hero .hero-title { font-size: clamp(1.95rem, 10.4vw, 2.3rem); }
       .home-hero .hh-stat { padding-left: 3px; }
-      .home-hero .hh-stat + .hh-stat { padding-left: 11px; }
-    }
+      .home-hero .hh-stat + .hh-stat { padding-left: 11px; }}
 
     /* ═══════════════════════════════════════════════════════════
        v7.4 · WIDE-SCREEN HERO COMPOSITION
@@ -12174,8 +11496,7 @@
       padding-top: calc(var(--wco-titlebar-h, env(titlebar-area-height, 0px)) + env(safe-area-inset-top, 0px));
     }
     @media (max-width: 768px) {
-      body { padding-top: calc(var(--wco-titlebar-h, env(titlebar-area-height, 0px)) + max(env(safe-area-inset-top, 0px), 20px)); }
-    }
+      body { padding-top: calc(var(--wco-titlebar-h, env(titlebar-area-height, 0px)) + max(env(safe-area-inset-top, 0px), 20px)); }}
     .wco-titlebar {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -12199,8 +11520,7 @@
     @media (prefers-reduced-motion: reduce) {
       .home-hero *, .home-hero *::before, .home-hero *::after {
         transition-duration: 0.01ms !important; animation-duration: 0.01ms !important;
-      }
-    }
+      }}
     html[data-perf="low"] .home-hero .hh-aurora { display: none; }
 
     /* ═══════════════════════════════════════════════════════════
@@ -12511,8 +11831,7 @@
     .dock-btn.dock-fab:active { transform: translateY(-9px) scale(0.9); }
     @media (max-width: 480px) {
       .dock-btn.dock-fab { transform: translateY(-9px); }
-      .dock-btn.dock-fab:active { transform: translateY(-9px) scale(0.9); }
-    }
+      .dock-btn.dock-fab:active { transform: translateY(-9px) scale(0.9); }}
 
     /* Sheet headers share the sheet's surface so there is no seam where
        the header meets the sheet, and the two toolkit headers become the
@@ -12534,8 +11853,7 @@
       background: var(--text-muted); opacity: 0.34; background-clip: content-box;
     }
     @media (min-width: 769px) {
-      .jx-tools-header, .jx-ne-head { border-radius: 36px 36px 0 0; }
-    }
+      .jx-tools-header, .jx-ne-head { border-radius: 36px 36px 0 0; }}
 
     /* The dock floats over the page, so anything that scrolls under it
        used to be sliced in half by the pill's edge. A scrim lets the
@@ -12548,7 +11866,7 @@
         color-mix(in srgb, var(--bg) 58%, transparent) 72%,
         transparent 100%);
     }
-    @media (min-width: 769px) { .dock-scrim { height: 96px; } }
+    @media (min-width: 769px) { .dock-scrim { height: 96px; }}
 
     /* The Clipboard put twenty-one controls above the first clip. The
        filter pills and the export actions are rails, not paragraphs —
@@ -12586,8 +11904,7 @@
         font-size: 0.53rem; letter-spacing: 0.03em; line-height: 1.2;
         white-space: normal; overflow: visible; text-overflow: clip;
       }
-      .clip-telemetry-val, .counter-telemetry-val { font-size: 1.05rem; line-height: 1.1; }
-    }
+      .clip-telemetry-val, .counter-telemetry-val { font-size: 1.05rem; line-height: 1.1; }}
     /* Three actions on one line: the long labels shrink to their short
        form, the full wording stays in the accessibility tree. */
     @media (max-width: 430px) {
@@ -12607,17 +11924,8 @@
     @media (min-width: 768px) {
       .container { max-width: 880px; }
     }
-    /* The metric tiles clipped a repository name to "Abou…". Let the name
-       wrap instead of truncating it. */
-    .oss-metric-value {
-      white-space: normal;
-      overflow-wrap: anywhere;
-      line-height: 1.2;
-    }
     /* "1 stars" reads wrong. */
-    .repo-meta span { white-space: nowrap; }
-
-  </style>
+    .repo-meta span { white-space: nowrap; }</style>
 
 </head>
 <body>
@@ -12762,52 +12070,67 @@
       <div class="scroll-dots" id="socialDots"></div>
     </div>
 
-    <!-- Support goal: real numbers only (owner-updated or auto-synced) -->
+    <!-- Creator fund: real numbers only (owner-updated or auto-synced) -->
     <section class="goal-card reveal" id="supportGoalCard" aria-labelledby="goalTitle">
       <span class="goal-glow" aria-hidden="true"></span>
 
       <header class="goal-head">
-        <span class="goal-eyebrow"><i class="fa-solid fa-seedling" aria-hidden="true"></i>Studio fund</span>
+        <span class="goal-eyebrow"><i class="fa-solid fa-seedling" aria-hidden="true"></i>Creator fund</span>
         <span class="goal-pct" id="goalPct">0%</span>
       </header>
 
-      <h2 class="goal-title" id="goalTitle">Help me ship the next free tool.</h2>
-      <p class="goal-copy">Every tool on this site is free, ad-free and runs on your device. A one-time contribution pays for the build time behind the next release.</p>
+      <div class="goal-body">
+        <h2 class="goal-title" id="goalTitle">Help me ship the next free tool.</h2>
+        <p class="goal-copy">Every tool on this site is free, ad-free and runs on your device. A one-time contribution pays for the build time behind the next release.</p>
 
-      <div class="goal-amounts">
-        <span class="goal-raised" id="goalRaised">₹0</span>
-        <span class="goal-target" id="goalTarget">of ₹5,000</span>
+        <div class="goal-amounts">
+          <span class="goal-raised" id="goalRaised">₹0</span>
+          <span class="goal-target" id="goalTarget">of ₹5,000</span>
+        </div>
+
+        <div class="goal-track" id="goalTrack" role="progressbar" aria-valuemin="0" aria-valuemax="5000" aria-valuenow="0" aria-label="Creator fund progress">
+          <span class="goal-fill" id="goalFill"></span>
+          <span class="goal-ticks" id="goalTicks" aria-hidden="true"></span>
+        </div>
+
+        <p class="goal-remain" id="goalRemain">₹5,000 to unlock the next drop</p>
+
+        <ol class="goal-steps" id="goalSteps" aria-label="Funding milestones"></ol>
+
+        <div class="goal-perks">
+          <span class="goal-perk"><i class="fa-solid fa-unlock-keyhole" aria-hidden="true"></i><strong>Free forever, nothing locked</strong></span>
+          <span class="goal-perk"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><strong>No account, no tracking</strong></span>
+          <span class="goal-perk"><i class="fa-solid fa-bolt" aria-hidden="true"></i><strong>One-time thank-you</strong></span>
+        </div>
+
+        <div class="goal-cta-row">
+          <a class="goal-cta goal-cta-primary ripple-btn" href="https://ko-fi.com/jinosabu1999" target="_blank" rel="noopener">
+            <i class="fa-solid fa-mug-hot" aria-hidden="true"></i>
+            <span class="goal-cta-copy"><strong>Contribute</strong><small>Ko-fi · PayPal</small></span>
+            <i class="fa-solid fa-arrow-right goal-cta-arrow" aria-hidden="true"></i>
+          </a>
+          <a class="goal-cta goal-cta-ghost ripple-btn" href="https://www.patreon.com/jinosabu1999" target="_blank" rel="noopener" aria-label="Support monthly on Patreon">
+            <i class="fa-brands fa-patreon" aria-hidden="true"></i>
+            <span class="goal-cta-copy"><strong>Patreon</strong><small>Monthly</small></span>
+          </a>
+        </div>
+
+        <p class="goal-why" id="goalWhy">Prefer buying something instead? The <a href="#storeSection">creator store</a> has paid downloads — same effect, you get a product.</p>
+        <p class="goal-source" id="goalSource">Amount updated manually by the creator.</p>
       </div>
 
-      <div class="goal-track" id="goalTrack" role="progressbar" aria-valuemin="0" aria-valuemax="5000" aria-valuenow="0" aria-label="Studio fund progress">
-        <span class="goal-fill" id="goalFill"></span>
-        <span class="goal-ticks" id="goalTicks" aria-hidden="true"></span>
+      <div class="goal-art" aria-hidden="true">
+        <svg class="fund-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none" focusable="false">
+          <rect class="fa-frame" x="22" y="30" width="156" height="140" rx="26"/>
+          <rect class="fa-bar fa-bar-1" x="46" y="126" width="20" height="22" rx="7"/>
+          <rect class="fa-bar fa-bar-2" x="76" y="108" width="20" height="40" rx="7"/>
+          <rect class="fa-bar fa-bar-3" x="106" y="90" width="20" height="58" rx="7"/>
+          <path class="fa-trend" d="M52 116 L86 100 L112 82 L146 56"/>
+          <circle class="fa-node" cx="146" cy="56" r="10"/>
+          <path class="fa-spark fa-spark-1" d="M156 108 l3.4 8.4 8.4 3.4 -8.4 3.4 -3.4 8.4 -3.4 -8.4 -8.4 -3.4 8.4 -3.4z"/>
+          <path class="fa-spark fa-spark-2" d="M40 56 l2.6 6.4 6.4 2.6 -6.4 2.6 -2.6 6.4 -2.6 -6.4 -6.4 -2.6 6.4 -2.6z"/>
+        </svg>
       </div>
-
-      <p class="goal-remain" id="goalRemain">₹5,000 to unlock the next drop</p>
-
-      <ol class="goal-steps" id="goalSteps" aria-label="Funding milestones"></ol>
-
-      <div class="goal-perks">
-        <div class="goal-perk"><i class="fa-solid fa-unlock-keyhole" aria-hidden="true"></i><span><strong>Nothing gets locked.</strong> Free tools stay free, forever.</span></div>
-        <div class="goal-perk"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><span><strong>No account, no tracking.</strong> Support is a one-time thank-you.</span></div>
-        <div class="goal-perk"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span><strong>Instant.</strong> Backers get new drops the moment they ship.</span></div>
-      </div>
-
-      <div class="goal-cta-row">
-        <a class="goal-cta goal-cta-primary ripple-btn" href="https://ko-fi.com/jinosabu1999" target="_blank" rel="noopener">
-          <i class="fa-solid fa-mug-hot" aria-hidden="true"></i>
-          <span class="goal-cta-copy"><strong>Contribute</strong><small>Ko-fi · PayPal</small></span>
-          <i class="fa-solid fa-arrow-right goal-cta-arrow" aria-hidden="true"></i>
-        </a>
-        <a class="goal-cta goal-cta-ghost ripple-btn" href="https://www.patreon.com/jinosabu1999" target="_blank" rel="noopener" aria-label="Support monthly on Patreon">
-          <i class="fa-brands fa-patreon" aria-hidden="true"></i>
-          <span class="goal-cta-copy"><strong>Patreon</strong><small>Monthly</small></span>
-        </a>
-      </div>
-
-      <p class="goal-why" id="goalWhy">Prefer buying something instead? The <a href="#storeSection">creator store</a> has paid downloads — same effect, you get a product.</p>
-      <p class="goal-source" id="goalSource">Amount updated manually by the creator.</p>
     </section>
 
     <!-- Tool Stack Conveyor -->
@@ -12847,13 +12170,6 @@
           </div>
         </div>
 
-        <div class="opensource-metrics" id="openSourceMetrics" aria-label="Open source repository metrics">
-          <div class="oss-metric-pill"><span class="oss-metric-icon"><i class="fa-solid fa-code-branch"></i></span><span class="oss-metric-copy"><span class="oss-metric-value" id="ossTotalRepos">—</span><span class="oss-metric-label">Public Repositories</span></span></div>
-          <div class="oss-metric-pill"><span class="oss-metric-icon"><i class="fa-solid fa-star"></i></span><span class="oss-metric-copy"><span class="oss-metric-value" id="ossTotalStars">—</span><span class="oss-metric-label">Stars Earned</span></span></div>
-          <div class="oss-metric-pill"><span class="oss-metric-icon"><i class="fa-solid fa-layer-group"></i></span><span class="oss-metric-copy"><span class="oss-metric-value" id="ossLanguages">—</span><span class="oss-metric-label">Languages Used</span></span></div>
-          <div class="oss-metric-pill"><span class="oss-metric-icon"><i class="fa-solid fa-bolt"></i></span><span class="oss-metric-copy"><span class="oss-metric-value" id="ossLatestRepo">—</span><span class="oss-metric-label">Most Recently Updated Repository</span></span></div>
-        </div>
-
         <div class="opensource-controls">
           <div class="opensource-actions oss-control-actions" aria-label="Open source carousel controls">
             <button class="opensource-icon-btn ripple-btn" type="button" onclick="scrollOpenSourceRail(-1)" aria-label="Scroll repositories left"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
@@ -12891,50 +12207,49 @@
     <!-- Experience -->
     <h2 class="section-title reveal" id="experienceSection">Experience</h2>
     <p class="section-sub reveal">Engineering discipline applied to interfaces — from mechanical systems to production frontends.</p>
-    <div class="bento-card glass-panel reveal xp-wrap" style="padding:12px;">
-      <div class="xp-rail" id="xpRail" role="list" aria-label="Experience history">
-        <article class="xp-card current" role="listitem">
-          <div class="xp-top">
-            <span class="xp-period"><i class="fa-regular fa-calendar" aria-hidden="true"></i>Present</span>
-            <span class="xp-now">Active</span>
-          </div>
-          <h3 class="xp-title">Digital Architect &amp; Developer</h3>
-          <p class="xp-desc">Architecting bespoke web applications and digital toolkits. Specialising in highly interactive frontends and seamless browser-native utilities.</p>
-          <div class="xp-chips">
-            <span class="xp-chip">Product design</span>
-            <span class="xp-chip">Web apps</span>
-            <span class="xp-chip">Browser APIs</span>
-          </div>
-          <button class="xp-more" type="button" onclick="toggleXpCard(this)" aria-expanded="false">Read more <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
-        </article>
-        <article class="xp-card" role="listitem">
-          <div class="xp-top">
-            <span class="xp-period"><i class="fa-regular fa-calendar" aria-hidden="true"></i>2022 – 2024</span>
-          </div>
-          <h3 class="xp-title">Frontend Engineer</h3>
-          <p class="xp-desc">Developed and maintained complex SPA ecosystems. Collaborated with product teams to refine UX and optimised core web vitals.</p>
-          <div class="xp-chips">
-            <span class="xp-chip">SPA architecture</span>
-            <span class="xp-chip">UX collaboration</span>
-            <span class="xp-chip">Web vitals</span>
-          </div>
-          <button class="xp-more" type="button" onclick="toggleXpCard(this)" aria-expanded="false">Read more <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
-        </article>
-        <article class="xp-card" role="listitem">
-          <div class="xp-top">
-            <span class="xp-period"><i class="fa-regular fa-calendar" aria-hidden="true"></i>2018 – 2022</span>
-          </div>
-          <h3 class="xp-title">Mechanical Systems Engineer</h3>
-          <p class="xp-desc">Designed physical systems and structural workflows. This foundational logic translates directly into my approach to software architecture.</p>
-          <div class="xp-chips">
-            <span class="xp-chip">Systems design</span>
-            <span class="xp-chip">Structural logic</span>
-            <span class="xp-chip">Engineering</span>
-          </div>
-          <button class="xp-more" type="button" onclick="toggleXpCard(this)" aria-expanded="false">Read more <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
-        </article>
+    <div class="bento-card glass-panel reveal xp-wrap" style="padding:16px 14px;">
+      <div class="xp-timeline" id="xpTimeline">
+        <svg class="xp-spine" id="xpSpine" aria-hidden="true" focusable="false"></svg>
+        <div class="xp-stack" id="xpStack" role="list" aria-label="Experience history">
+          <article class="xp-card current is-live" role="listitem" data-xp-icon="architect">
+            <div class="xp-top">
+              <span class="xp-period"><i class="fa-regular fa-calendar" aria-hidden="true"></i>Present</span>
+              <span class="xp-now">Active</span>
+            </div>
+            <h3 class="xp-title">Digital Architect &amp; Developer</h3>
+            <p class="xp-desc">Architecting bespoke web applications and digital toolkits. Specialising in highly interactive frontends and seamless browser-native utilities.</p>
+            <div class="xp-chips">
+              <span class="xp-chip">Product design</span>
+              <span class="xp-chip">Web apps</span>
+              <span class="xp-chip">Browser APIs</span>
+            </div>
+          </article>
+          <article class="xp-card" role="listitem" data-xp-icon="frontend">
+            <div class="xp-top">
+              <span class="xp-period"><i class="fa-regular fa-calendar" aria-hidden="true"></i>2022 – 2024</span>
+            </div>
+            <h3 class="xp-title">Frontend Engineer</h3>
+            <p class="xp-desc">Developed and maintained complex SPA ecosystems. Collaborated with product teams to refine UX and optimised core web vitals.</p>
+            <div class="xp-chips">
+              <span class="xp-chip">SPA architecture</span>
+              <span class="xp-chip">UX collaboration</span>
+              <span class="xp-chip">Web vitals</span>
+            </div>
+          </article>
+          <article class="xp-card" role="listitem" data-xp-icon="mechanical">
+            <div class="xp-top">
+              <span class="xp-period"><i class="fa-regular fa-calendar" aria-hidden="true"></i>2018 – 2022</span>
+            </div>
+            <h3 class="xp-title">Mechanical Systems Engineer</h3>
+            <p class="xp-desc">Designed physical systems and structural workflows. This foundational logic translates directly into my approach to software architecture.</p>
+            <div class="xp-chips">
+              <span class="xp-chip">Systems design</span>
+              <span class="xp-chip">Structural logic</span>
+              <span class="xp-chip">Engineering</span>
+            </div>
+          </article>
+        </div>
       </div>
-      <div class="scroll-dots" id="xpDots"></div>
     </div>
 
     <!-- Testimonials -->
@@ -12963,17 +12278,35 @@
     <div class="storefront-card upgraded-store reveal">
       <div class="store-bg-glow"></div>
       <div class="store-layout">
-        <div>
-          <div class="store-kicker">Digital Assets</div>
+        <div class="store-intro">
           <h3 class="store-title">Creator Store</h3>
           <p class="store-copy">
-            Compact digital downloads, wallpapers, guides, and future tool drops — ready for instant access.
+            Digital downloads, wallpapers and guides — instant access, and every sale funds the next free tool.
           </p>
           <div class="store-badges">
             <span class="store-badge">Instant access</span>
-            <span class="store-badge">Creator resources</span>
-            <span class="store-badge">Digital downloads</span>
             <span class="store-badge">Support future drops</span>
+          </div>
+          <div class="store-art" aria-hidden="true">
+            <svg class="store-art-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none" focusable="false">
+              <g class="sa-arrow">
+                <path class="sa-arrow-stem" d="M100 14 V40"/>
+                <path class="sa-arrow-head" d="M90 33 L100 43 L110 33"/>
+              </g>
+              <g class="sa-sparkles">
+                <path class="sa-spark sa-spark-1" d="M44 44 l3.2 8 8 3.2 -8 3.2 -3.2 8 -3.2 -8 -8 -3.2 8 -3.2z"/>
+                <path class="sa-spark sa-spark-2" d="M158 60 l2.6 6.4 6.4 2.6 -6.4 2.6 -2.6 6.4 -2.6 -6.4 -6.4 -2.6 6.4 -2.6z"/>
+                <path class="sa-spark sa-spark-3" d="M34 112 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/>
+              </g>
+              <g class="sa-box">
+                <rect class="sa-lid" x="40" y="86" width="120" height="28" rx="9"/>
+                <path class="sa-body" d="M50 114 h100 v48 a10 10 0 0 1 -10 10 h-80 a10 10 0 0 1 -10 -10 z"/>
+                <rect class="sa-ribbon" x="88" y="86" width="24" height="86" rx="4"/>
+                <path class="sa-bow sa-bow-l" d="M100 86 C88 70 68 70 70 82 C72 92 88 86 100 86 Z"/>
+                <path class="sa-bow sa-bow-r" d="M100 86 C112 70 132 70 130 82 C128 92 112 86 100 86 Z"/>
+                <rect class="sa-knot" x="92" y="76" width="16" height="11" rx="5"/>
+              </g>
+            </svg>
           </div>
         </div>
 
@@ -13088,8 +12421,11 @@
   // Changelog bootstrap: renders latest updates immediately, even before the main app script finishes loading.
   // ▼ EDIT HERE: bump SITE_VERSION + add an entry at the TOP when you ship an update.
   //   Visitors see the new version automatically (live sync also pulls it from GitHub).
-  window.SITE_VERSION = 'v7.10';
+  window.SITE_VERSION = 'v7.13';
   window.SITE_CHANGELOG_FALLBACK = [
+    { version: 'v7.13', date: '14th Nov 2026', text: 'The support card is now the Creator Fund, and it is a much smaller card. It used to be called the Studio Fund and it carried a row of milestone cards you had to swipe sideways to read, which meant the one number that matters - how much has been raised against the target - was never the thing you landed on. The milestones are now small chips that wrap into the card, the three reassurances are a single quiet line, and the two ways to help sit side by side on a wide screen and stack cleanly on a phone instead of squeezing the Patreon button. The card draws itself as well: a small chart of bars and a rising line, inline SVG, so it follows the theme and costs nothing to download. The Creator Store was simplified the same way - one line of copy, two badges, and a drawn gift box with a download arrow dropping into it. The store art was being cut off: every cover was cropped into a wide frame, so a square cover lost its edges. The covers are now shown whole in a square frame, with a blurred copy of the same picture filling the space around them, and the sample previews in the product sheet are fitted the same way instead of being sliced in half. The superseded store renderer - the old card grid, the old milestone rail and the support-goal styles they dragged along - has been removed, and the store facts now reflow onto a phone so the last one is not squeezed into an unreadable sliver.' },
+    { version: 'v7.12', date: '13th Nov 2026', text: 'Recent Updates stops publishing the site\'s own housekeeping. The scheduled feed refresh and the little bot that keeps the service-worker version in step were being printed as though they were releases, so the panel filled up with chore: refresh feeds and a count of how many further commits there were that day. Those never reach the page now, and what does reach it is written as a sentence rather than a raw commit line. Selected Works grows a cover: every card now carries a small drawn still of the app it points at - the photo on the canvas with its crop guides over it, the waveform with the selected stretch of it and the playhead sitting inside, the carroms board with its pockets, its balls and the striker waiting to be placed. The drawings are inline SVG, so they cost nothing to download, work offline and follow the theme on their own. The icon font is now preloaded along with the page, so the symbols cannot flash as empty boxes while the font is still on its way.' },
+    { version: 'v7.11', date: '7th Nov 2026', text: 'The Experience section finally reads like a career instead of a swipe. It is a drawn timeline now: the line draws itself from the first role to the last as the section arrives, the markers pop in one after another as the line reaches them, and every role carries the glyph of its own job inside its marker. After that the line grows as you read, and a role lights up - and its card takes the accent tint - exactly when its own card reaches your reading line. Every role is on screen at once and every description is written out in full instead of hiding behind a Read more button. The line and the cards are measured from each other and kept watching each other, so the drawing can never drift out of alignment with the story it is telling.' },
     { version: 'v7.10', date: '6th Nov 2026', text: 'The subscribe button and its little sheet are gone again - you asked, so they are gone. While looking at that part of the page we also found why the page sometimes stopped scrolling right below Recent Updates: the notes panel was swallowing every swipe that landed on it, so the rest of the page could not be reached from there. It now behaves like an ordinary scroll area, it fades its bottom edge when there is more to read, and a fast flick can no longer leave a section of the page blank. The Wi-Fi Join Sheet that kept turning up on its own is fixed as well: a closed panel is now hidden outright instead of sitting just below the fold where it could still be seen or picked up, the Wi-Fi pop-up no longer scrolls the page out from under you, and the camera stops when you leave the tab. And the release feed is gone for good - no RSS file, no builder, no workflow, no button: Recent Updates on the site is the only place the release notes live now.' },
     { version: 'v7.9', date: '6th Nov 2026', text: 'The subscribe button no longer dumps a wall of XML in your face. It opens a small sheet instead: what the feed is, the address on one tap to copy, and buttons that open it straight in a reader. The raw XML is still one link away for anyone who wants it. While checking the icons on the new sheet we found some of them were coming out empty - the icon font was missing a few of the glyphs it referenced - so the icon font was rebuilt and a couple of blank buttons around the site now show their symbol again.' },
     { version: 'v7.8', date: '6th Nov 2026', text: 'Three fixes you asked for. The top of the page no longer sits flush against the screen: it now keeps clear of the notch and the status bar on a phone and leaves a little breathing room everywhere else. The site name that lives in the OS title bar was being painted even when the browser had no title bar for it, so it overflowed the top of the screen and was cut in half at the corner - it now only appears when there is a real title bar to sit in. Recent Updates is a fixed panel that scrolls inside itself instead of a long section you have to scroll past, with the version and the sync controls pinned at the top. And the release feed is findable again: a subscribe row now sits right under the toolbar, so the RSS link is always one tap away.' },
@@ -15413,7 +14749,7 @@
     });
 
     // Generic keyboard activation for non-native clickable elements.
-    // Any element with role="button" + tabindex (e.g. .store-product-card,
+    // Any element with role="button" + tabindex (e.g. .jx-product-card,
     // .project-card, .scroll-fab) responds to Enter and Space like a button.
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
@@ -21099,7 +20435,6 @@
     // Apply staggering to the statically-rendered groups.
     staggerReveal(document.querySelectorAll('.timeline .t-item'));
     staggerReveal(document.querySelectorAll('#socialScrollRow .social-btn'));
-    staggerReveal(document.querySelectorAll('.store-product-card'));
 
     function openSheet(id) { 
       playSynthesizedSound('swoosh-open'); 
@@ -21430,19 +20765,19 @@
 
 
     const projects = [
-      { title: 'Lumière', desc: 'A couture-grade image studio that resizes, crops, retouches and exports photos with pixel precision — entirely on your device.', tags:['Frontend', 'Tools'], outcomes:['UI Systems', 'Browser Tools'], icon: 'fa-solid fa-wand-magic-sparkles', kind: 'Image editor', badge: 'New', url: 'https://jinosabu1999.github.io/Lumiere/',
+      { title: 'Lumière', desc: 'A couture-grade image studio that resizes, crops, retouches and exports photos with pixel precision — entirely on your device.', tags:['Frontend', 'Tools'], outcomes:['UI Systems', 'Browser Tools'], icon: 'fa-solid fa-wand-magic-sparkles', kind: 'Image editor', art: 'lumiere', badge: 'New', url: 'https://jinosabu1999.github.io/Lumiere/',
         problem:'Quick photo edits usually mean uploading private images to a cloud editor, then fighting a bloated interface for what should be a simple resize, crop or compress.',
         solution:'Lumière is an in-browser image atelier: drop a photo in, then refine tone, crop with rule-of-thirds guides, and export with social-media presets — every pixel computed locally, nothing uploaded.',
         features:['100% on-device editing — images never leave your phone','Crop, resize, retouch and colour grading with pinch / double-tap zoom','Compress to an exact target file size with a minimum-pixel floor','Social-media export presets + JPG / PNG / WEBP with metadata stripping','Session auto-save, undo/redo and full keyboard shortcuts'],
         tech:['JavaScript','Canvas API','File APIs','Web Storage','PWA'],
         learned:'Privacy is a design constraint that actually makes an app feel faster — when nothing is uploaded, every interaction can respond instantly instead of waiting on a spinner.' },
-      { title: 'SonicForge', desc: 'A complete audio cutter and music editor that trims, cleans and exports sound privately in your browser.', tags:['Tools', 'Frontend'], outcomes:['Browser Tools', 'Productivity'], icon: 'fa-solid fa-sliders', kind: 'Audio editor', url: 'https://jinosabu1999.github.io/SonicForge/',
+      { title: 'SonicForge', desc: 'A complete audio cutter and music editor that trims, cleans and exports sound privately in your browser.', tags:['Tools', 'Frontend'], outcomes:['Browser Tools', 'Productivity'], icon: 'fa-solid fa-sliders', kind: 'Audio editor', art: 'sonicforge', url: 'https://jinosabu1999.github.io/SonicForge/',
         problem:'Trimming a voice note or polishing a podcast normally means installing heavyweight desktop software, or handing your raw audio to a web service.',
         solution:'SonicForge is a full editing room in a tab: waveform scrubbing with pinch-to-zoom, precise in/out points, silence detection, normalization, reverse, markers and WAV/MP3 export — all offline.',
         features:['Waveform editor with precise selection, snap-to-silence and pinch zoom','Trim, split, reverse, normalize and remove silence in one pass','Find-silence scanner with adjustable threshold and minimum length','Lossless undo history (up to 14 edits) plus an audio backup export','WAV 16/24/32-bit & MP3 export — no upload, no account, works offline'],
         tech:['Web Audio API','AudioBuffer','Canvas','File APIs','PWA'],
         learned:'Destructive editing is a trust problem, not a UI problem. Building a lossless undo stack from day one made it safe to put every powerful tool one tap away.' },
-      { title: 'Carroms Pool Game', desc: 'A browser-based carroms pool game — classic carroms meets pool physics in a fun, interactive web game.', tags:['Frontend', 'Game'], outcomes:['Experiments', 'Browser Tools'], icon: 'fa-solid fa-circle-dot', url: 'https://jinosabu1999.github.io/Carroms-Pool/', problem:'Classic board games deserve a modern, accessible browser version with smooth physics and intuitive controls.', solution:'A carroms pool game that blends traditional carroms mechanics with pool-style physics, playable directly in the browser.', features:['Browser-based gameplay','Physics simulation','Interactive controls','Responsive design'], tech:['JavaScript','Canvas','Physics Engine','Frontend'], learned:'Physics-based games require careful tuning of collision and friction to feel natural in the browser.' }
+      { title: 'Carroms Pool Game', desc: 'A browser-based carroms pool game — classic carroms meets pool physics in a fun, interactive web game.', tags:['Frontend', 'Game'], outcomes:['Experiments', 'Browser Tools'], icon: 'fa-solid fa-circle-dot', art: 'carroms', url: 'https://jinosabu1999.github.io/Carroms-Pool/', problem:'Classic board games deserve a modern, accessible browser version with smooth physics and intuitive controls.', solution:'A carroms pool game that blends traditional carroms mechanics with pool-style physics, playable directly in the browser.', features:['Browser-based gameplay','Physics simulation','Interactive controls','Responsive design'], tech:['JavaScript','Canvas','Physics Engine','Frontend'], learned:'Physics-based games require careful tuning of collision and friction to feel natural in the browser.' }
     ];
 
     function initializeScrollDots(scrollerId, dotsId) {
@@ -21484,6 +20819,76 @@
       }, { passive: true });
     }
 
+    // ── Selected Works: static cover art ────────────────────────────
+    // Each card carries a small, hand-drawn still of the app it points
+    // at - the real interface in miniature, not a flat gradient. The
+    // drawings are inline SVG, so they cost nothing to download, work
+    // offline, and follow the theme on their own.
+    const ART_WINDOW =
+      '<g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">' +
+        '<rect x="138" y="15" width="166" height="82" rx="11" opacity=".28"/>' +
+        '<path d="M138 33h166" opacity=".16"/>' +
+        '<circle cx="150" cy="24" r="2.1" opacity=".36"/>' +
+        '<circle cx="159" cy="24" r="2.1" opacity=".22"/>' +
+        '<circle cx="168" cy="24" r="2.1" opacity=".13"/>' +
+      '</g>';
+
+    const COVER_ART = {
+      // Lumière - a photo on the canvas with the crop guides over it and
+      // the adjustment sliders down the side.
+      lumiere:
+        '<g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">' +
+          '<rect x="150" y="44" width="76" height="40" rx="4" opacity=".5"/>' +
+          '<circle cx="161" cy="55" r="4.2" opacity=".4"/>' +
+          '<path d="M152 82 169 65 182 76 195 64 224 82Z" opacity=".32"/>' +
+        '</g>' +
+        '<g stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" opacity=".28">' +
+          '<path d="M188 44v40"/><path d="M150 64h76"/>' +
+        '</g>' +
+        '<g stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".36">' +
+          '<path d="M238 52h52"/><path d="M238 66h52"/><path d="M238 80h52"/>' +
+        '</g>' +
+        '<g fill="var(--accent)">' +
+          '<circle cx="252" cy="52" r="3"/><circle cx="270" cy="66" r="3"/><circle cx="260" cy="80" r="3"/>' +
+        '</g>',
+      // SonicForge - the waveform, the selected stretch of it and the
+      // playhead sitting inside the selection.
+      sonicforge:
+        '<g stroke="currentColor" stroke-width="1" opacity=".24">' +
+          '<path d="M150 40v4M174 40v3M198 40v4M222 40v3M246 40v4M270 40v3M294 40v4"/>' +
+        '</g>' +
+        '<rect x="194" y="44" width="56" height="42" rx="4" fill="var(--accent)" fill-opacity=".13" stroke="var(--accent)" stroke-opacity=".45" stroke-width="1.3"/>' +
+        '<g stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".48">' +
+          '<path d="M152 76v-8M157 76v-15M162 76v-22M167 76v-12M172 76v-26M177 76v-18M182 76v-10M187 76v-20M192 76v-28M197 76v-16M202 76v-24M207 76v-12M212 76v-19M217 76v-30M222 76v-14M227 76v-22M232 76v-9M237 76v-17M242 76v-25M247 76v-13M252 76v-21M257 76v-11M262 76v-15M267 76v-24M272 76v-16M277 76v-27M282 76v-12M287 76v-18"/>' +
+        '</g>' +
+        '<path d="M212 40v52" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"/>',
+      // Carroms Pool - the board with its pockets, three balls and the
+      // striker waiting to be placed.
+      carroms:
+        '<rect x="180" y="36" width="60" height="56" rx="5" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".42"/>' +
+        '<g fill="none" stroke="currentColor" stroke-width="1.3" opacity=".46">' +
+          '<circle cx="180" cy="36" r="4.4"/><circle cx="240" cy="36" r="4.4"/>' +
+          '<circle cx="180" cy="92" r="4.4"/><circle cx="240" cy="92" r="4.4"/>' +
+          '<circle cx="180" cy="64" r="4.4"/><circle cx="240" cy="64" r="4.4"/>' +
+          '<circle cx="210" cy="64" r="10"/><path d="M180 64h60"/>' +
+        '</g>' +
+        '<g fill="var(--accent)">' +
+          '<circle cx="196" cy="48" r="3.8"/><circle cx="228" cy="54" r="3.8"/><circle cx="200" cy="78" r="3.8"/>' +
+        '</g>' +
+        '<circle cx="226" cy="76" r="4" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".85"/>' +
+        '<circle cx="258" cy="56" r="5" fill="var(--accent)" fill-opacity=".85"/>' +
+        '<circle cx="258" cy="74" r="5" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".4"/>' +
+        '<g fill="currentColor" opacity=".2">' +
+          '<rect x="272" y="53" width="24" height="5" rx="2.5"/><rect x="272" y="71" width="16" height="5" rx="2.5"/>' +
+        '</g>'
+    };
+
+    function coverArt(key) {
+      const body = COVER_ART[key];
+      if (!body) return '';
+      return '<span class="pc-art"><svg viewBox="0 0 320 112" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">' + ART_WINDOW + body + '</svg></span>';
+    }
+
     // ── Selected Works: card builder (v6.4) ────────────────────────
     // Renders a richer card: gradient cover with category label + "New"
     // badge, outcome chips, and two explicit actions (case study / live demo)
@@ -21495,6 +20900,7 @@
       return '' +
         '<article class="project-card glass-panel pc2" aria-label="' + esc(p.title) + (p.kind ? ' — ' + esc(p.kind) : '') + '" onclick="openProjectCase(' + idx + ')">' +
           '<div class="pc-cover" data-tone="' + tone + '">' +
+            coverArt(p.art) +
             '<span class="pc-cover-icon"><i class="' + esc(p.icon) + '" aria-hidden="true"></i></span>' +
             '<span class="pc-kind">' + esc(p.kind || 'Side project') + '</span>' +
             badge +
@@ -21579,19 +20985,261 @@
             '</div>' +
           '</article>';
       }).join('');
-      setTimeout(() => { initializeScrollDots('testimonialContainer', 'testimonialDots'); initializeScrollDots('xpRail', 'xpDots'); }, 50);
+      setTimeout(() => { initializeScrollDots('testimonialContainer', 'testimonialDots'); }, 50);
       if (window.staggerReveal) window.staggerReveal(container.querySelectorAll('.testimonial-card'));
     }
 
-    function toggleXpCard(btn) {
-      const card = btn.closest('.xp-card');
-      if (!card) return;
-      const open = card.classList.toggle('expanded');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      btn.innerHTML = (open ? 'Show less' : 'Read more') + ' <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>';
-      if (typeof haptic === 'function') haptic([10]);
-    }
-    window.toggleXpCard = toggleXpCard;
+    /* ── v7.11 Experience timeline ──────────────────────────────────────
+       The SVG spine is measured from the cards that are really on the
+       page, so the drawing can never drift away from the content: the
+       line grows with the scroll position and each marker lights up the
+       moment its own card reaches the reading line.
+
+       The drawing is built once. Every later measurement only moves the
+       pieces to where the cards now are, so the reveal animation plays
+       exactly once and can never be restarted halfway by a font swap. */
+    (function () {
+      const NS = 'http://www.w3.org/2000/svg';
+      const timeline = document.getElementById('xpTimeline');
+      const svg = document.getElementById('xpSpine');
+      const stack = document.getElementById('xpStack');
+      if (!timeline || !svg || !stack) return;
+
+      const GLYPHS = {
+        architect: '<path d="M12 3.2 20.6 7.6 12 12 3.4 7.6z"/><path d="M3.4 12.1 12 16.5l8.6-4.4"/><path d="M3.4 16.6 12 21l8.6-4.4"/>',
+        frontend: '<path d="M8.8 7.8 4.2 12l4.6 4.2"/><path d="M15.2 7.8 19.8 12l-4.6 4.2"/><path d="M13.6 4.9 10.4 19.1"/>',
+        mechanical: '<circle cx="12" cy="12" r="3.1"/><path d="M12 3.5v2.3M12 18.2v2.3M20.5 12h-2.3M5.8 12H3.5M18 6l-1.6 1.6M7.6 16.4 6 18M18 18l-1.6-1.6M7.6 7.6 6 6"/>'
+      };
+
+      const cards = Array.from(stack.querySelectorAll('.xp-card'));
+      if (!cards.length) return;
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const make = (name, attrs) => {
+        const node = document.createElementNS(NS, name);
+        for (const key in attrs) node.setAttribute(key, attrs[key]);
+        return node;
+      };
+
+      let spineX = 29;
+      let marks = [];
+      let base = null, progress = null, tip = null;
+      let signature = '';
+      let revealed = false;
+
+      /* ── build the drawing once ─────────────────────────────────── */
+      function build() {
+        svg.innerHTML = '';
+        base = make('line', { class: 'xp-spine-base', x1: spineX, y1: 0, x2: spineX, y2: 0 });
+        progress = make('line', { class: 'xp-spine-progress', x1: spineX, y1: 0, x2: spineX, y2: 0 });
+        tip = make('circle', { class: 'xp-spine-tip', cx: spineX, cy: 0, r: 3 });
+        svg.appendChild(base);
+        svg.appendChild(progress);
+        svg.appendChild(tip);
+
+        marks = cards.map(function (card, i) {
+          const group = make('g', {
+            class: 'xp-mark' + (card.classList.contains('current') ? ' xp-mark-current' : ''),
+            'data-i': i
+          });
+          /* the core scales around the marker itself; the connector sits
+             outside it so it cannot drag the marker off centre */
+          const core = make('g', { class: 'xp-mark-core' });
+          let halo = null;
+          if (card.classList.contains('current')) {
+            halo = make('circle', { class: 'xp-mark-halo', r: 15 });
+            core.appendChild(halo);
+          }
+          const ring = make('circle', { class: 'xp-mark-ring', r: 19 });
+          const disc = make('circle', { class: 'xp-mark-disc', r: 14 });
+          core.appendChild(ring);
+          core.appendChild(disc);
+          const glyph = make('g', { class: 'xp-mark-glyph' });
+          glyph.innerHTML = GLYPHS[card.dataset.xpIcon] || GLYPHS.architect;
+          core.appendChild(glyph);
+          group.appendChild(core);
+
+          const conn = make('g', { class: 'xp-mark-conn' });
+          const tick = make('line', { class: 'xp-mark-tick' });
+          conn.appendChild(tick);
+          group.appendChild(conn);
+
+          svg.appendChild(group);
+          return { card: card, group: group, core: core, conn: conn, glyph: glyph, tick: tick, y: 0 };
+        });
+      }
+
+      /* ── move the drawing onto the cards ────────────────────────── */
+      function measure() {
+        const rect = timeline.getBoundingClientRect();
+        spineX = parseFloat(getComputedStyle(timeline).getPropertyValue('--xp-spine-x')) || 29;
+
+        /* the marker centres on the role's period pill - the pill is the
+           thing the eye reads as "this role", so the drawing lands on it
+           whatever the card padding or the text wrapping happens to be */
+        const plan = cards.map(function (card) {
+          const r = card.getBoundingClientRect();
+          const pill = card.querySelector('.xp-period');
+          const p = pill ? pill.getBoundingClientRect() : null;
+          return {
+            y: p ? Math.round(p.top - rect.top + p.height / 2)
+                : Math.round(r.top - rect.top + 26),
+            left: r.left - rect.left
+          };
+        });
+
+        const nextSignature = spineX + '|' + plan.map(function (p) {
+          return p.y + ':' + Math.round(p.left);
+        }).join(',');
+        if (signature === nextSignature && marks.length) { update(true); return; }
+        signature = nextSignature;
+
+        marks.forEach(function (m, i) {
+          const y = plan[i].y;
+          const left = plan[i].left;
+          m.y = y;
+          m.core.querySelectorAll('circle').forEach(function (c) {
+            c.setAttribute('cx', spineX);
+            c.setAttribute('cy', y);
+          });
+          m.glyph.setAttribute('transform',
+            'translate(' + (spineX - 7) + ' ' + (y - 7) + ') scale(0.583)');
+          /* the centre of this marker, in SVG coordinates - every scale and
+             every pulse happens around this point and nowhere else */
+          const origin = spineX + 'px ' + y + 'px';
+          m.core.style.transformOrigin = origin;
+          m.core.querySelectorAll('circle').forEach(function (c) {
+            c.style.transformOrigin = origin;
+          });
+          m.tick.setAttribute('x1', spineX + 15);
+          m.tick.setAttribute('y1', y);
+          m.tick.setAttribute('x2', Math.max(spineX + 19, left - 7));
+          m.tick.setAttribute('y2', y);
+        });
+
+        const first = marks[0].y;
+        const last = marks[marks.length - 1].y;
+        const len = Math.max(1, last - first);
+        base.setAttribute('x1', spineX);
+        base.setAttribute('x2', spineX);
+        base.setAttribute('y1', first);
+        base.setAttribute('y2', last);
+        progress.setAttribute('x1', spineX);
+        progress.setAttribute('x2', spineX);
+        progress.setAttribute('y1', first);
+        progress.setAttribute('y2', last);
+        svg.style.setProperty('--xp-len', String(len));
+        progress.setAttribute('stroke-dasharray', String(len));
+        tip.setAttribute('cx', spineX);
+
+        /* the markers arrive in step with the line that draws them */
+        if (!revealed) {
+          marks.forEach(function (m) {
+            const delay = (0.08 + (m.y - first) / len * 0.62).toFixed(3);
+            m.core.style.animationDelay = delay + 's';
+            m.conn.style.animationDelay = delay + 's';
+          });
+        }
+
+        update(true);
+      }
+
+      /* ── follow the reading position ────────────────────────────── */
+      function update(force) {
+        if (!progress || !marks.length) return;
+        const rect = timeline.getBoundingClientRect();
+        /* the reading line sits just above the middle of the screen: a role
+           counts as read once it has been carried up past it */
+        const readY = window.innerHeight * 0.52;
+        const tipY = readY - rect.top;
+        const first = marks[0].y;
+        const last = marks[marks.length - 1].y;
+        const len = Math.max(1, last - first);
+        const drawn = Math.max(0, Math.min(len, tipY - first));
+        progress.setAttribute('stroke-dashoffset', String(len - drawn));
+        if (tip) {
+          tip.setAttribute('cy', String(Math.min(last, Math.max(first, tipY))));
+          tip.style.opacity = drawn > 4 ? '0.9' : '0';
+        }
+        marks.forEach(function (m) {
+          const live = m.y <= tipY + 4;
+          if (force || live !== m.live) {
+            m.live = live;
+            m.group.classList.toggle('is-live', live);
+            m.card.classList.toggle('is-live', live);
+          }
+        });
+      }
+
+      /* attached once - the markers are looked up by index, so the
+         listeners survive every re-measure */
+      cards.forEach(function (card, i) {
+        card.addEventListener('pointerenter', function () {
+          const m = marks[i];
+          if (m) m.group.classList.add('is-hot');
+        });
+        card.addEventListener('pointerleave', function () {
+          const m = marks[i];
+          if (m) m.group.classList.remove('is-hot');
+        });
+      });
+
+      let ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () { update(false); ticking = false; });
+      }
+
+      /* the section draws itself the first time it comes into view */
+      function startDraw() {
+        if (revealed) return;
+        revealed = true;
+        timeline.classList.add('is-drawn');
+        setTimeout(function () {
+          timeline.classList.remove('is-drawn');
+          timeline.classList.add('is-drawn-done');
+        }, 1400);
+      }
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            io.unobserve(timeline);
+            startDraw();
+          });
+        }, { threshold: 0.2 });
+        io.observe(timeline);
+      } else {
+        startDraw();
+      }
+      /* safety net: the drawing must never stay hidden */
+      setTimeout(startDraw, 2600);
+
+      // Fonts and images land after the first paint - move the drawing once they do.
+      build();
+      measure();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', function () { measure(); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); });
+      setTimeout(function () { measure(); }, 120);
+      setTimeout(function () { measure(); }, 600);
+
+      /* watch the cards themselves: if one of them changes size - a web
+         font arriving, a description re-wrapping, a narrower screen - the
+         markers move onto the new rows straight away, so the drawing can
+         never drift away from the story it is telling */
+      if ('ResizeObserver' in window) {
+        let pending = false;
+        const ro = new ResizeObserver(function () {
+          if (pending) return;
+          pending = true;
+          requestAnimationFrame(function () { pending = false; measure(); });
+        });
+        cards.forEach(function (card) { ro.observe(card); });
+        ro.observe(stack);
+      }
+    })();
 
     function toggleTestimonial(btn) {
       const card = btn.closest('.testimonial-card');
@@ -22377,10 +22025,10 @@ async function ensureQRCodeLib() {
        step with the scroll position.
        ═══════════════════════════════════════════════════════════ */
     const JX_RAIL_IDS = [
-      'openSourceRail', 'openSourceFilters', 'xpRail', 'testimonialContainer',
+      'openSourceRail', 'openSourceFilters', 'testimonialContainer',
       'clipFilterRow', 'counterFilterRow',
       'projectContainer', 'qrLogoOptions', 'qrStyleOptions',
-      'qrColorOptions', 'goalSteps'
+      'qrColorOptions'
     ];
     const JX_RAIL_CLASSES = [
       'qr-studio-type-bar', 'jx-send-row', 'oss-filter-row',
@@ -23048,10 +22696,11 @@ async function ensureQRCodeLib() {
       if (latestWrap) latestWrap.innerHTML = latestHtml;
       if (olderWrap) olderWrap.innerHTML = olderOfficialHtml + detectedHtml;
       if (liveWrap) {
-        liveWrap.innerHTML = jclState.activity.map(entry =>
+        const publishable = jclState.activity.filter(entry => !jclIsAutomationText(entry.text));
+        liveWrap.innerHTML = publishable.map(entry =>
           '<div class="jcl-entry jcl-activity"><span class="jcl-version-badge jcl-badge-gh"><i class="fa-brands fa-github" aria-hidden="true"></i></span><div><div class="changelog-head"><span class="changelog-date">' + escapeHtml(entry.date) + '</span>' + (entry.url ? '<a class="jcl-commit-link" href="' + escapeHtml(entry.url) + '" target="_blank" rel="noopener" aria-label="View commit on GitHub">' + escapeHtml(entry.sha || 'commit') + '</a>' : '') + '</div><div class="changelog-text">' + escapeHtml(entry.text) + (entry.extra ? ' <span class="jcl-muted">(+' + entry.extra + ' more commit' + (entry.extra > 1 ? 's' : '') + ' that day)</span>' : '') + '</div></div></div>'
         ).join('');
-        liveWrap.style.display = jclState.activity.length ? '' : 'none';
+        liveWrap.style.display = publishable.length ? '' : 'none';
       }
       const vLabel = document.getElementById('jclVersionLabel');
       if (vLabel) vLabel.textContent = jclState.version;
@@ -23085,10 +22734,45 @@ async function ensureQRCodeLib() {
       }
       return false;
     }
+    // A commit that is the machine talking to itself is not a release.
+    // A scheduled feed refresh, a bot bumping the service-worker version,
+    // a dependency update — none of that is worth a visitor's attention,
+    // and publishing it under "Recent Updates" makes the site look
+    // unfinished. These never reach the page.
+    const JCL_AUTOMATION_MESSAGE = /^\s*(chore|ci|bump|revert)\b|\brefresh feeds\b|\bsync cache_version\b|\[skip ci\]|dependabot|renovate|auto-?merge|^\s*merge pull request/i;
+    const JCL_AUTOMATION_AUTHOR = /bot$|\[bot\]|github actions|dependabot|renovate/i;
+
+    function jclIsAutomation(commit) {
+      const author = ((commit && commit.commit && commit.commit.author) || {}).name || '';
+      const message = String((commit && commit.commit && commit.commit.message) || '').split('\n')[0];
+      if (JCL_AUTOMATION_AUTHOR.test(author)) return true;
+      return JCL_AUTOMATION_MESSAGE.test(message);
+    }
+
+    // The activity list is also kept in local storage, so an entry that was
+    // published before this rule existed can still be sitting in a
+    // returning visitor's cache. It is scrubbed on the way out as well.
+    function jclIsAutomationText(text) {
+      return JCL_AUTOMATION_MESSAGE.test(String(text || '').trim());
+    }
+
+    // Turn a commit message into a sentence a stranger can read.
     function jclCleanCommitMessage(msg) {
       let line = String(msg || '').split('\n')[0].trim();
-      if (/^(add files? via upload|update index\.?html|deploy( to (gh-)?pages)?|site update)$/i.test(line)) line = 'Published a new site update';
+      // the bot stamps its own timestamp: "chore: refresh feeds (2026-11-13T06:42Z)"
+      line = line.replace(/\s*\(\d{4}-\d{2}-\d{2}T[\d:]+Z?\)\s*$/, '').trim();
+      if (/^(add files? via upload|update index\.?html|deploy( to .*)?|site update|publish(ed)? (a )?new site update)$/i.test(line)) line = 'Published a new site update';
+      else if (/^update readme(\.md)?$/i.test(line)) line = 'Updated the README';
+      else if (/^update sw\.js$/i.test(line)) line = 'Updated the service worker';
+      else {
+        const verb = /^(feat|feature|fix|bugfix|perf|docs|refactor|style|test|build)\b(?:\([^)]*\))?!?:\s*(.+)$/i.exec(line);
+        if (verb) {
+          const verbs = { feat: 'Added', feature: 'Added', fix: 'Fixed', bugfix: 'Fixed', perf: 'Improved', docs: 'Documented', refactor: 'Refactored', style: 'Tidied', test: 'Tested', build: 'Built' };
+          line = verbs[verb[1].toLowerCase()] + ': ' + verb[2];
+        }
+      }
       if (line.length > 110) line = line.slice(0, 107) + '…';
+      if (line) line = line.charAt(0).toUpperCase() + line.slice(1);
       return line;
     }
 
@@ -23212,6 +22896,10 @@ async function ensureQRCodeLib() {
             (Array.isArray(commits) ? commits : []).forEach(c => {
               const iso = c && c.commit && c.commit.author && c.commit.author.date;
               if (!iso) return;
+              // automated housekeeping is filtered out here, before the day
+              // groups are built, so "+2 more commits" only ever counts the
+              // ones a visitor will actually see
+              if (jclIsAutomation(c)) return;
               const t = new Date(iso).getTime();
               if (isNaN(t) || t <= newestOfficial) return;
               const key = formatPreciseDate(new Date(t));
@@ -23677,12 +23365,13 @@ async function ensureQRCodeLib() {
       if (item.includedCount) metaBits.push('<span><i class="fa-solid fa-box-open" aria-hidden="true"></i><span data-product-included="' + i + '">' + safe(productIncludedSummary(item)) + '</span></span>');
       if (item.fileSize) metaBits.push('<span><i class="fa-solid fa-hard-drive" aria-hidden="true"></i><span data-product-file-size="' + i + '">' + safe(item.fileSize) + '</span></span>');
       const longDate = 'Updated ' + formatProductDate(item.updatedAt || item.createdAt, true);
+      // Cover art is square (600×600) and is fitted, not cropped.
       const img = item.thumb
-        ? '<img data-jxload src="' + safe(item.thumb) + '" alt="' + safe(item.title) + ' cover art" loading="lazy" decoding="async" width="640" height="360">'
-        : '';
+        ? '<div class="jx-thumb-skeleton" aria-hidden="true"></div>' +
+          '<img data-jxload src="' + safe(item.thumb) + '" alt="' + safe(item.title) + ' cover art" loading="lazy" decoding="async" width="600" height="600">'
+        : '<span class="jx-thumb-fallback" aria-hidden="true"><i class="fa-solid fa-box-open"></i></span>';
       return '<article class="jx-product-card" data-product-card="' + i + '" role="button" tabindex="0" aria-label="View ' + safe(item.title) + ', priced at ' + safe(item.price) + '" onclick="openStoreProduct(' + i + ')" onkeydown="jxCardKey(event,' + i + ')">' +
-        '<div class="jx-thumb">' +
-          '<div class="jx-thumb-skeleton" aria-hidden="true"></div>' + img +
+        '<div class="jx-thumb">' + img +
           '<span class="jx-flag" data-product-flag="' + i + '" style="display:none"></span>' +
           '<button class="jx-share ripple-btn" type="button" aria-label="Share ' + safe(item.title) + '" onclick="event.stopPropagation();shareStoreProduct(' + i + ')"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i></button>' +
         '</div>' +
@@ -23849,7 +23538,8 @@ async function ensureQRCodeLib() {
           return '<li class="goal-step ' + (reached ? 'reached' : '') + '">' +
               '<span class="goal-step-amt">' + goalMoney(st.amount) + '</span>' +
               '<span class="goal-step-label">' + escapeHtml(st.label || 'Milestone') + '</span>' +
-              '<span class="goal-step-state"><i class="fa-solid ' + (reached ? 'fa-circle-check' : 'fa-lock') + '" aria-hidden="true"></i>' + (reached ? 'Reached' : 'Locked') + '</span>' +
+              '<span class="goal-step-state"><i class="fa-solid ' + (reached ? 'fa-circle-check' : 'fa-lock') + '" aria-hidden="true"></i>' +
+                '<span class="sr-only">' + (reached ? 'Reached' : 'Locked') + '</span></span>' +
             '</li>';
         }).join('');
       }
@@ -23901,12 +23591,27 @@ async function ensureQRCodeLib() {
       }
       grid.innerHTML = storeProducts.map(jxProductCard).join('');
       grid.querySelectorAll('img[data-jxload]').forEach(img => {
-        const finish = () => { const t = img.closest('.jx-thumb'); if (t) t.classList.add('jx-loaded'); };
+        const finish = () => {
+          const t = img.closest('.jx-thumb');
+          if (!t) return;
+          t.classList.add('jx-loaded');
+          try { t.style.setProperty('--thumb', 'url("' + (img.currentSrc || img.src) + '")'); } catch (e) {}
+        };
         if (img.complete && img.naturalWidth > 0) finish();
         else {
           img.addEventListener('load', finish, { once: true });
-          img.addEventListener('error', () => { img.style.display = 'none'; }, { once: true });
+          // A cover that will not load must not leave the shimmer running.
+          img.addEventListener('error', () => {
+            img.style.display = 'none';
+            const t = img.closest('.jx-thumb');
+            if (t) t.classList.add('jx-loaded');
+          }, { once: true });
         }
+      });
+      // A product with no cover at all still shows its placeholder, and its
+      // share button is still reachable.
+      grid.querySelectorAll('.jx-thumb:not(.jx-loaded)').forEach(t => {
+        if (!t.querySelector('img')) t.classList.add('jx-loaded');
       });
       storeProducts.forEach((_, i) => { renderStoreRating(i); syncProductCardMeta(i); });
       renderStoreFlags();
@@ -24211,8 +23916,15 @@ async function ensureQRCodeLib() {
         { icon:'fa-bolt', label:'Delivery', value:item.delivery || 'Instant download' },
         { icon:'fa-calendar-check', label:'Updated', value:updated }
       ];
-      $('#productSheetContent').innerHTML = '<div class="detail-hero" role="img" aria-label="Product preview image for ' + escapeHtml(item.title) + '" style="--detail-bg:url(' + item.thumb + ')"></div>' +
-        '<div class="detail-section"><h3>Sample Preview</h3><div class="store-sample-preview" role="img" aria-label="Sample preview image for ' + escapeHtml(item.title) + '" style="--sample:url(' + (item.sampleThumb || item.thumb) + '); min-height:170px;"><span><i class="fa-regular fa-image"></i> Sample preview image</span></div></div>' +
+      const heroUrl = item.thumb || item.sampleThumb || '';
+      const sampleUrl = item.sampleThumb || item.thumb || '';
+      $('#productSheetContent').innerHTML = '<div class="detail-hero" style="--detail-bg:url(&quot;' + escapeHtml(heroUrl) + '&quot;)">' +
+          (heroUrl ? '<img src="' + escapeHtml(heroUrl) + '" alt="Cover art for ' + escapeHtml(item.title) + '" loading="lazy" decoding="async">' : '') +
+        '</div>' +
+        '<div class="detail-section"><h3>Sample Preview</h3><div class="store-sample-preview" style="--sample:url(&quot;' + escapeHtml(sampleUrl) + '&quot;);">' +
+          (sampleUrl ? '<img src="' + escapeHtml(sampleUrl) + '" alt="Sample preview image for ' + escapeHtml(item.title) + '" loading="lazy" decoding="async">' : '') +
+          '<span><i class="fa-regular fa-image"></i> Sample preview image</span>' +
+        '</div></div>' +
         '<div class="detail-section"><h3>Price</h3><p><strong style="color:var(--accent);">' + escapeHtml(item.price) + '</strong>' + (item.sale ? ' <s class="jx-was">' + escapeHtml(item.currencySym || '') + item.sale.was + '</s> <span class="jx-sale-badge"><i class="fa-solid fa-tag"></i> ' + item.sale.pct + '% OFF</span>' : '') + ratingHtml + ' <span class="instant-download-badge" style="margin-left:8px;"><i class="fa-solid fa-bolt"></i> ' + escapeHtml(item.delivery || 'Instant download') + '</span></p></div>' +
         '<div class="detail-section"><h3>Product Details</h3><div class="product-fact-grid">' + facts.map(f => '<div class="product-fact-card"><div class="product-fact-label"><i class="fa-solid ' + f.icon + '"></i>' + escapeHtml(f.label) + '</div><div class="product-fact-value">' + escapeHtml(f.value) + '</div></div>').join('') + '</div></div>' +
         (item.includes && item.includes.length ? '<div class="detail-section"><h3>What’s included</h3><ul class="detail-list">' + item.includes.map(x => '<li>' + escapeHtml(x) + '</li>').join('') + '</ul></div>' : '') +
@@ -24695,13 +24407,6 @@ async function ensureQRCodeLib() {
     function renderOpenSourceMetrics() {
       const repos = openSourceRepos;
       const totalStars = repos.reduce((sum, repo) => sum + Number(repo.stargazers_count || 0), 0);
-      const languages = [...new Set(repos.map(getRepoLanguage).filter(lang => lang && lang !== 'Other'))];
-      const latestRepo = repos[0];
-      const setText = (id, value) => { const el = $('#' + id); if (el) el.textContent = value; };
-      setText('ossTotalRepos', formatRepoNumber(repos.length));
-      setText('ossTotalStars', formatRepoNumber(totalStars));
-      setText('ossLanguages', languages.length ? formatRepoNumber(languages.length) : '0');
-      setText('ossLatestRepo', latestRepo ? latestRepo.name : '—');
       // Home snapshot reads the same live numbers — no duplicated fetching.
       window.__studioRepos = repos.length;
       window.__studioStars = totalStars;
@@ -26468,6 +26173,5 @@ async function ensureQRCodeLib() {
 })();
 </script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a59efce59e662e93',t:'MTc5NDU4NTYxMQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a59efce59e662e93',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
