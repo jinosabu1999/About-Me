@@ -19,20 +19,18 @@ const SHARE_CACHE = 'jino-share-target';
 const SHARE_META_KEY = './__share_meta__';
 const SHARE_FILE_KEY = (i) => './__share_file_' + i + '__';
 
-/* Precache: the shell + everything the first screen needs, including the
-   self-hosted font and icon subsets (no third-party requests any more). */
+/* Precache: the shell + everything the first screen needs.
+   The font and icon subsets are inlined into index.html as data URIs
+   since v7.15, so there are no font files to fetch — and no way for an
+   icon to arrive as an empty box because a font request failed.
+   The store covers are not here on purpose: they are pulled from
+   Gumroad, which is the source of truth for the catalogue. The backers
+   feed is not here either \u2014 it is not deployed, so the wall asks
+   for nothing. */
 const PRECACHE = [
   './',
   './index.html',
   './manifest.json',
-  './feed.xml',
-  './fonts/inter-latin.woff2',
-  './fonts/inter-latin-ext.woff2',
-  './fonts/jetbrains-mono-latin.woff2',
-  './fonts/jetbrains-mono-latin-ext.woff2',
-  './fonts/fa-solid-subset.woff2',
-  './fonts/fa-regular-subset.woff2',
-  './fonts/fa-brands-subset.woff2',
   './feeds/repos.json',
   './feeds/store.json',
   './profile.jpg',
